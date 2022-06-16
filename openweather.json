@@ -1066,7 +1066,7 @@
         "type": "function",
         "z": "ddd61edf8d8f5ce2",
         "name": "cod",
-        "func": "// GET VARIABLEN\nlet cod = flow.get('cod') || 0;\n\n// FUNKTION\ncod = msg.payload.cod;\n\nif(cod == 200) {\n    msg.topic = 1;\n} else {\n    msg.topic = 0;\n}\n\n// SET VARIABLEN\nflow.set('cod', cod);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = cod;\n\n// RETURN\nreturn msg;",
+        "func": "// GET VARIABLEN\nlet cod = flow.get('cod') || 0;\n\n// FUNKTION\ncod = msg.payload.cod;\n\n// SET VARIABLEN\nflow.set('cod', cod);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = cod;\n\n// RETURN\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
