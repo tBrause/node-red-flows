@@ -250,8 +250,6 @@
         "y": 780,
         "wires": [
             [
-                "b04355598a860d27",
-                "0798ce47f6aa3654",
                 "cf40801eef0ad09e"
             ]
         ]
@@ -1136,12 +1134,14 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 880,
-        "y": 820,
+        "x": 780,
+        "y": 780,
         "wires": [
             [
                 "c43783c9fee726ef",
-                "89f5412216e665f9"
+                "89f5412216e665f9",
+                "0798ce47f6aa3654",
+                "b04355598a860d27"
             ]
         ]
     },
@@ -1314,7 +1314,7 @@
     {
         "id": "e70d0760bcc08d3a",
         "type": "ui_group",
-        "name": "Bewölkung",
+        "name": "Wolkenlos",
         "tab": "5052abf10d1685d7",
         "order": 4,
         "disp": true,
