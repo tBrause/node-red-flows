@@ -1,0 +1,777 @@
+[
+    {
+        "id": "57793960cf4cb040",
+        "type": "tab",
+        "label": "Lüften",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5b5d0a70099fd93e",
+        "type": "mqtt in",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "shellies/shellyht-706823/sensor/temperature",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "e7bef4fac1dad829",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 390,
+        "y": 120,
+        "wires": [
+            [
+                "b3d00498ea201d99"
+            ]
+        ]
+    },
+    {
+        "id": "b3d00498ea201d99",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "tempShellyIn",
+        "func": "// GET VARIABLEN\nlet tempShellyIn = flow.get('tempShellyIn') || 0;\n\n// FUNKTION\ntempShellyIn = parseFloat(msg.payload);\n\n// SET VARIABLEN\nflow.set('tempShellyIn', tempShellyIn);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = tempShellyIn;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 120,
+        "wires": [
+            [
+                "6634bb0f0e2e9363"
+            ]
+        ]
+    },
+    {
+        "id": "79affadd0eb44b48",
+        "type": "mqtt in",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "aussentemperatur",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "e7bef4fac1dad829",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 310,
+        "y": 260,
+        "wires": [
+            [
+                "560564a25089302d"
+            ]
+        ]
+    },
+    {
+        "id": "560564a25089302d",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "aussentemperatur",
+        "func": "// GET VARIABLEN\nlet aussentemperatur = flow.get('aussentemperatur') || 0;\n\n// FUNKTION\naussentemperatur = parseFloat(msg.payload);\n\n// SET VARIABLEN\nflow.set('aussentemperatur', aussentemperatur);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = aussentemperatur;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 260,
+        "wires": [
+            [
+                "400367aa363d0c6f"
+            ]
+        ]
+    },
+    {
+        "id": "e3e1e7e4ed3c429b",
+        "type": "inject",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 290,
+        "y": 680,
+        "wires": [
+            [
+                "b113741a4dd4fb41",
+                "a2e3817d485308e4",
+                "d32aeadadc471b9c"
+            ]
+        ]
+    },
+    {
+        "id": "b113741a4dd4fb41",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "airFunction",
+        "func": "// GET VARIABLEN\nlet air = flow.get('air') || 0;\nlet tempShellyIn = flow.get('tempShellyIn');\nlet aussentemperatur = flow.get('aussentemperatur');\n\n// FUNKTION\nif(tempShellyIn > (aussentemperatur + 1)) {\n    air = `Window open<br>`;\n} else {\n    air = `Window close<br>`;\n}\n\n// SET VARIABLEN\nflow.set('air', air);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = air;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 680,
+        "wires": [
+            [
+                "c20c5eb55bacf9fa"
+            ]
+        ]
+    },
+    {
+        "id": "cd2a8311e40517cc",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "Subscriping / Client",
+        "info": "",
+        "x": 310,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "1612213d1f1c83b7",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "Query",
+        "info": "",
+        "x": 910,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "c20c5eb55bacf9fa",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "77910d3a38071c05",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "AIR",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1090,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "a00fe233165e7463",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "Publishing / Client",
+        "info": "",
+        "x": 1130,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4f2c71eba33d04bd",
+        "type": "mqtt out",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "raum/temperatur/settings/min",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 1160,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "3f3456cec466e5c4",
+        "type": "mqtt in",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "raum/temperatur/settings/min",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "e7bef4fac1dad829",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 340,
+        "y": 480,
+        "wires": [
+            [
+                "86cb09f8d213ba17"
+            ]
+        ]
+    },
+    {
+        "id": "d6e1f9c0c6071e82",
+        "type": "mqtt out",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "raum/temperatur/settings/max",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 1170,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "58134b108efa9d16",
+        "type": "mqtt in",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "raum/temperatur/settings/max",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "e7bef4fac1dad829",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 340,
+        "y": 540,
+        "wires": [
+            [
+                "eb5094f349027d37"
+            ]
+        ]
+    },
+    {
+        "id": "8e018ea8c3dd3d4a",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "tempOptMin",
+        "func": "// GET VARIABLEN\nlet tempOptMin = flow.get('tempOptMin') || 20;\n\n// FUNKTION\ntempOptMin = parseInt(msg.payload);\n\n// SET VARIABLEN\nflow.set('tempOptMin', tempOptMin);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = tempOptMin;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 480,
+        "wires": [
+            [
+                "4f2c71eba33d04bd",
+                "a2e3817d485308e4"
+            ]
+        ]
+    },
+    {
+        "id": "6b14d114da6abe1a",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "tempOptMax",
+        "func": "// GET VARIABLEN\nlet tempOptMax = flow.get('tempOptMax') || 24;\n\n// FUNKTION\ntempOptMax = parseInt(msg.payload);\n\n// SET VARIABLEN\nflow.set('tempOptMax', tempOptMax);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = tempOptMax;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 540,
+        "wires": [
+            [
+                "d6e1f9c0c6071e82",
+                "d32aeadadc471b9c"
+            ]
+        ]
+    },
+    {
+        "id": "86e22ab9a9672cad",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "109d33547ff0a425",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Raumtemperatur",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 590,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "eb5094f349027d37",
+        "type": "ui_numeric",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "label": "max",
+        "tooltip": "",
+        "group": "109d33547ff0a425",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": "10",
+        "max": "30",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 540,
+        "wires": [
+            [
+                "6b14d114da6abe1a"
+            ]
+        ]
+    },
+    {
+        "id": "86cb09f8d213ba17",
+        "type": "ui_numeric",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "label": "min",
+        "tooltip": "",
+        "group": "109d33547ff0a425",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": "10",
+        "max": "30",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 480,
+        "wires": [
+            [
+                "8e018ea8c3dd3d4a"
+            ]
+        ]
+    },
+    {
+        "id": "6634bb0f0e2e9363",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "f313c8705833350a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Temperatur",
+        "format": "{{msg.payload}} °C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1110,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "400367aa363d0c6f",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "fd2c0f70ffd2888e",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Temperatur",
+        "format": "{{msg.payload}} °C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1110,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "ac9a5f4134e8463b",
+        "type": "ui_button",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "group": "77910d3a38071c05",
+        "order": 1,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "",
+        "tooltip": "",
+        "color": "#333333",
+        "bgcolor": "#f1f1f1",
+        "className": "",
+        "icon": "fa-refresh",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 310,
+        "y": 720,
+        "wires": [
+            [
+                "b113741a4dd4fb41",
+                "a2e3817d485308e4",
+                "d32aeadadc471b9c"
+            ]
+        ]
+    },
+    {
+        "id": "a2e3817d485308e4",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "heatFunction",
+        "func": "// GET VARIABLEN\nlet heat = flow.get('heat') || 0;\nlet tempShellyIn = flow.get('tempShellyIn');\nlet tempOptMin = flow.get('tempOptMin');\n\nif(tempShellyIn < tempOptMin) {\n    heat = `ON<br>`;\n} else {\n    heat = `OFF<br>`;\n}\n\n// SET VARIABLEN\nflow.set('heat', heat);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = heat;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 760,
+        "wires": [
+            [
+                "feb3c03ebf975264"
+            ]
+        ]
+    },
+    {
+        "id": "d32aeadadc471b9c",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "coolFunction",
+        "func": "// GET VARIABLEN\nlet cool = flow.get('cool') || 0;\nlet tempShellyIn = flow.get('tempShellyIn');\nlet tempOptMax = flow.get('tempOptMax');\n\nif(tempShellyIn > tempOptMax) {\n    cool = `ON<br>`;\n} else {\n    cool = `OFF<br>`;\n}\n\n// SET VARIABLEN\nflow.set('cool', cool);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = cool;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 840,
+        "wires": [
+            [
+                "e13cd7e85b6eae97"
+            ]
+        ]
+    },
+    {
+        "id": "feb3c03ebf975264",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "77910d3a38071c05",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "HEAT",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1090,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "e13cd7e85b6eae97",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "77910d3a38071c05",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "COOL",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1090,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "478b85f0942099f1",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "View",
+        "info": "",
+        "x": 1090,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "cecfe0040cde7cb3",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "View",
+        "info": "",
+        "x": 550,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "84523a1396e6d03d",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "View",
+        "info": "",
+        "x": 1090,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "2a6fc90334635438",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "Request",
+        "info": "",
+        "x": 280,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "9d9bd0341f96dc79",
+        "type": "mqtt in",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "shellies/shellyht-706823/sensor/humidity",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "e7bef4fac1dad829",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 380,
+        "y": 180,
+        "wires": [
+            [
+                "8990030f0a6e2172"
+            ]
+        ]
+    },
+    {
+        "id": "8990030f0a6e2172",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "humidityShellyIn",
+        "func": "// GET VARIABLEN\nlet humidityShellyIn = flow.get('humidityShellyIn') || 0;\n\n// FUNKTION\nhumidityShellyIn = parseFloat(msg.payload);\n\n// SET VARIABLEN\nflow.set('humidityShellyIn', humidityShellyIn);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = humidityShellyIn;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 180,
+        "wires": [
+            [
+                "b63a48150f69f422"
+            ]
+        ]
+    },
+    {
+        "id": "b63a48150f69f422",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "f313c8705833350a",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Luftfeuchtigkeit",
+        "format": "{{msg.payload}} %",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1120,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "b82941be42c8591f",
+        "type": "mqtt in",
+        "z": "57793960cf4cb040",
+        "name": "",
+        "topic": "humidity",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "e7bef4fac1dad829",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 280,
+        "y": 320,
+        "wires": [
+            [
+                "919cc18f6e49e572"
+            ]
+        ]
+    },
+    {
+        "id": "919cc18f6e49e572",
+        "type": "function",
+        "z": "57793960cf4cb040",
+        "name": "humidity",
+        "func": "// GET VARIABLEN\nlet humidity = flow.get('humidity') || 0;\n\n// FUNKTION\nhumidity = parseFloat(msg.payload);\n\n// SET VARIABLEN\nflow.set('humidity', humidity);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = humidity;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 320,
+        "wires": [
+            [
+                "323ea9d80a208172"
+            ]
+        ]
+    },
+    {
+        "id": "323ea9d80a208172",
+        "type": "ui_text",
+        "z": "57793960cf4cb040",
+        "group": "fd2c0f70ffd2888e",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Luftfeuchtigkeit",
+        "format": "{{msg.payload}} %",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1120,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "c03ea592379723b8",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "Indoor",
+        "info": "",
+        "x": 130,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "464f1737e87f6c5e",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "Outdoor",
+        "info": "",
+        "x": 120,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "90df13d952dae4b4",
+        "type": "comment",
+        "z": "57793960cf4cb040",
+        "name": "Settings",
+        "info": "",
+        "x": 120,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "77910d3a38071c05",
+        "type": "ui_group",
+        "name": "Empfehlung / Aktion",
+        "tab": "0fb03d12c9eac6b4",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "109d33547ff0a425",
+        "type": "ui_group",
+        "name": "Einstellungen",
+        "tab": "0fb03d12c9eac6b4",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f313c8705833350a",
+        "type": "ui_group",
+        "name": "Indoor / Shelly H&T",
+        "tab": "0fb03d12c9eac6b4",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "fd2c0f70ffd2888e",
+        "type": "ui_group",
+        "name": "Outdoor / openweather.org",
+        "tab": "0fb03d12c9eac6b4",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0fb03d12c9eac6b4",
+        "type": "ui_tab",
+        "name": "InOut",
+        "icon": "fa-question-circle",
+        "order": 8,
+        "disabled": false,
+        "hidden": false
+    }
+]
