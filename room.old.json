@@ -1,0 +1,1221 @@
+[
+    {
+        "id": "53b67eedfb3a15c5",
+        "type": "tab",
+        "label": "Küche",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "5e20bbc63e3aa434",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "SELECT * FROM `room_settings`",
+        "func": "msg.topic = \"SELECT * FROM `room_settings` WHERE `id` = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 160,
+        "wires": [
+            [
+                "4c41182d478af299",
+                "70c7124bbff564ab"
+            ]
+        ]
+    },
+    {
+        "id": "70c7124bbff564ab",
+        "type": "mysql",
+        "z": "53b67eedfb3a15c5",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 670,
+        "y": 160,
+        "wires": [
+            [
+                "a530b213a2522df9",
+                "b76fa41f333fe5b8",
+                "bc094a684df55bf4",
+                "48e95a3b7ce347d2",
+                "ca2d71b3bd5e4b1a"
+            ]
+        ]
+    },
+    {
+        "id": "4c41182d478af299",
+        "type": "debug",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "f98959ee22a25282",
+        "type": "inject",
+        "z": "53b67eedfb3a15c5",
+        "name": "INIT",
+        "props": [
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "0.0",
+        "topic": "SELECT * FROM `room_settings` WHERE `id` = '3'",
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "5e20bbc63e3aa434",
+                "e565658cd8a79e5a"
+            ]
+        ]
+    },
+    {
+        "id": "bd2c2d436b6923ca",
+        "type": "ui_numeric",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "label": "min",
+        "tooltip": "",
+        "group": "5270da3bb1dfbe4e",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "50",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 320,
+        "wires": [
+            [
+                "db97592fbbd8d1bb"
+            ]
+        ]
+    },
+    {
+        "id": "3ef7254704ea0ff2",
+        "type": "ui_numeric",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "label": "Optimal",
+        "tooltip": "",
+        "group": "5270da3bb1dfbe4e",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptimal",
+        "topicType": "str",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "50",
+        "step": 1,
+        "className": "",
+        "x": 560,
+        "y": 440,
+        "wires": [
+            [
+                "c011e1be3749db4e"
+            ]
+        ]
+    },
+    {
+        "id": "4925ebec6fee037a",
+        "type": "ui_numeric",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "label": "max",
+        "tooltip": "",
+        "group": "5270da3bb1dfbe4e",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMax",
+        "topicType": "str",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "50",
+        "step": 1,
+        "className": "",
+        "x": 550,
+        "y": 560,
+        "wires": [
+            [
+                "d5615e66ebcc9c53"
+            ]
+        ]
+    },
+    {
+        "id": "a530b213a2522df9",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "min_temp",
+        "func": "msg.payload = msg.payload[0].min_temp;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 320,
+        "wires": [
+            [
+                "bd2c2d436b6923ca",
+                "8338ccaeac5d6892"
+            ]
+        ]
+    },
+    {
+        "id": "b76fa41f333fe5b8",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "opt_temp",
+        "func": "msg.payload = msg.payload[0].opt_temp;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 440,
+        "wires": [
+            [
+                "3ef7254704ea0ff2",
+                "d8540dd9df84570a",
+                "81093bc1ee406acb"
+            ]
+        ]
+    },
+    {
+        "id": "bc094a684df55bf4",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "max_temp",
+        "func": "msg.payload = msg.payload[0].max_temp;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 170,
+        "y": 560,
+        "wires": [
+            [
+                "4925ebec6fee037a",
+                "4380c50ef2e65999"
+            ]
+        ]
+    },
+    {
+        "id": "db97592fbbd8d1bb",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "UPDATE `room_settings`",
+        "func": "msg.topic = \"UPDATE `room_settings` SET `min_temp` = '\" + msg.payload + \"' WHERE id = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 380,
+        "wires": [
+            [
+                "0ac26fb995f42c20"
+            ]
+        ]
+    },
+    {
+        "id": "0ac26fb995f42c20",
+        "type": "mysql",
+        "z": "53b67eedfb3a15c5",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1030,
+        "y": 440,
+        "wires": [
+            [
+                "5e20bbc63e3aa434",
+                "a22956cbab1239da",
+                "514295beae841dc6"
+            ]
+        ]
+    },
+    {
+        "id": "c011e1be3749db4e",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "UPDATE `room_settings`",
+        "func": "msg.topic = \"UPDATE `room_settings` SET `opt_temp` = '\" + msg.payload + \"' WHERE id = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 440,
+        "wires": [
+            [
+                "0ac26fb995f42c20"
+            ]
+        ]
+    },
+    {
+        "id": "d5615e66ebcc9c53",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "UPDATE `room_settings`",
+        "func": "msg.topic = \"UPDATE `room_settings` SET `max_temp` = '\" + msg.payload + \"' WHERE id = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 500,
+        "wires": [
+            [
+                "0ac26fb995f42c20"
+            ]
+        ]
+    },
+    {
+        "id": "8338ccaeac5d6892",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "tempMin",
+        "func": "msg.topic = `tempMin`;\nmsg = {ui_control:{min:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "3ef7254704ea0ff2"
+            ]
+        ]
+    },
+    {
+        "id": "d8540dd9df84570a",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "tempOptMin",
+        "func": "msg.topic = `tempOptMin`;\nmsg = {ui_control:{min:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 480,
+        "wires": [
+            [
+                "4925ebec6fee037a"
+            ]
+        ]
+    },
+    {
+        "id": "81093bc1ee406acb",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "tempOptMax",
+        "func": "msg.topic = `tempOptMax`;\nmsg = {ui_control:{max:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 400,
+        "wires": [
+            [
+                "bd2c2d436b6923ca"
+            ]
+        ]
+    },
+    {
+        "id": "4380c50ef2e65999",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "tempMax",
+        "func": "msg.topic = `tempMax`;\nmsg = {ui_control:{max:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 520,
+        "wires": [
+            [
+                "3ef7254704ea0ff2"
+            ]
+        ]
+    },
+    {
+        "id": "f756db82c6aa2825",
+        "type": "comment",
+        "z": "53b67eedfb3a15c5",
+        "name": " WHERE id = '3'",
+        "info": "",
+        "x": 320,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "97bb259c377b7c32",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "SensorOffice",
+        "func": "let tempSensorOffice = flow.get('tempSensorOffice');\nlet humiSensorOffice = flow.get('humiSensorOffice');\n\ntempSensorOffice = msg.payload[0].temp;\nhumiSensorOffice = msg.payload[0].humi;\n\n// SET VARIABLEN\nflow.set('tempSensorOffice', tempSensorOffice);\nflow.set('humiSensorOffice', humiSensorOffice);\n\nmsg.payload = tempSensorOffice;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1950,
+        "y": 440,
+        "wires": [
+            [
+                "cb690c82e3c70667"
+            ]
+        ]
+    },
+    {
+        "id": "e738282ef0087d3e",
+        "type": "inject",
+        "z": "53b67eedfb3a15c5",
+        "name": "5min",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1330,
+        "y": 280,
+        "wires": [
+            [
+                "1e8abfaaf6b54803",
+                "881b1dc1c987dfae"
+            ]
+        ]
+    },
+    {
+        "id": "a22956cbab1239da",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "SELECT * FROM `sensor_data`",
+        "func": "msg.topic = \"SELECT * FROM `sensor_data` WHERE `sensor_id` = 2 ORDER BY `sensor_data`.`updated` DESC LIMIT 0, 1\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1410,
+        "y": 440,
+        "wires": [
+            [
+                "018c81f12721dd16"
+            ]
+        ]
+    },
+    {
+        "id": "018c81f12721dd16",
+        "type": "mysql",
+        "z": "53b67eedfb3a15c5",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1710,
+        "y": 440,
+        "wires": [
+            [
+                "97bb259c377b7c32"
+            ]
+        ]
+    },
+    {
+        "id": "cb690c82e3c70667",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "SELECT * FROM `room_settings`",
+        "func": "msg.topic = \"SELECT * FROM `room_settings` WHERE `id` = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1420,
+        "y": 540,
+        "wires": [
+            [
+                "d522733b77fdbb8c"
+            ]
+        ]
+    },
+    {
+        "id": "d522733b77fdbb8c",
+        "type": "mysql",
+        "z": "53b67eedfb3a15c5",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1710,
+        "y": 540,
+        "wires": [
+            [
+                "c431bf732587c81a",
+                "3a466471e6453d3c",
+                "2bec036a9ddf5b39"
+            ]
+        ]
+    },
+    {
+        "id": "c431bf732587c81a",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "SensorSetting TEMP",
+        "func": "let tempOfficeMin = flow.get('tempOfficeMin') || 0;\nlet tempOfficeOpt = flow.get('tempOfficeOpt') || 0;\nlet tempOfficeMax = flow.get('tempOfficeMax') || 0;\n\ntempOfficeMin = msg.payload[0].min_temp;\ntempOfficeOpt = msg.payload[0].opt_temp;\ntempOfficeMax = msg.payload[0].max_temp;\n\n\n// SET VARIABLEN\nflow.set('tempOfficeMin', tempOfficeMin);\nflow.set('tempOfficeOpt', tempOfficeOpt);\nflow.set('tempOfficeMax', tempOfficeMax);\n\nmsg.payload = tempOfficeOpt;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 640,
+        "wires": [
+            [
+                "ff7557e9871ba366",
+                "4393a5133c07cba6"
+            ]
+        ]
+    },
+    {
+        "id": "1e8abfaaf6b54803",
+        "type": "mqtt out",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "topic": "/interval/room/wz",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 1550,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "48e95a3b7ce347d2",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "min_humi",
+        "func": "msg.payload = msg.payload[0].min_humidity;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 160,
+        "y": 720,
+        "wires": [
+            [
+                "6cb7acc97460d837",
+                "4fa0985bcde9db19"
+            ]
+        ]
+    },
+    {
+        "id": "ca2d71b3bd5e4b1a",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "max_humi",
+        "func": "msg.payload = msg.payload[0].max_humidity;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 170,
+        "y": 840,
+        "wires": [
+            [
+                "51e12795d8d853c3",
+                "8206ec390d18802f"
+            ]
+        ]
+    },
+    {
+        "id": "6cb7acc97460d837",
+        "type": "ui_numeric",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "label": "min",
+        "tooltip": "",
+        "group": "45567883aec63278",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "100",
+        "step": "10",
+        "className": "",
+        "x": 550,
+        "y": 720,
+        "wires": [
+            [
+                "5a6055574de773ba"
+            ]
+        ]
+    },
+    {
+        "id": "51e12795d8d853c3",
+        "type": "ui_numeric",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "label": "max",
+        "tooltip": "",
+        "group": "45567883aec63278",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "100",
+        "step": "10",
+        "className": "",
+        "x": 550,
+        "y": 840,
+        "wires": [
+            [
+                "ca90687afd4ce2b0"
+            ]
+        ]
+    },
+    {
+        "id": "e565658cd8a79e5a",
+        "type": "mqtt out",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "topic": "/interval/kc/select",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 330,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "5a6055574de773ba",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "UPDATE `room_settings`",
+        "func": "msg.topic = \"UPDATE `room_settings` SET `min_humidity` = '\" + msg.payload + \"' WHERE id = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 720,
+        "wires": [
+            [
+                "08422298f8559e55"
+            ]
+        ]
+    },
+    {
+        "id": "ca90687afd4ce2b0",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "UPDATE `room_settings`",
+        "func": "msg.topic = \"UPDATE `room_settings` SET `max_humidity` = '\" + msg.payload + \"' WHERE id = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 840,
+        "wires": [
+            [
+                "08422298f8559e55"
+            ]
+        ]
+    },
+    {
+        "id": "514295beae841dc6",
+        "type": "debug",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "08422298f8559e55",
+        "type": "mysql",
+        "z": "53b67eedfb3a15c5",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1030,
+        "y": 780,
+        "wires": [
+            [
+                "5e20bbc63e3aa434",
+                "a22956cbab1239da"
+            ]
+        ]
+    },
+    {
+        "id": "4fa0985bcde9db19",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "humMin",
+        "func": "msg.topic = `humMin`;\nmsg = {ui_control:{min:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 760,
+        "wires": [
+            [
+                "51e12795d8d853c3"
+            ]
+        ]
+    },
+    {
+        "id": "8206ec390d18802f",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "tempMax",
+        "func": "msg.topic = `tempMax`;\nmsg = {ui_control:{max:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 800,
+        "wires": [
+            [
+                "6cb7acc97460d837"
+            ]
+        ]
+    },
+    {
+        "id": "409d00111430e345",
+        "type": "comment",
+        "z": "53b67eedfb3a15c5",
+        "name": "Temperatur",
+        "info": "",
+        "x": 110,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "2607fe6404b6f758",
+        "type": "comment",
+        "z": "53b67eedfb3a15c5",
+        "name": "Humidity",
+        "info": "",
+        "x": 100,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "3a466471e6453d3c",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "SensorSetting HUMI",
+        "func": "let humiOfficeMin = flow.get('humiOfficeMin') || 0;\nlet humiOfficeMax = flow.get('humiOfficeMax') || 0;\n\nhumiOfficeMin = msg.payload[0].min_humidity;\nhumiOfficeMax = msg.payload[0].max_humidity;\n\n// SET VARIABLEN\nflow.set('humiOfficeMin', humiOfficeMin);\nflow.set('humiOfficeMax', humiOfficeMax);\n\nmsg.payload = humiOfficeMax;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 800,
+        "wires": [
+            [
+                "578f6fd80941ed6a",
+                "f9c072a2fce4abf3"
+            ]
+        ]
+    },
+    {
+        "id": "2bec036a9ddf5b39",
+        "type": "debug",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2010,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "aa26852e2ea6e1c0",
+        "type": "ui_gauge",
+        "z": "53b67eedfb3a15c5",
+        "name": "gauge Humidity",
+        "group": "45567883aec63278",
+        "order": 2,
+        "width": "6",
+        "height": "4",
+        "gtype": "donut",
+        "title": "",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#eaa81a"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 2020,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "578f6fd80941ed6a",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "CHECK Humidity",
+        "func": "let humiSensorOffice = flow.get('humiSensorOffice');\nlet humiOfficeMin = flow.get('humiOfficeMin');\nlet humiOfficeMax = flow.get('humiOfficeMax');\n\nmsg.topic = '%';\nmsg = {ui_control:{min:0, max:100, seg1:humiOfficeMin, seg2:humiOfficeMax}, topic:`${msg.topic}`};\n\nmsg.payload = humiSensorOffice;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1730,
+        "y": 800,
+        "wires": [
+            [
+                "b01e6a96f507a9a5",
+                "aa26852e2ea6e1c0"
+            ]
+        ]
+    },
+    {
+        "id": "b01e6a96f507a9a5",
+        "type": "debug",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1990,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "ff7557e9871ba366",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "CHECK Temp",
+        "func": "let tempSensorOffice = flow.get('tempSensorOffice');\nlet tempOfficeMin = flow.get('tempOfficeMin') || 0;\nlet tempOfficeOpt = flow.get('tempOfficeOpt') || 0;\nlet tempOfficeMax = flow.get('tempOfficeMax') || 0;\n\nmsg.topic = '°C';\nlet start = tempOfficeMin - 5;\nlet end = tempOfficeMax + 5 ;\nmsg = {ui_control:{min:start, max:end, seg1:tempOfficeMin, seg2:tempOfficeMax}, topic:`${msg.topic}`};\n\nmsg.payload = tempSensorOffice;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1720,
+        "y": 640,
+        "wires": [
+            [
+                "aa1b33d975af47ec",
+                "cbeb46aeafab5767"
+            ]
+        ]
+    },
+    {
+        "id": "aa1b33d975af47ec",
+        "type": "ui_gauge",
+        "z": "53b67eedfb3a15c5",
+        "name": "gauge Temp",
+        "group": "5270da3bb1dfbe4e",
+        "order": 2,
+        "width": "6",
+        "height": "3",
+        "gtype": "gage",
+        "title": "",
+        "label": "°C",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "30",
+        "colors": [
+            "#e6e600",
+            "#00b500",
+            "#e6e600"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 2010,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "cbeb46aeafab5767",
+        "type": "debug",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2010,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "f9c072a2fce4abf3",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "CHECK Humidity",
+        "func": "let humiSensorOffice = flow.get('humiSensorOffice');\nlet humiOfficeMin = flow.get('humiOfficeMin');\nlet humiOfficeMax = flow.get('humiOfficeMax');\n\nmsg.topic = '%';\nmsg = {ui_control:{min:0, max:100}, topic:`${msg.topic}`};\n\nmsg.payload = humiSensorOffice;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1730,
+        "y": 840,
+        "wires": [
+            [
+                "99a1d78f8fd4ab8d"
+            ]
+        ]
+    },
+    {
+        "id": "4393a5133c07cba6",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "CHECK Temp",
+        "func": "let tempSensorOffice = flow.get('tempSensorOffice');\nlet tempOfficeMin = flow.get('tempOfficeMin') || 0;\nlet tempOfficeOpt = flow.get('tempOfficeOpt') || 0;\nlet tempOfficeMax = flow.get('tempOfficeMax') || 0;\n\nmsg.topic = '°C';\nlet start = tempOfficeMin - 5;\nlet end = tempOfficeMax + 5 ;\nmsg = {ui_control:{ymin:start, ymax:end}, topic:`${msg.topic}`};\n\nmsg.payload = tempSensorOffice;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1720,
+        "y": 680,
+        "wires": [
+            [
+                "7cf2a02f73dc2937"
+            ]
+        ]
+    },
+    {
+        "id": "99a1d78f8fd4ab8d",
+        "type": "ui_chart",
+        "z": "53b67eedfb3a15c5",
+        "name": "chart Luftfeuchte",
+        "group": "45567883aec63278",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 2030,
+        "y": 840,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7cf2a02f73dc2937",
+        "type": "ui_chart",
+        "z": "53b67eedfb3a15c5",
+        "name": "chart Temperatur",
+        "group": "5270da3bb1dfbe4e",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 2030,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "86900cfa043086da",
+        "type": "inject",
+        "z": "53b67eedfb3a15c5",
+        "name": "Init",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1110,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "881b1dc1c987dfae",
+        "type": "function",
+        "z": "53b67eedfb3a15c5",
+        "name": "Inject",
+        "func": "let init = context.get('init') || 1;\n\n// SET VARIABLEN\ncontext.set('init', init);\nmsg.payload = init;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1510,
+        "y": 280,
+        "wires": [
+            [
+                "a22956cbab1239da"
+            ]
+        ]
+    },
+    {
+        "id": "51c87c693c7b2a1b",
+        "type": "comment",
+        "z": "53b67eedfb3a15c5",
+        "name": "For Init",
+        "info": "",
+        "x": 1510,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "9a824439f2601b8b",
+        "type": "debug",
+        "z": "53b67eedfb3a15c5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "919f4e44dec380e0",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "raumklima",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "5270da3bb1dfbe4e",
+        "type": "ui_group",
+        "name": "Temperatur °C",
+        "tab": "0ab1cb1a24262bf4",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "45567883aec63278",
+        "type": "ui_group",
+        "name": "Luftfeuchte %",
+        "tab": "0ab1cb1a24262bf4",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "0ab1cb1a24262bf4",
+        "type": "ui_tab",
+        "name": "Hausflur",
+        "icon": "fa-thermometer-half",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    }
+]
