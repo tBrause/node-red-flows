@@ -1,0 +1,3106 @@
+[
+    {
+        "id": "1d4f578bef439a70",
+        "type": "tab",
+        "label": "compare",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "da9233d9bf4e959d",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "60 Minuten",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "3600",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1590,
+        "y": 1220,
+        "wires": [
+            [
+                "caaf2e59f24610e5",
+                "ca13951db7e9d464",
+                "d909af704fafeb3e",
+                "83b22c960a55c55c"
+            ]
+        ]
+    },
+    {
+        "id": "9d7ea4fa13613473",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2210,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "caaf2e59f24610e5",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "compare_temp",
+        "func": "let ow_current_temp = global.get('ow_current_temp') || 0;\nlet yr_current_temp = global.get('yr_current_temp') || 0;\nlet ht_current_temp = global.get('ht_current_temp') || 0;\nlet wb_current_temp = global.get('wb_current_temp') || 0;\nlet wa_current_temp = global.get('wa_current_temp') || 0;\nlet ws_current_temp = global.get('ws_current_temp') || 0;\n\nlet ht_temp = context.get('ht_temp') || 0.00;\nht_temp = JSON.parse(ht_current_temp).ht_temp;\n\nlet ow_temp = context.get('ow_temp') || 0.00;\now_temp = JSON.parse(ow_current_temp).ow_temp;\n\nlet yr_temp = context.get('yr_temp') || 0.00;\nyr_temp = JSON.parse(yr_current_temp).yr_temp;\n\nlet wb_temp = context.get('wb_temp') || 0.00;\nwb_temp = JSON.parse(wb_current_temp).wb_temp;\n\nlet wa_temp = context.get('wa_temp') || 0.00;\nwa_temp = JSON.parse(wa_current_temp).wa_temp;\n\nlet ws_temp = context.get('ws_temp') || 0.00;\nws_temp = JSON.parse(ws_current_temp).ws_temp;\n\nlet sum_temp = flow.get('sum_temp') || 0.00;\n\nlet sum_diff_ow = 0.00;\nlet sum_diff_yr = 0.00;\nlet sum_diff_wb = 0.00;\n\nif(ht_temp < ow_temp) {\n    sum_diff_ow = parseFloat(ow_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_ow = parseFloat(ht_temp) - parseFloat(ow_temp);\n}\nsum_diff_ow = sum_diff_ow.toFixed(2);\n\nif(ht_temp < yr_temp) {\n    sum_diff_yr = parseFloat(yr_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_yr = parseFloat(ht_temp) - parseFloat(yr_temp);\n}\nsum_diff_yr = sum_diff_yr.toFixed(2);\n\nif(ht_temp < wb_temp) {\n    sum_diff_wb = parseFloat(wb_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_wb = parseFloat(ht_temp) - parseFloat(wb_temp);\n}\nsum_diff_wb = sum_diff_wb.toFixed(2);\n\n//let compare_array = [\"qw\", \"yr\", \"wb\", \"wa\", \"ws\"];\n//let compare_array = [[`${sum_diff_ow}`: `ow`], [`${sum_diff_yr}`: `yr`], [`${sum_diff_wb}`: `wb`]];\nlet compare_array = [`${sum_diff_ow}`, `${sum_diff_yr}`, `${sum_diff_wb}`];\ncompare_array.sort();\n\nlet best_temp = compare_array[0];\n\n\nfor(const array of compare_array) {\n    \n}\n\nlet result = `Gleich`;\n\nif(sum_diff_ow > sum_diff_yr) {\n    result = `YR is better @temperature`;\n} else {\n    result = `OW is better @temperature`;\n}\n\nsum_temp = result;\n\n// SET VARIABLEN\nflow.set('sum_temp', sum_temp);\n\nmsg.payload = compare_array;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1800,
+        "y": 1160,
+        "wires": [
+            [
+                "04b1bfa40160fbdb",
+                "055bef0700c31b58"
+            ]
+        ]
+    },
+    {
+        "id": "ca13951db7e9d464",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "yr_current_temp",
+        "func": "let yr_current_temp = global.get('yr_current_temp') || 0;\nmsg.payload = yr_current_temp;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1800,
+        "y": 1260,
+        "wires": [
+            [
+                "9e8635dee0212362"
+            ]
+        ]
+    },
+    {
+        "id": "9e8635dee0212362",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2010,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "04b1bfa40160fbdb",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "9cbad506a0556217",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "ow_current_temp",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 2030,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "d909af704fafeb3e",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "ht_current_temp",
+        "func": "let ht_current_temp = global.get('ht_current_temp') || 0;\nmsg.payload = ht_current_temp;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1800,
+        "y": 1320,
+        "wires": [
+            [
+                "123517904650a311"
+            ]
+        ]
+    },
+    {
+        "id": "123517904650a311",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2010,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "055bef0700c31b58",
+        "type": "file",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "filename": "data/better",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 2030,
+        "y": 1080,
+        "wires": [
+            [
+                "9d7ea4fa13613473"
+            ]
+        ]
+    },
+    {
+        "id": "53b00ceaaf63d0fa",
+        "type": "file",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "filename": "data/better",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1770,
+        "y": 1520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7736859d99157187",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "clear",
+        "payloadType": "str",
+        "x": 1570,
+        "y": 1520,
+        "wires": [
+            [
+                "53b00ceaaf63d0fa"
+            ]
+        ]
+    },
+    {
+        "id": "83b22c960a55c55c",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "compare_humidity",
+        "func": "let ow_current_humidity = global.get('ow_current_humidity') || 0;\nlet yr_current_humidity = global.get('yr_current_humidity') || 0;\nlet ht_current_humidity = global.get('ht_current_humidity') || 0;\nlet wb_current_humidity = global.get('wb_current_humidity') || 0;\nlet wa_current_humidity = global.get('wa_current_humidity') || 0;\nlet ws_current_humidity = global.get('ws_current_humidity') || 0;\n\n\n\nlet ht_humidity = context.get('ht_humidity') || 0.00;\nht_humidity = JSON.parse(ht_current_humidity).ht_humidity;\n\nlet ow_humidity = context.get('ow_humidity') || 0.00;\now_humidity = JSON.parse(ow_current_humidity).ow_humidity;\n\nlet yr_humidity = context.get('yr_humidity') || 0.00;\nyr_humidity = JSON.parse(yr_current_humidity).yr_humidity;\n\nlet sum_humidity = flow.get('sum_humidity') || 0.00;\n\nlet sum_diff_ow = 0.00;\nlet sum_diff_yr = 0.00;\n\nif(ht_humidity < ow_humidity) {\n    sum_diff_ow = parseFloat(ow_humidity) - parseFloat(ht_humidity);\n    sum_diff_ow = sum_diff_ow.toFixed(2);\n} else {\n    sum_diff_ow = parseFloat(ht_humidity) - parseFloat(ow_humidity);\n    sum_diff_ow = sum_diff_ow.toFixed(2);\n}\n\nif(ht_humidity < yr_humidity) {\n    sum_diff_yr = parseFloat(yr_humidity) - parseFloat(ht_humidity);\n    sum_diff_yr = sum_diff_ow.toFixed(2);\n} else {\n    sum_diff_yr = parseFloat(ht_humidity) - parseFloat(yr_humidity);\n    sum_diff_yr = sum_diff_yr.toFixed(2);\n}\n\nlet result = `Gleich`;\n\nif(sum_diff_ow > sum_diff_yr) {\n    result = `YR is better @humidity`;\n} else {\n    result = `OW is better @humidity`;\n}\n\nsum_humidity = result;\n\n// SET VARIABLEN\nflow.set('sum_humidity', sum_humidity);\n\nmsg.payload = sum_humidity;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1811,
+        "y": 1053,
+        "wires": [
+            [
+                "332febf949cefb51",
+                "055bef0700c31b58"
+            ]
+        ]
+    },
+    {
+        "id": "332febf949cefb51",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2030,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "2c00ea89b8b821c3",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "compare_temp",
+        "func": "let ow_current_temp = global.get('ow_current_temp') || 0;\nlet yr_current_temp = global.get('yr_current_temp') || 0;\nlet ht_current_temp = global.get('ht_current_temp') || 0;\nlet wb_current_temp = global.get('wb_current_temp') || 0;\nlet wa_current_temp = global.get('wa_current_temp') || 0;\nlet ws_current_temp = global.get('ws_current_temp') || 0;\n\nlet ht_temp = context.get('ht_temp') || 0.00;\nht_temp = JSON.parse(ht_current_temp).ht_temp;\n\nlet ow_temp = context.get('ow_temp') || 0.00;\now_temp = JSON.parse(ow_current_temp).ow_temp;\n\nlet yr_temp = context.get('yr_temp') || 0.00;\nyr_temp = JSON.parse(yr_current_temp).yr_temp;\n\nlet wb_temp = context.get('wb_temp') || 0.00;\nwb_temp = JSON.parse(wb_current_temp).wb_temp;\n\nlet wa_temp = context.get('wa_temp') || 0.00;\nwa_temp = JSON.parse(wa_current_temp).wa_temp;\n\nlet ws_temp = context.get('ws_temp') || 0.00;\nws_temp = JSON.parse(ws_current_temp).ws_temp;\n\nlet sum_temp = flow.get('sum_temp') || 0.00;\n\nlet sum_diff_ow = 0.00;\nlet sum_diff_yr = 0.00;\nlet sum_diff_wb = 0.00;\nlet sum_diff_wa = 0.00;\nlet sum_diff_ws = 0.00;\n\nlet sql = \"\";\n\n//\n// DIFFERENZ\n//\n\n// OW\nif(ht_temp < ow_temp) {\n    sum_diff_ow = parseFloat(ow_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_ow = parseFloat(ht_temp) - parseFloat(ow_temp);\n}\nsum_diff_ow = sum_diff_ow.toFixed(2);\n//sql = \"INSERT INTO `compare` (`fk_offerer`, temp`) VALUE (`2`, \" + sum_diff_ow + \"`)\";\n\n// YR\nif(ht_temp < yr_temp) {\n    sum_diff_yr = parseFloat(yr_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_yr = parseFloat(ht_temp) - parseFloat(yr_temp);\n}\nsum_diff_yr = sum_diff_yr.toFixed(2);\n//sql = \"INSERT INTO `compare` (`fk_offerer`, temp`) VALUE (`1`, \" + sum_diff_yr + \"`)\";\n\n// WB\nif(ht_temp < wb_temp) {\n    sum_diff_wb = parseFloat(wb_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_wb = parseFloat(ht_temp) - parseFloat(wb_temp);\n}\nsum_diff_wb = sum_diff_wb.toFixed(2);\n\n\n// WA\nif(ht_temp < wa_temp) {\n    sum_diff_wa = parseFloat(wa_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_wa = parseFloat(ht_temp) - parseFloat(wa_temp);\n}\nsum_diff_wa = sum_diff_wa.toFixed(2);\n\n// WS\ndiff(ht_temp, ws_temp);\nif(ht_temp < ws_temp) {\n    sum_diff_ws = parseFloat(ws_temp) - parseFloat(ht_temp);\n} else {\n    sum_diff_ws = parseFloat(ht_temp) - parseFloat(ws_temp);\n}\nsum_diff_ws = sum_diff_ws.toFixed(2);\n\nfunction diff(ht_temp, e_temp) {\n    let sum_diff = 0.00;\n    if(ht_temp < e_temp) {\n        sum_diff = parseFloat(e_temp) - parseFloat(ht_temp);\n    } else {\n        sum_diff = parseFloat(ht_temp) - parseFloat(e_temp);\n    }\n    sum_diff = sum_diff.toFixed(2);\n    \n    return sum_diff;\n}\n\nlet compare_array = [`${sum_diff_ow}:ow`, `${sum_diff_yr}:yr`, `${sum_diff_wb}:wb`, `${sum_diff_wa}:wa`]; // , `${sum_diff_ws}:ws`\ncompare_array.sort();\n\ncompare_json = JSON.stringify(compare_array);\n\nlet best_temp = compare_array[0];\n\nlet best_view = ``;\n\nfor(const item of compare_array) {\n    //let sql = \"INSERT INTO `compare` (``) VALUE ()\";\n    best_view = `${best_view} ${item}<br>`\n}\n\nlet result = `Gleich`;\n\nif(sum_diff_ow > sum_diff_yr) {\n    result = `YR is better @temperature`;\n} else {\n    result = `OW is better @temperature`;\n}\n\nsum_temp = result;\n\n// SET VARIABLEN\nflow.set('sum_temp', sum_temp);\n\nmsg.payload = best_view;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 420,
+        "wires": [
+            [
+                "d51a4b9c09cabdaf",
+                "7bc03fb5756079ee"
+            ]
+        ]
+    },
+    {
+        "id": "d51a4b9c09cabdaf",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1330,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "7bc03fb5756079ee",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 9,
+        "width": 6,
+        "height": 2,
+        "name": "compare",
+        "label": "{{msg.payload}}",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1320,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a1ce1c5da22fa799",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 690,
+        "y": 320,
+        "wires": [
+            [
+                "433d18d1385be86f"
+            ]
+        ]
+    },
+    {
+        "id": "1575ecc850d22e82",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "getSQL Query",
+        "func": "msg.topic = \"SELECT co.id, co.temp, co.humi, co.wann, of.oname FROM `compare` AS `co` JOIN `offerer` AS `of` ON co.fk_offerer = of.id ORDER BY co.wann desc LIMIT 0, 5\";\n    \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 140,
+        "wires": [
+            [
+                "c04a2b38cefc8ce8"
+            ]
+        ]
+    },
+    {
+        "id": "8023677ba3cc0c1a",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "SELECT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1320,
+        "y": 300,
+        "wires": [
+            [
+                "0820cc5c91585b59"
+            ]
+        ]
+    },
+    {
+        "id": "433d18d1385be86f",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "0820cc5c91585b59",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "getSQL OffererName",
+        "func": "msg.topic = \"SELECT of.oname, of.id FROM `compare` AS `co` JOIN `offerer` AS `of` ON co.fk_offerer = of.id\";\n    \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1540,
+        "y": 300,
+        "wires": [
+            [
+                "74419285bf30eeb3"
+            ]
+        ]
+    },
+    {
+        "id": "160bc2c253e330da",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "compare_yr",
+        "func": "let ht_current_temp = global.get('ht_current_temp') || 0;\nlet ht_current_humidity = global.get('ht_current_humidity') || 0;\n\nlet yr_current_temp = global.get('yr_current_temp') || 0;\nlet yr_current_hum = global.get('yr_current_hum') || 0;\n\n// H&T \nlet ht_temp = context.get('ht_temp') || 0.00;\nht_temp = JSON.parse(ht_current_temp).ht_temp;\n\nlet ht_hum = context.get('ht_hum') || 0.00;\nht_hum = JSON.parse(ht_current_humidity).ht_humidity;\n\n\n// YR\nlet yr_temp = context.get('yr_temp') || 0.00;\nyr_temp = JSON.parse(yr_current_temp).yr_temp;\n\nlet yr_hum = context.get('yr_hum') || 0.00;\nyr_hum = JSON.parse(yr_current_hum).yr_hum;\n\nlet sum_diff_temp = 0.00;\nlet sum_diff_hum = 0.00;\nlet temp = 'err';\nlet hum = 'err';\n\n// TEMP\nif(ht_temp == yr_temp) {\n    temp = 'opt';\n} else if(ht_temp < yr_temp) {\n    temp = 'up';\n    sum_diff_temp = parseFloat(yr_temp) - parseFloat(ht_temp);\n} else {\n    temp = 'down';\n    sum_diff_temp = parseFloat(ht_temp) - parseFloat(yr_temp);\n}\nsum_diff_temp = sum_diff_temp.toFixed(2);\n\n// HUMIDITY\nif(ht_hum == yr_hum) {\n    hum = 'opt';\n} else if(ht_hum < yr_hum) {\n    hum = 'up';\n    sum_diff_hum = parseFloat(yr_hum) - parseFloat(ht_hum);\n} else {\n    hum = 'down';\n    sum_diff_hum = parseFloat(ht_hum) - parseFloat(yr_hum);\n}\nsum_diff_hum = sum_diff_hum.toFixed(2);\n\nlet sql = \"INSERT INTO `compare` (`fk_offerer`, `temp`, `diff_temp`, `humi`, `diff_humi`) VALUE ('1', '\" + sum_diff_temp + \"', '\" + temp + \"', '\" + sum_diff_hum + \"', '\" + hum + \"')\";\n\nmsg.topic = sql;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 260,
+        "wires": [
+            [
+                "7ab7db44b6ddb470",
+                "a1ce1c5da22fa799"
+            ]
+        ]
+    },
+    {
+        "id": "acb3198dedd3783b",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "57316acf0db89fb6",
+        "order": 1,
+        "width": "6",
+        "height": "12",
+        "name": "Hello ",
+        "label": "{{msg.payload}}",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1330,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "e1de6f0e840f98d2",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "Init",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 140,
+        "wires": [
+            [
+                "1575ecc850d22e82"
+            ]
+        ]
+    },
+    {
+        "id": "04745591f40f1168",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "1fa51fa7edb685a3",
+        "type": "json",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 950,
+        "y": 140,
+        "wires": [
+            [
+                "65fcdc6df28b582b",
+                "ac18cd73c3619f43"
+            ]
+        ]
+    },
+    {
+        "id": "65fcdc6df28b582b",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "ac18cd73c3619f43",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "func": "let list = msg.payload;\nlet content = ``;\nlet limit = 10;\n\nfor(let i=0; i < list.length && i < limit; i++) {\n    content = `${content} ${list[i].oname} `;\n    content = `${content} ${list[i].temp}°C `;\n    content = `${content} ${list[i].humi}%<br>`;\n    content = `${content} ${list[i].wann}<br><br>`;\n    content = `${content}<br>`;\n}\n\nmsg.payload = content;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 140,
+        "wires": [
+            [
+                "cc07d441c671b26e",
+                "acb3198dedd3783b"
+            ]
+        ]
+    },
+    {
+        "id": "cc07d441c671b26e",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "2ad49ab9068f7ee5",
+        "type": "ui_button",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "group": "57316acf0db89fb6",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "REFRESH",
+        "tooltip": "",
+        "color": "#333333",
+        "bgcolor": "#f1f1f1",
+        "className": "",
+        "icon": "fa-refresh",
+        "payload": "",
+        "payloadType": "date",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "1575ecc850d22e82"
+            ]
+        ]
+    },
+    {
+        "id": "4b58273a5fd13622",
+        "type": "mqtt out",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "topic": "/cron/compare/insert/current",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 500,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "c04a2b38cefc8ce8",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 690,
+        "y": 140,
+        "wires": [
+            [
+                "04745591f40f1168",
+                "1fa51fa7edb685a3"
+            ]
+        ]
+    },
+    {
+        "id": "2acf2cb380509aa0",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "compare_wb",
+        "func": "let ht_current_temp = global.get('ht_current_temp') || 0;\nlet ht_current_humidity = global.get('ht_current_humidity') || 0;\n\nlet wb_current_temp = global.get('wb_current_temp') || 0;\nlet wb_current_humidity = global.get('wb_current_humidity') || 0;\n\n// H&T \nlet ht_temp = context.get('ht_temp') || 0.00;\nht_temp = JSON.parse(ht_current_temp).ht_temp;\n\nlet ht_hum = context.get('ht_hum') || 0.00;\nht_hum = JSON.parse(ht_current_humidity).ht_humidity;\n\n// WB\nlet wb_temp = context.get('wb_temp') || 0.00;\nwb_temp = JSON.parse(wb_current_temp).wb_temp;\n\nlet wb_hum = context.get('wb_hum') || 0.00;\nwb_hum = JSON.parse(wb_current_humidity).wb_hum;\n\nlet sum_diff_temp = 0.00;\nlet sum_diff_hum = 0.00;\nlet temp = 'opt';\nlet hum = 'opt';\n\n// TEMP\nif(ht_temp < wb_temp) {\n    temp = 'up';\n    sum_diff_temp = parseFloat(wb_temp) - parseFloat(ht_temp);\n} else {\n    temp = 'down';\n    sum_diff_temp = parseFloat(ht_temp) - parseFloat(wb_temp);\n}\nsum_diff_temp = sum_diff_temp.toFixed(2);\n\n// HUMIDITY\nif(ht_hum < wb_hum) {\n    hum = 'up';\n    sum_diff_hum = parseFloat(wb_hum) - parseFloat(ht_hum);\n} else {\n    hum = 'down';\n    sum_diff_hum = parseFloat(ht_hum) - parseFloat(wb_hum);\n}\nsum_diff_hum = sum_diff_hum.toFixed(2);\n\nmsg.payload = wb_current_humidity;\n\nlet sql = \"INSERT INTO `compare` (`fk_offerer`, `temp`, `diff_temp`, `humi`, `diff_humi`) VALUE ('3', '\" + sum_diff_temp + \"', '\" + temp + \"', '\" + sum_diff_hum + \"', '\" + hum + \"')\";\n\nmsg.topic = sql;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 340,
+        "wires": [
+            [
+                "a1ce1c5da22fa799"
+            ]
+        ]
+    },
+    {
+        "id": "74419285bf30eeb3",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 1730,
+        "y": 300,
+        "wires": [
+            [
+                "e53bba7a070a307b"
+            ]
+        ]
+    },
+    {
+        "id": "e53bba7a070a307b",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1930,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "820b0bef76ec5b7a",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "new Date",
+        "func": "// GET VARIABLEN\nlet fct = flow.get('fct') || 0;\n\n// FUNKTION\nfunction fctDate() {\n    const date = new Date();\n    \n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    let h = date.getHours();\n    h = ((h < 10) ? \"0\" + h : h);\n    \n    let min = date.getMinutes();\n    min = ((min < 10) ? \"0\" + min : min);\n    \n    let s = date.getSeconds();\n    s = ((s < 10) ? \"0\" + s : s);\n    \n    fct = `${d}.${mon}.${y} ${h}:${min}:${s}`;\n}\n\n// SET VARIABLEN\nflow.set('fct', fct);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = fct;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1319.8958740234375,
+        "y": 227.88888549804688,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fae9f079a2b8d368",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "Data from YR",
+        "func": "msg.topic = \"SELECT co.temp, co.humi FROM `offerer` AS `of` JOIN `compare` AS `co` ON co.fk_offerer = of.id WHERE of.id = '1'\";\nmsg.payload = `yr`;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 600,
+        "wires": [
+            [
+                "cc1f9e91fb15704d"
+            ]
+        ]
+    },
+    {
+        "id": "cc1f9e91fb15704d",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 690,
+        "y": 600,
+        "wires": [
+            [
+                "e5735c253215580a"
+            ]
+        ]
+    },
+    {
+        "id": "6778413ff7d0347b",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "SELECT",
+        "info": "",
+        "x": 440,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "0986faabdd1757f1",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "INSERT",
+        "info": "",
+        "x": 440,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "e5735c253215580a",
+        "type": "json",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 850,
+        "y": 600,
+        "wires": [
+            [
+                "f1ae7b919f0199f3",
+                "8c6943e466803077"
+            ]
+        ]
+    },
+    {
+        "id": "f1ae7b919f0199f3",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_temp",
+        "func": "let list = msg.payload;\nlet sum_temp = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_temp = sum_temp + list[i].temp;\n}\n\nmsg.payload = sum_temp.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 600,
+        "wires": [
+            [
+                "eb632af350b3479f"
+            ]
+        ]
+    },
+    {
+        "id": "eb632af350b3479f",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 2,
+        "width": 3,
+        "height": 1,
+        "name": "yr Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "d50d8d8b4c320df8",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "Data from OW",
+        "func": "msg.topic = \"SELECT co.temp, co.humi FROM `offerer` AS `of` JOIN `compare` AS `co` ON co.fk_offerer = of.id WHERE of.id = '2'\";\nmsg.payload = `ow`;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 740,
+        "wires": [
+            [
+                "11b3a89c2ade0cf6"
+            ]
+        ]
+    },
+    {
+        "id": "11b3a89c2ade0cf6",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 690,
+        "y": 740,
+        "wires": [
+            [
+                "786814dc7316b7d0"
+            ]
+        ]
+    },
+    {
+        "id": "786814dc7316b7d0",
+        "type": "json",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 850,
+        "y": 740,
+        "wires": [
+            [
+                "d360d58dcc6067b1",
+                "1a594964e8c9190c"
+            ]
+        ]
+    },
+    {
+        "id": "d360d58dcc6067b1",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_temp",
+        "func": "let list = msg.payload;\nlet sum_temp = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_temp = sum_temp + list[i].temp;\n}\n\nmsg.payload = sum_temp.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 740,
+        "wires": [
+            [
+                "ab79c01a40212049"
+            ]
+        ]
+    },
+    {
+        "id": "ab79c01a40212049",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 5,
+        "width": 3,
+        "height": 1,
+        "name": "ow Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "ce663d490a9d53e2",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "Data from WB",
+        "func": "msg.topic = \"SELECT co.temp, co.humi FROM `offerer` AS `of` JOIN `compare` AS `co` ON co.fk_offerer = of.id WHERE of.id = '3'\";\nmsg.payload = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 880,
+        "wires": [
+            [
+                "d9f357fad6cf14c4"
+            ]
+        ]
+    },
+    {
+        "id": "d9f357fad6cf14c4",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 690,
+        "y": 880,
+        "wires": [
+            [
+                "2dd56b7adb3baf65"
+            ]
+        ]
+    },
+    {
+        "id": "2dd56b7adb3baf65",
+        "type": "json",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 850,
+        "y": 880,
+        "wires": [
+            [
+                "0e1d682b7076b4a2",
+                "930f75dff6478e42"
+            ]
+        ]
+    },
+    {
+        "id": "0e1d682b7076b4a2",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_temp",
+        "func": "let list = msg.payload;\nlet sum_temp = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_temp = sum_temp + list[i].temp;\n}\n\nmsg.payload = sum_temp.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 880,
+        "wires": [
+            [
+                "a314c034f6f9530b"
+            ]
+        ]
+    },
+    {
+        "id": "a314c034f6f9530b",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 8,
+        "width": 3,
+        "height": 1,
+        "name": "wb Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "a8efc2ec3377f365",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "Data from Wa",
+        "func": "msg.topic = \"SELECT co.temp, co.humi FROM `offerer` AS `of` JOIN `compare` AS `co` ON co.fk_offerer = of.id WHERE of.id = '4'\";\nmsg.payload = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 1020,
+        "wires": [
+            [
+                "3e836ec43fbdd070"
+            ]
+        ]
+    },
+    {
+        "id": "3e836ec43fbdd070",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 690,
+        "y": 1020,
+        "wires": [
+            [
+                "62203e5de6dcba2a"
+            ]
+        ]
+    },
+    {
+        "id": "62203e5de6dcba2a",
+        "type": "json",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 850,
+        "y": 1020,
+        "wires": [
+            [
+                "f478aea88e481551",
+                "fcdd78f0590b49f5"
+            ]
+        ]
+    },
+    {
+        "id": "f478aea88e481551",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_temp",
+        "func": "let list = msg.payload;\nlet sum_temp = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_temp = sum_temp + list[i].temp;\n}\n\nmsg.payload = sum_temp.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 1020,
+        "wires": [
+            [
+                "8b9d90a70baeebf7"
+            ]
+        ]
+    },
+    {
+        "id": "8b9d90a70baeebf7",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 11,
+        "width": 3,
+        "height": 1,
+        "name": "wa Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "778cf9d1db7aa2b7",
+        "type": "cronplus",
+        "z": "1d4f578bef439a70",
+        "name": "compare",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "compare",
+                "topic": "compare",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 8 */1 * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 920,
+        "y": 420,
+        "wires": [
+            [
+                "2c00ea89b8b821c3"
+            ]
+        ]
+    },
+    {
+        "id": "100f0a61ae452994",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "SELECT",
+        "info": "",
+        "x": 440,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "7ab7db44b6ddb470",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "314ec4e220e74bf2",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 260,
+        "wires": [
+            [
+                "160bc2c253e330da"
+            ]
+        ]
+    },
+    {
+        "id": "bc7b16974b084c0c",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 2040,
+        "wires": [
+            [
+                "2eb1ffff38d0ae5d"
+            ]
+        ]
+    },
+    {
+        "id": "7cfb4eaa0fc211ab",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "GLOBAL",
+        "info": "",
+        "x": 1800,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "272e0c826330d7ad",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "compare_ow",
+        "func": "let ht_current_temp = global.get('ht_current_temp') || 0;\nlet ht_current_humidity = global.get('ht_current_humidity') || 0;\n\nlet ow_current_temp = global.get('ow_current_temp') || 0;\nlet ow_current_humidity = global.get('ow_current_humidity') || 0;\n\n// H&T \nlet ht_temp = context.get('ht_temp') || 0.00;\nht_temp = JSON.parse(ht_current_temp).ht_temp;\n\nlet ht_hum = context.get('ht_hum') || 0.00;\nht_hum = JSON.parse(ht_current_humidity).ht_humidity;\n\n// OW\nlet ow_temp = context.get('ow_temp') || 0.00;\now_temp = JSON.parse(ow_current_temp).ow_temp;\n\nlet ow_hum = context.get('ow_hum') || 0.00;\now_hum = JSON.parse(ow_current_humidity).ow_humidity;\n\nlet sum_diff_temp = 0.00;\nlet sum_diff_hum = 0.00;\nlet temp = 'opt';\nlet hum = 'opt';\n\n// TEMP\nif(ht_temp < ow_temp) {\n    temp = 'up';\n    sum_diff_temp = parseFloat(ow_temp) - parseFloat(ht_temp);\n} else {\n    temp = 'down';\n    sum_diff_temp = parseFloat(ht_temp) - parseFloat(ow_temp);\n}\nsum_diff_temp = sum_diff_temp.toFixed(2);\n\n// HUMIDITY\nif(ht_hum < ow_hum) {\n    hum = 'up';\n    sum_diff_hum = parseFloat(ow_hum) - parseFloat(ht_hum);\n} else {\n    hum = 'down';\n    sum_diff_hum = parseFloat(ht_hum) - parseFloat(ow_hum);\n}\nsum_diff_hum = sum_diff_hum.toFixed(2);\n\nlet sql = \"INSERT INTO `compare` (`fk_offerer`, `temp`, `diff_temp`, `humi`, `diff_humi`) VALUE ('2', '\" + sum_diff_temp + \"', '\" + temp + \"', '\" + sum_diff_hum + \"', '\" + hum + \"')\";\n\nmsg.topic = sql;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 300,
+        "wires": [
+            [
+                "a1ce1c5da22fa799"
+            ]
+        ]
+    },
+    {
+        "id": "93d646275d131c50",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "compare_wa",
+        "func": "let ht_current_temp = global.get('ht_current_temp') || 0;\nlet ht_current_humidity = global.get('ht_current_humidity') || 0;\n\nlet wa_current_temp = global.get('wa_current_temp') || 0;\nlet wa_current_humidity = global.get('wa_current_humidity') || 0;\n\n// H&T \nlet ht_temp = context.get('ht_temp') || 0.00;\nht_temp = JSON.parse(ht_current_temp).ht_temp;\n\nlet ht_hum = context.get('ht_hum') || 0.00;\nht_hum = JSON.parse(ht_current_humidity).ht_humidity;\n\n// WB\nlet wa_temp = context.get('wa_temp') || 0.00;\nwa_temp = JSON.parse(wa_current_temp).wa_temp;\n\nlet ab_hum = context.get('wa_hum') || 0.00;\nwa_hum = JSON.parse(wa_current_humidity).wa_hum;\n\nlet sum_diff_temp = 0.00;\nlet sum_diff_hum = 0.00;\nlet temp = 'opt';\nlet hum = 'opt';\n\n// TEMP\nif(ht_temp < wa_temp) {\n    temp = 'up';\n    sum_diff_temp = parseFloat(wa_temp) - parseFloat(ht_temp);\n} else {\n    temp = 'down';\n    sum_diff_temp = parseFloat(ht_temp) - parseFloat(wa_temp);\n}\nsum_diff_temp = sum_diff_temp.toFixed(2);\n\n// HUMIDITY\nif(ht_hum < wa_hum) {\n    hum = 'up';\n    sum_diff_hum = parseFloat(wa_hum) - parseFloat(ht_hum);\n} else {\n    hum = 'down';\n    sum_diff_hum = parseFloat(ht_hum) - parseFloat(wa_hum);\n}\nsum_diff_hum = sum_diff_hum.toFixed(2);\n\nmsg.payload = wa_current_humidity;\n\nlet sql = \"INSERT INTO `compare` (`fk_offerer`, `temp`, `diff_temp`, `humi`, `diff_humi`) VALUE ('4', '\" + sum_diff_temp + \"', '\" + temp + \"', '\" + sum_diff_hum + \"', '\" + hum + \"')\";\n\nmsg.topic = sql;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 380,
+        "wires": [
+            [
+                "a1ce1c5da22fa799"
+            ]
+        ]
+    },
+    {
+        "id": "8c6943e466803077",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_humi",
+        "func": "let list = msg.payload;\nlet sum_humi = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_humi = sum_humi + list[i].humi;\n}\n\nmsg.payload = sum_humi.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 640,
+        "wires": [
+            [
+                "920ae7dd896c77d8"
+            ]
+        ]
+    },
+    {
+        "id": "920ae7dd896c77d8",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "name": "yr Humi",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "4aa435da97ccd579",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "yr Text",
+        "label": "yr",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1190,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "dcbdd6280b9822d5",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "ow Text",
+        "label": "openweather",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "e82b0f1bb8148b54",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 6,
+        "width": 3,
+        "height": 1,
+        "name": "ow Humi",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "1a594964e8c9190c",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_humi",
+        "func": "let list = msg.payload;\nlet sum_humi = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_humi = sum_humi + list[i].humi;\n}\n\nmsg.payload = sum_humi.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 780,
+        "wires": [
+            [
+                "e82b0f1bb8148b54"
+            ]
+        ]
+    },
+    {
+        "id": "0938e678d87e7890",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "wb Text",
+        "label": "weatherbit",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "930f75dff6478e42",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_humi",
+        "func": "let list = msg.payload;\nlet sum_humi = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_humi = sum_humi + list[i].humi;\n}\n\nmsg.payload = sum_humi.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 920,
+        "wires": [
+            [
+                "ed80c1c68ac0a9a7"
+            ]
+        ]
+    },
+    {
+        "id": "ed80c1c68ac0a9a7",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 9,
+        "width": 3,
+        "height": 1,
+        "name": "wb Humi",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "7ea91d63fd43c79d",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 10,
+        "width": 0,
+        "height": 0,
+        "name": "wa Text",
+        "label": "Weather-API",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "fcdd78f0590b49f5",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_humi",
+        "func": "let list = msg.payload;\nlet sum_humi = 0;\n\nfor(let i=0; i < list.length; i++) {\n    sum_humi = sum_humi + list[i].humi;\n}\n\nmsg.payload = sum_humi.toFixed(2);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1030,
+        "y": 1060,
+        "wires": [
+            [
+                "f2842fff306adb3a"
+            ]
+        ]
+    },
+    {
+        "id": "f2842fff306adb3a",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 12,
+        "width": 3,
+        "height": 1,
+        "name": "wa Humi",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200.8958740234375,
+        "y": 1061.3333740234375,
+        "wires": []
+    },
+    {
+        "id": "692de8ab5ec6abbb",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "CONNECTION",
+        "info": "",
+        "x": 720,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "1571e5fdf7683fda",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "na_outdoor_temp",
+        "func": "// GET VARIABLEN\nlet na_outdoor_temp = global.get('na_outdoor_temp') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = parseInt(na_outdoor_temp).toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 1260,
+        "wires": [
+            [
+                "3dd2079be91cdf7a",
+                "317b6381fa052710"
+            ]
+        ]
+    },
+    {
+        "id": "3dd2079be91cdf7a",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 2,
+        "width": 3,
+        "height": 1,
+        "name": "Netatmo Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1220,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "c19570d69bf294cf",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "Netatmo Text",
+        "label": "",
+        "format": "Netatmo (Outdoor)",
+        "layout": "row-left",
+        "className": "",
+        "x": 1210,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "e0614b0248e5e899",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "na_outdoor_hum",
+        "func": "// GET VARIABLEN\nlet na_outdoor_hum = global.get('na_outdoor_hum') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = parseInt(na_outdoor_hum).toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 1300,
+        "wires": [
+            [
+                "fc28ebc730b722b6",
+                "9512d0cff52cdcfe"
+            ]
+        ]
+    },
+    {
+        "id": "fc28ebc730b722b6",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "name": "Netatmo Humi",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1220,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "f9c480d7379e0a5d",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "FirstDate",
+        "func": "msg.topic = \"SELECT `wann` FROM `compare` ORDER BY wann asc LIMIT 1\";\nmsg.payload = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1140,
+        "wires": [
+            [
+                "85d46aa21626487c"
+            ]
+        ]
+    },
+    {
+        "id": "0bc06c6741a7b54f",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "time1",
+        "func": "// GET VARIABLEN\nlet now = flow.get('now') || 0;\n\n// FUNKTION\nconst date = new Date(msg.payload[0].wann);\n\nlet d = date.getDate(msg.payload);\nd = ((d < 10) ? \"0\" + d : d);\n\nlet mon = date.getMonth() + 1;\nmon = ((mon < 10) ? \"0\" + mon : mon);\n\nconst y = date.getFullYear();\n\nlet h = date.getHours(msg.payload);\nh = ((h < 10) ? \"0\" + h : h);\n\nlet min = date.getMinutes();\nmin = ((min < 10) ? \"0\" + min : min);\n\nlet s = date.getSeconds();\ns = ((s < 10) ? \"0\" + s : s);\n\nnow = `${d}.${mon}.${y} ${h}:${min}`;\n\n// SET VARIABLEN\nflow.set('now', now);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = now;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1010,
+        "y": 1140,
+        "wires": [
+            [
+                "c5acd9f29bba6521"
+            ]
+        ]
+    },
+    {
+        "id": "85d46aa21626487c",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 690,
+        "y": 1140,
+        "wires": [
+            [
+                "c1ebb20907919a8f"
+            ]
+        ]
+    },
+    {
+        "id": "c1ebb20907919a8f",
+        "type": "json",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 850,
+        "y": 1140,
+        "wires": [
+            [
+                "0bc06c6741a7b54f"
+            ]
+        ]
+    },
+    {
+        "id": "c5acd9f29bba6521",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "b154e9481e5e0664",
+        "order": 13,
+        "width": 0,
+        "height": 0,
+        "name": "Messung seit",
+        "label": "Messung seit",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1210,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "b451728d5aa7ab35",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "From global",
+        "info": "",
+        "x": 450,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "57c211920ccab842",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestTemp YR",
+        "func": "msg.headers = {\"sum\": \"1\"};\nmsg.topic = \"SELECT SUM(temp) as yr_sum_temp FROM `compare` WHERE `fk_offerer` = '1'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 1960,
+        "wires": [
+            [
+                "e6b8937bb7b97d09"
+            ]
+        ]
+    },
+    {
+        "id": "e6b8937bb7b97d09",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 1960,
+        "wires": [
+            [
+                "3b8d8ae0327a2440"
+            ]
+        ]
+    },
+    {
+        "id": "bdc07533684ad417",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "offerer",
+        "func": "msg.headers = {\"query\": \"offerer\"};\n\n//msg.topic = \"SELECT co.temp, co.humi FROM `offerer` AS `of` JOIN `compare` AS `co` ON co.fk_offerer = of.id WHERE of.id = '1'\";\nmsg.topic = \"SELECT * FROM `compare`\";\nmsg.topic = \"SELECT SUM(temp) as yr_sum_temp FROM `compare` WHERE `fk_offerer` = '1'\";\nmsg.payload = `best-temp`;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 2900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c8b693118c6b34be",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestTemp OW",
+        "func": "msg.headers = {\"sum\": \"2\"};\nmsg.topic = \"SELECT SUM(temp) as ow_sum_temp FROM `compare` WHERE `fk_offerer` = '2'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 2080,
+        "wires": [
+            [
+                "7082accc6a271ff9"
+            ]
+        ]
+    },
+    {
+        "id": "7082accc6a271ff9",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 2080,
+        "wires": [
+            [
+                "78fe95e68225d67a"
+            ]
+        ]
+    },
+    {
+        "id": "78fe95e68225d67a",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "ow_sum_temp",
+        "func": "// GET VARIABLEN\nlet ow_sum_temp = flow.get('ow_sum_temp') || 0;\n\n// FUNKTION\now_sum_temp = msg.payload[0].ow_sum_temp;\now_sum_temp = ow_sum_temp.toFixed(2);\now_sum_temp = `${ow_sum_temp}:${msg.headers.sum}`;\n// ow_sum_temp = [`${msg.headers.sum}`, `${ow_sum_temp}`];\n\n// SET VARIABLEN\nflow.set('ow_sum_temp', ow_sum_temp);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = ow_sum_temp;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 2080,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3b8d8ae0327a2440",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "yr_sum_temp",
+        "func": "// GET VARIABLEN\nlet yr_sum_temp = flow.get('yr_sum_temp') || 0;\nlet offerer = msg.headers.sum;\n\n// FUNKTION\nyr_sum_temp = msg.payload[0].yr_sum_temp;\nyr_sum_temp = yr_sum_temp.toFixed(2);\nyr_sum_temp = `${yr_sum_temp}:${msg.headers.sum}`;\n\n// SET VARIABLEN\nflow.set('yr_sum_temp', yr_sum_temp);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = yr_sum_temp;\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 1960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "43c47f14412df02c",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "Set FLOAT",
+        "info": "",
+        "x": 920,
+        "y": 1920,
+        "wires": []
+    },
+    {
+        "id": "c226c9943afbadd8",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestTemp WB",
+        "func": "msg.headers = {\"sum\": \"3\"};\nmsg.topic = \"SELECT SUM(temp) as wb_sum_temp FROM `compare` WHERE `fk_offerer` = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 2200,
+        "wires": [
+            [
+                "3b07316de278ee8d"
+            ]
+        ]
+    },
+    {
+        "id": "3b07316de278ee8d",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 2200,
+        "wires": [
+            [
+                "dd9960ac814e66f8"
+            ]
+        ]
+    },
+    {
+        "id": "dd9960ac814e66f8",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wb_sum_temp",
+        "func": "// GET VARIABLEN\nlet wb_sum_temp = flow.get('wb_sum_temp') || 0;\n\n// FUNKTION\nwb_sum_temp = msg.payload[0].wb_sum_temp;\nwb_sum_temp = wb_sum_temp.toFixed(2);\nwb_sum_temp = `${wb_sum_temp}:${msg.headers.sum}`;\n// wb_sum_temp = [`${msg.headers.sum}`, `${wb_sum_temp}`];\n\n// SET VARIABLEN\nflow.set('wb_sum_temp', wb_sum_temp);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = wb_sum_temp;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 2200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "68d675e6af29e3f9",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestTemp WA",
+        "func": "msg.headers = {\"sum\": \"4\"};\nmsg.topic = \"SELECT SUM(temp) as wa_sum_temp FROM `compare` WHERE `fk_offerer` = '4'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 2320,
+        "wires": [
+            [
+                "250851997d393513"
+            ]
+        ]
+    },
+    {
+        "id": "250851997d393513",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 2320,
+        "wires": [
+            [
+                "cd1ce437769d128e"
+            ]
+        ]
+    },
+    {
+        "id": "cd1ce437769d128e",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wa_sum_temp",
+        "func": "// GET VARIABLEN\nlet wa_sum_temp = flow.get('wa_sum_temp') || 0;\n\nlet result = flow.get('result') || [];\nresult.push(\"\" + msg.headers.sum + \"\");\n\n// FUNKTION\nwa_sum_temp = msg.payload[0].wa_sum_temp;\nwa_sum_temp = wa_sum_temp.toFixed(2);\nwa_sum_temp = `${wa_sum_temp}:${msg.headers.sum}`;\n// wa_sum_temp = [`${msg.headers.sum}`, `${wa_sum_temp}`];\n\n// SET VARIABLEN\nflow.set('wa_sum_temp', wa_sum_temp);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = wa_sum_temp;\nmsg.topic = result;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 2320,
+        "wires": [
+            [
+                "d69e303761bf7f5c"
+            ]
+        ]
+    },
+    {
+        "id": "45ae5679c699dc1e",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 320,
+        "y": 2820,
+        "wires": [
+            [
+                "e381493ec3a7ca94"
+            ]
+        ]
+    },
+    {
+        "id": "c88bf8f613f47ff7",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 2840,
+        "wires": []
+    },
+    {
+        "id": "e381493ec3a7ca94",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_ow",
+        "func": "// GET VARIABLEN\nlet result = flow.get('result') || [];\n\n// SET VARIABLEN\nflow.set('result', result);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = result;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 2800,
+        "wires": [
+            [
+                "c88bf8f613f47ff7",
+                "565fb46aa537afd3"
+            ]
+        ]
+    },
+    {
+        "id": "565fb46aa537afd3",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_ow",
+        "func": "// GET VARIABLEN\nlet result = flow.get('result') || [];\n\nresult[\"yr\"] = [\"1\"];\n\n// SET VARIABLEN\nflow.set('result', result);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = result;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 2880,
+        "wires": [
+            [
+                "c930184bbf47eb23",
+                "5da1369cde61d1ca"
+            ]
+        ]
+    },
+    {
+        "id": "a38a66b5307f46fc",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 3080,
+        "wires": []
+    },
+    {
+        "id": "c930184bbf47eb23",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "sum_ow",
+        "func": "// GET VARIABLEN\nlet result = flow.get('result');\n\n//result.push(\"ow\" => \"2\");\n\n// SET VARIABLEN\nflow.set('result', result);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = result;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 2940,
+        "wires": [
+            [
+                "a38a66b5307f46fc"
+            ]
+        ]
+    },
+    {
+        "id": "5da1369cde61d1ca",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 3040,
+        "wires": []
+    },
+    {
+        "id": "2eb1ffff38d0ae5d",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "result [ ]",
+        "func": "// GET VARIABLEN\nlet result = flow.get('result') || [];\n\n// SET VARIABLEN\nflow.set('result', result);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = result;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 2100,
+        "wires": [
+            [
+                "57c211920ccab842",
+                "c8b693118c6b34be",
+                "c226c9943afbadd8",
+                "68d675e6af29e3f9",
+                "e6c82e8fd7c0afcd",
+                "da88d820fc25860d",
+                "99e3f1b9b46ae4ba",
+                "e43991a4649f2193"
+            ]
+        ]
+    },
+    {
+        "id": "d69e303761bf7f5c",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 2320,
+        "wires": []
+    },
+    {
+        "id": "1144564e830925c9",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1460,
+        "y": 2160,
+        "wires": [
+            [
+                "46ee8b7213a13f47"
+            ]
+        ]
+    },
+    {
+        "id": "46ee8b7213a13f47",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "result [ ]",
+        "func": "// GET VARIABLEN\nlet result = flow.get('result') || [];\n\nresult = [];\n\n// SET VARIABLEN\nflow.set('result', result);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = result;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1660,
+        "y": 2160,
+        "wires": [
+            [
+                "522ab5639839985c"
+            ]
+        ]
+    },
+    {
+        "id": "522ab5639839985c",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1870,
+        "y": 2160,
+        "wires": []
+    },
+    {
+        "id": "e6c82e8fd7c0afcd",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestHum YR",
+        "func": "msg.headers = {\"sum\": \"1\"};\nmsg.topic = \"SELECT SUM(humi) as yr_sum_humidity FROM `compare` WHERE `fk_offerer` = '1'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 2020,
+        "wires": [
+            [
+                "67e58d34bfcdb1d5"
+            ]
+        ]
+    },
+    {
+        "id": "67e58d34bfcdb1d5",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 2020,
+        "wires": [
+            [
+                "f75b0bc7b858f26d"
+            ]
+        ]
+    },
+    {
+        "id": "f75b0bc7b858f26d",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "yr_sum_humidity",
+        "func": "// GET VARIABLEN\nlet yr_sum_humidity = flow.get('yr_sum_humidity') || 0;\nlet offerer = msg.headers.sum;\n\n// FUNKTION\nyr_sum_humidity = msg.payload[0].yr_sum_humidity;\nyr_sum_humidity = yr_sum_humidity.toFixed(2);\nyr_sum_humidity = `${yr_sum_humidity}:${msg.headers.sum}`;\n\n// SET VARIABLEN\nflow.set('yr_sum_humidity', yr_sum_humidity);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = yr_sum_humidity;\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 957.0069580078125,
+        "y": 2020.888916015625,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "df1716c960528e3c",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "ow_sum_humidity",
+        "func": "// GET VARIABLEN\nlet ow_sum_humidity = flow.get('ow_sum_humidity') || 0;\nlet offerer = msg.headers.sum;\n\n// FUNKTION\now_sum_humidity = msg.payload[0].ow_sum_humidity;\now_sum_humidity = ow_sum_humidity.toFixed(2);\now_sum_humidity = `${ow_sum_humidity}:${msg.headers.sum}`;\n\n// SET VARIABLEN\nflow.set('ow_sum_humidity', ow_sum_humidity);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = ow_sum_humidity;\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 2140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d89a92883862b4d9",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 2140,
+        "wires": [
+            [
+                "df1716c960528e3c"
+            ]
+        ]
+    },
+    {
+        "id": "da88d820fc25860d",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestHum OW",
+        "func": "msg.headers = {\"sum\": \"2\"};\nmsg.topic = \"SELECT SUM(humi) as ow_sum_humidity FROM `compare` WHERE `fk_offerer` = '2'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 2140,
+        "wires": [
+            [
+                "d89a92883862b4d9"
+            ]
+        ]
+    },
+    {
+        "id": "99e3f1b9b46ae4ba",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestHum WB",
+        "func": "msg.headers = {\"sum\": \"3\"};\nmsg.topic = \"SELECT SUM(humi) as wb_sum_humidity FROM `compare` WHERE `fk_offerer` = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 2260,
+        "wires": [
+            [
+                "1683c7692a62b3ee"
+            ]
+        ]
+    },
+    {
+        "id": "1683c7692a62b3ee",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 2260,
+        "wires": [
+            [
+                "17c83e1e75c55dc6"
+            ]
+        ]
+    },
+    {
+        "id": "17c83e1e75c55dc6",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wb_sum_humidity",
+        "func": "// GET VARIABLEN\nlet wb_sum_humidity = flow.get('wb_sum_humidity') || 0;\nlet offerer = msg.headers.sum;\n\n// FUNKTION\nwb_sum_humidity = msg.payload[0].wb_sum_humidity;\nwb_sum_humidity = wb_sum_humidity.toFixed(2);\nwb_sum_humidity = `${wb_sum_humidity}:${msg.headers.sum}`;\n\n// SET VARIABLEN\nflow.set('wb_sum_humidity', wb_sum_humidity);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = wb_sum_humidity;\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 2260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e43991a4649f2193",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "bestHum WA",
+        "func": "msg.headers = {\"sum\": \"4\"};\nmsg.topic = \"SELECT SUM(humi) as wa_sum_humidity FROM `compare` WHERE `fk_offerer` = '4'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 2380,
+        "wires": [
+            [
+                "ca292c66598faa28"
+            ]
+        ]
+    },
+    {
+        "id": "ca292c66598faa28",
+        "type": "mysql",
+        "z": "1d4f578bef439a70",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 670,
+        "y": 2380,
+        "wires": [
+            [
+                "b460913273ec3307"
+            ]
+        ]
+    },
+    {
+        "id": "b460913273ec3307",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wa_sum_humidity",
+        "func": "// GET VARIABLEN\nlet wa_sum_humidity = flow.get('wa_sum_humidity') || 0;\nlet offerer = msg.headers.sum;\n\n// FUNKTION\nwa_sum_humidity = msg.payload[0].wa_sum_humidity;\nwa_sum_humidity = wa_sum_humidity.toFixed(2);\nwa_sum_humidity = `${wa_sum_humidity}:${msg.headers.sum}`;\n\n// SET VARIABLEN\nflow.set('wa_sum_humidity', wa_sum_humidity);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = wa_sum_humidity;\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 950,
+        "y": 2380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "56ef8f49d0ddb582",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "yr_current_temp",
+        "func": "// GET VARIABLEN\nlet yr_current_temp = global.get('yr_current_temp') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(yr_current_temp).yr_temp.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 1400,
+        "wires": [
+            [
+                "5d93323a35708bd0"
+            ]
+        ]
+    },
+    {
+        "id": "e2248d0c737823a8",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "YR",
+        "label": "",
+        "format": "YR",
+        "layout": "row-left",
+        "className": "",
+        "x": 1190,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "5d93323a35708bd0",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "YR Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "ace722ddea31a291",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "YR Humidity",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1210,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "7b2d5ded0cde0274",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "yr_current_humidity",
+        "func": "// GET VARIABLEN\nlet yr_current_humidity = global.get('yr_current_humidity') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(yr_current_humidity).yr_humidity.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 1440,
+        "wires": [
+            [
+                "ace722ddea31a291"
+            ]
+        ]
+    },
+    {
+        "id": "34b081fe11537ffe",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "ow_current_temp",
+        "func": "// GET VARIABLEN\nlet ow_current_temp = global.get('ow_current_temp') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(ow_current_temp).ow_temp.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 1540,
+        "wires": [
+            [
+                "4b7754bd0a444045"
+            ]
+        ]
+    },
+    {
+        "id": "fb6c6b7897b0344b",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "OW Text",
+        "label": "",
+        "format": "openweather",
+        "layout": "row-left",
+        "className": "",
+        "x": 1200,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "4b7754bd0a444045",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "OW Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 1540,
+        "wires": []
+    },
+    {
+        "id": "3894471be7c10518",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "OW Humidity",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1210,
+        "y": 1580,
+        "wires": []
+    },
+    {
+        "id": "cc3e06f39e9a97c1",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "ow_current_humidity",
+        "func": "// GET VARIABLEN\nlet ow_current_humidity = global.get('ow_current_humidity') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(ow_current_humidity).ow_humidity.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 1580,
+        "wires": [
+            [
+                "3894471be7c10518"
+            ]
+        ]
+    },
+    {
+        "id": "6ef8838da01682d6",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "WB Text",
+        "label": "",
+        "format": "weatherbit",
+        "layout": "row-left",
+        "className": "",
+        "x": 1200,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "cd0d8a10616b7292",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wb_current_temp",
+        "func": "// GET VARIABLEN\nlet wb_current_temp = global.get('wb_current_temp') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(wb_current_temp).wb_temp.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 1680,
+        "wires": [
+            [
+                "de7b71e8454fba4f"
+            ]
+        ]
+    },
+    {
+        "id": "18a35be8bdf41f13",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wb_current_humidity",
+        "func": "// GET VARIABLEN\nlet wb_current_humidity = global.get('wb_current_humidity') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(wb_current_humidity).wb_hum.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 1720,
+        "wires": [
+            [
+                "c3a16ce53b4b11d7"
+            ]
+        ]
+    },
+    {
+        "id": "de7b71e8454fba4f",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "WB Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 1680,
+        "wires": []
+    },
+    {
+        "id": "c3a16ce53b4b11d7",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "WB Humidity",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1210,
+        "y": 1720,
+        "wires": []
+    },
+    {
+        "id": "8f60d3f0d09145df",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "WA Text",
+        "label": "",
+        "format": "Weather-API",
+        "layout": "row-left",
+        "className": "",
+        "x": 1200,
+        "y": 1780,
+        "wires": []
+    },
+    {
+        "id": "9fad6f551ce55bf5",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "WA Temp",
+        "label": "",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1200,
+        "y": 1820,
+        "wires": []
+    },
+    {
+        "id": "dcdb55b6648d7787",
+        "type": "ui_text",
+        "z": "1d4f578bef439a70",
+        "group": "69fad70e826d02b4",
+        "order": 4,
+        "width": "3",
+        "height": 1,
+        "name": "WA Humidity",
+        "label": "",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1210,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "82363997206438b5",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wa_current_temp",
+        "func": "// GET VARIABLEN\nlet wa_current_temp = global.get('wa_current_temp') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(wa_current_temp).wa_temp.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 1820,
+        "wires": [
+            [
+                "9fad6f551ce55bf5"
+            ]
+        ]
+    },
+    {
+        "id": "b89c8fa23d693692",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "wa_current_humidity",
+        "func": "// GET VARIABLEN\nlet wa_current_humidity = global.get('wa_current_humidity') || 0;\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = JSON.parse(wa_current_humidity).wa_hum.toFixed(2);\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 1860,
+        "wires": [
+            [
+                "dcdb55b6648d7787"
+            ]
+        ]
+    },
+    {
+        "id": "fe429e63b8f3651b",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "yr_sum_temp",
+        "func": "// GET VARIABLEN\nlet yr_sum_temp = flow.get('yr_sum_temp') || 0;\nlet offerer = msg.headers.sum;\n\n// FUNKTION\nyr_sum_temp = msg.payload[0].yr_sum_temp;\nyr_sum_temp = yr_sum_temp.toFixed(2);\nyr_sum_temp = [`${msg.headers.sum}`, `${yr_sum_temp}`];\n\n// SET VARIABLEN\nflow.set('yr_sum_temp', yr_sum_temp);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = yr_sum_temp;\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1129.8958740234375,
+        "y": 1925.666748046875,
+        "wires": [
+            [
+                "7aa51147d4196d96"
+            ]
+        ]
+    },
+    {
+        "id": "7aa51147d4196d96",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1350,
+        "y": 1920,
+        "wires": []
+    },
+    {
+        "id": "3faf76cab38c4e03",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 1960,
+        "wires": [
+            [
+                "c8b693118c6b34be",
+                "57c211920ccab842",
+                "48492f5c23e6b425"
+            ]
+        ]
+    },
+    {
+        "id": "6c7e05e58b5723b2",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "func": "// GET VARIABLEN\nlet yr_sum_temp = flow.get('yr_sum_temp') || 0;\nlet ow_sum_temp = flow.get('ow_sum_temp') || 0;\n\n\nlet sortable = [];\nsortable.push(yr_sum_temp);\nsortable.push(ow_sum_temp);\n\n\nsortable.sort(function(a, b) {\n    return a[1] - b[1];\n});\n\nresult = sortable;\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1260,
+        "y": 2020,
+        "wires": [
+            [
+                "8f47b12482f37dfa"
+            ]
+        ]
+    },
+    {
+        "id": "8f47b12482f37dfa",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1430,
+        "y": 2020,
+        "wires": []
+    },
+    {
+        "id": "2ed676c4d508c660",
+        "type": "inject",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1160,
+        "y": 2080,
+        "wires": [
+            [
+                "6c7e05e58b5723b2"
+            ]
+        ]
+    },
+    {
+        "id": "bb2ec096db6514be",
+        "type": "function",
+        "z": "1d4f578bef439a70",
+        "name": "ow_sum_temp",
+        "func": "// GET VARIABLEN\nlet ow_sum_temp = flow.get('ow_sum_temp') || 0;\n\n// FUNKTION\now_sum_temp = msg.payload[0].ow_sum_temp;\now_sum_temp = ow_sum_temp.toFixed(2);\now_sum_temp = [`${msg.headers.sum}`, `${ow_sum_temp}`];\n\n// SET VARIABLEN\nflow.set('ow_sum_temp', ow_sum_temp);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = ow_sum_temp;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1343.8958740234375,
+        "y": 2097.666748046875,
+        "wires": [
+            [
+                "6fdce5e399ee434a"
+            ]
+        ]
+    },
+    {
+        "id": "6fdce5e399ee434a",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1530,
+        "y": 2080,
+        "wires": []
+    },
+    {
+        "id": "48492f5c23e6b425",
+        "type": "delay",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "2",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 220,
+        "y": 2240,
+        "wires": [
+            [
+                "3657153b3d0d4b63"
+            ]
+        ]
+    },
+    {
+        "id": "3657153b3d0d4b63",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 210,
+        "y": 2360,
+        "wires": []
+    },
+    {
+        "id": "b091846e78a2f2bf",
+        "type": "mqtt out",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "topic": "/cron/compare/select/current",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 160,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "111c9118529df00a",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "App-Vergleich (Aktuell)",
+        "info": "",
+        "x": 1360,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "814c13f795866314",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "App-Vergleich (Summe)",
+        "info": "",
+        "x": 1239.8958740234375,
+        "y": 517.888916015625,
+        "wires": []
+    },
+    {
+        "id": "fd1361f07a37a950",
+        "type": "comment",
+        "z": "1d4f578bef439a70",
+        "name": "App-Vergleich (Aktuell)",
+        "info": "",
+        "x": 1220,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "317b6381fa052710",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 1220,
+        "wires": []
+    },
+    {
+        "id": "9512d0cff52cdcfe",
+        "type": "debug",
+        "z": "1d4f578bef439a70",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "fd7f7de2f4bbd24d",
+        "type": "cronplus",
+        "z": "1d4f578bef439a70",
+        "name": "compare",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "compare",
+                "topic": "compare",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 5 */1 * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 120,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0e4aaff7bc094898",
+        "type": "cronplus",
+        "z": "1d4f578bef439a70",
+        "name": "compare",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "compare",
+                "topic": "compare",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 7 */1 * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 144.8958282470703,
+        "y": 1238.5555419921875,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9cbad506a0556217",
+        "type": "ui_group",
+        "name": "hidden",
+        "tab": "d1dcec789102c3a3",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "69fad70e826d02b4",
+        "type": "ui_group",
+        "name": "Aktuell",
+        "tab": "8e5d7269710e10a7",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "179277ed4e2f8253",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "test",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "57316acf0db89fb6",
+        "type": "ui_group",
+        "name": "MySQL",
+        "tab": "d1dcec789102c3a3",
+        "order": 9,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "b154e9481e5e0664",
+        "type": "ui_group",
+        "name": "Summe",
+        "tab": "8e5d7269710e10a7",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "d1dcec789102c3a3",
+        "type": "ui_tab",
+        "name": "Hidden",
+        "icon": "dashboard",
+        "order": 14,
+        "disabled": true,
+        "hidden": true
+    },
+    {
+        "id": "8e5d7269710e10a7",
+        "type": "ui_tab",
+        "name": "App-Vergleich",
+        "icon": "fa-sun-o",
+        "order": 7,
+        "disabled": false,
+        "hidden": false
+    }
+]

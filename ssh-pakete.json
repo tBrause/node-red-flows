@@ -1,0 +1,901 @@
+[
+    {
+        "id": "152a62b35d9475c1",
+        "type": "tab",
+        "label": "ssh Pakete",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9388d218c02ad1bc",
+        "type": "inject",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 720,
+        "wires": [
+            [
+                "f2dfefa758513857"
+            ]
+        ]
+    },
+    {
+        "id": "f2dfefa758513857",
+        "type": "exec",
+        "z": "152a62b35d9475c1",
+        "command": "sudo apache2 -v",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 450,
+        "y": 780,
+        "wires": [
+            [
+                "bb9917687dd6e973",
+                "2fe04d39fb758385"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "c54810d569b70d6f",
+        "type": "ui_gauge",
+        "z": "152a62b35d9475c1",
+        "name": "color apache",
+        "group": "58860e257290341d",
+        "order": 10,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1001.2083740234375,
+        "y": 719.555419921875,
+        "wires": []
+    },
+    {
+        "id": "5f05aaad92deb37f",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 11,
+        "width": "3",
+        "height": "1",
+        "name": "text Apache2",
+        "label": "",
+        "format": "Apache2",
+        "layout": "row-left",
+        "className": "",
+        "x": 1001.2083740234375,
+        "y": 779.555419921875,
+        "wires": []
+    },
+    {
+        "id": "f5287716c7929f8b",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 12,
+        "width": "2",
+        "height": "1",
+        "name": "version apache",
+        "label": "",
+        "format": "v{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1000,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "2bfd82143abd9ad9",
+        "type": "inject",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 320,
+        "wires": [
+            [
+                "531535fc57f8e476"
+            ]
+        ]
+    },
+    {
+        "id": "531535fc57f8e476",
+        "type": "exec",
+        "z": "152a62b35d9475c1",
+        "command": "sudo node -v",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 430,
+        "y": 320,
+        "wires": [
+            [
+                "ba4c0fb3d5f580f6",
+                "4a138a33b642f34b"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "ba4c0fb3d5f580f6",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 6,
+        "width": "2",
+        "height": "1",
+        "name": "version node",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 770,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "44948ecd8b34f411",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "name": "text Node",
+        "label": "",
+        "format": "Node",
+        "layout": "row-left",
+        "className": "",
+        "x": 760,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "4a138a33b642f34b",
+        "type": "function",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "func": "let apache = msg.payload;\nlet result = 0;\nif(apache != '') {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 360,
+        "wires": [
+            [
+                "4c1b6530a8d9d29d"
+            ]
+        ]
+    },
+    {
+        "id": "4c1b6530a8d9d29d",
+        "type": "ui_gauge",
+        "z": "152a62b35d9475c1",
+        "name": "color Node",
+        "group": "58860e257290341d",
+        "order": 4,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 950,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "4487d84a56aee337",
+        "type": "inject",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 1380,
+        "wires": [
+            [
+                "d089272876ff659f"
+            ]
+        ]
+    },
+    {
+        "id": "d089272876ff659f",
+        "type": "exec",
+        "z": "152a62b35d9475c1",
+        "command": "sudo php -v",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 390,
+        "y": 1380,
+        "wires": [
+            [
+                "d520b540cb5acf1c",
+                "d7c27dd8228b9923",
+                "718e3abd3e1ee13f"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d520b540cb5acf1c",
+        "type": "debug",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 550,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "d7c27dd8228b9923",
+        "type": "function",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "func": "let nodered = msg.payload;\nlet result = 0;\nif(nodered != '') {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 1420,
+        "wires": [
+            [
+                "a9dec73298c7c13f",
+                "1d6b7dc953e1ba38"
+            ]
+        ]
+    },
+    {
+        "id": "a9dec73298c7c13f",
+        "type": "debug",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 1420,
+        "wires": []
+    },
+    {
+        "id": "364bc2fbbd5bb817",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 14,
+        "width": "3",
+        "height": "1",
+        "name": "text PHP",
+        "label": "",
+        "format": "PHP",
+        "layout": "row-left",
+        "className": "",
+        "x": 800,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "718e3abd3e1ee13f",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 15,
+        "width": "2",
+        "height": "1",
+        "name": "version PHP",
+        "label": "",
+        "format": "v{{msg.payload.substr(4, 6)}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 810,
+        "y": 1380,
+        "wires": []
+    },
+    {
+        "id": "1d6b7dc953e1ba38",
+        "type": "ui_gauge",
+        "z": "152a62b35d9475c1",
+        "name": "color PHP",
+        "group": "58860e257290341d",
+        "order": 13,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 940,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "58fe8d7028251589",
+        "type": "inject",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 250,
+        "y": 500,
+        "wires": [
+            [
+                "3cbd80696241abb5"
+            ]
+        ]
+    },
+    {
+        "id": "3cbd80696241abb5",
+        "type": "exec",
+        "z": "152a62b35d9475c1",
+        "command": "sudo mariadb --version",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 460,
+        "y": 500,
+        "wires": [
+            [
+                "7a8cc035e8c3714b",
+                "8f15c3f44fc31c03"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "7a8cc035e8c3714b",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 9,
+        "width": "2",
+        "height": "1",
+        "name": "version MariaDB",
+        "label": "",
+        "format": "v{{msg.payload.substr(26, 7)}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 780,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "8f15c3f44fc31c03",
+        "type": "function",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "func": "let mariadb = msg.payload;\nlet result = 0;\nif(mariadb != '') {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 540,
+        "wires": [
+            [
+                "fb7fa45373f87d78"
+            ]
+        ]
+    },
+    {
+        "id": "fb7fa45373f87d78",
+        "type": "ui_gauge",
+        "z": "152a62b35d9475c1",
+        "name": "color MariaDB",
+        "group": "58860e257290341d",
+        "order": 7,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 940,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "e93fa06b97dfc160",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 8,
+        "width": "3",
+        "height": "1",
+        "name": "text MariaDB",
+        "label": "",
+        "format": "MariaDB",
+        "layout": "row-left",
+        "className": "",
+        "x": 770,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "ac34a5cfe79842c4",
+        "type": "inject",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 140,
+        "wires": [
+            [
+                "2c03a2a9798ddf4e"
+            ]
+        ]
+    },
+    {
+        "id": "2c03a2a9798ddf4e",
+        "type": "exec",
+        "z": "152a62b35d9475c1",
+        "command": "sudo npm -v",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "e7d54ad529e2ecf0",
+                "a1aa4e58dcba2da7"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "53849b80e80accfd",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 2,
+        "width": "3",
+        "height": "1",
+        "name": "text npm",
+        "label": "",
+        "format": "npm",
+        "layout": "row-left",
+        "className": "",
+        "x": 760,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "a1aa4e58dcba2da7",
+        "type": "ui_text",
+        "z": "152a62b35d9475c1",
+        "group": "58860e257290341d",
+        "order": 3,
+        "width": "2",
+        "height": "1",
+        "name": "version npm",
+        "label": "",
+        "format": "v{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 770,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "e7d54ad529e2ecf0",
+        "type": "function",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "func": "let npm = msg.payload;\nlet result = 0;\nif(npm != '') {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 760,
+        "y": 180,
+        "wires": [
+            [
+                "52ea436171aef551"
+            ]
+        ]
+    },
+    {
+        "id": "52ea436171aef551",
+        "type": "ui_gauge",
+        "z": "152a62b35d9475c1",
+        "name": "color npm",
+        "group": "58860e257290341d",
+        "order": 1,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 940,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "252f372b588c0fe0",
+        "type": "comment",
+        "z": "152a62b35d9475c1",
+        "name": "npm",
+        "info": "",
+        "x": 210,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b1adcf4ff29daa83",
+        "type": "comment",
+        "z": "152a62b35d9475c1",
+        "name": "Node",
+        "info": "",
+        "x": 210,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "2a0af32a703ac737",
+        "type": "comment",
+        "z": "152a62b35d9475c1",
+        "name": "PHP",
+        "info": "",
+        "x": 190,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "72bb71dd1db7d881",
+        "type": "comment",
+        "z": "152a62b35d9475c1",
+        "name": "MariaDB",
+        "info": "",
+        "x": 220,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "5bfcaeb6282b9ef3",
+        "type": "comment",
+        "z": "152a62b35d9475c1",
+        "name": "Apache2",
+        "info": "",
+        "x": 220,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "5445f8a695acc883",
+        "type": "debug",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "1e37ad4e823baabc",
+        "type": "exec",
+        "z": "152a62b35d9475c1",
+        "command": "sudo systemctl status apache2",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 490,
+        "y": 720,
+        "wires": [
+            [
+                "3066c724d19b8a48",
+                "a6a867298a172553"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "3066c724d19b8a48",
+        "type": "function",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "func": "let apache = msg.payload.search(\"Active: active\");\nlet result = 0;\nif(apache >= 0) {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 720,
+        "wires": [
+            [
+                "3a2d3dca5969d08e"
+            ]
+        ]
+    },
+    {
+        "id": "a6a867298a172553",
+        "type": "debug",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "3a2d3dca5969d08e",
+        "type": "debug",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 987.1041870117188,
+        "y": 660.7777099609375,
+        "wires": []
+    },
+    {
+        "id": "a5d0df018d2486fc",
+        "type": "debug",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "bb9917687dd6e973",
+        "type": "function",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "func": "let apache = msg.payload;\nlet result = apache.substr(23, 6);\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 840,
+        "wires": [
+            [
+                "f5287716c7929f8b"
+            ]
+        ]
+    },
+    {
+        "id": "2fe04d39fb758385",
+        "type": "function",
+        "z": "152a62b35d9475c1",
+        "name": "",
+        "func": "let apache = msg.payload.search(\"Apache\");\nlet result = 0;\nif(apache >= 0) {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 740,
+        "y": 800,
+        "wires": [
+            [
+                "c54810d569b70d6f"
+            ]
+        ]
+    },
+    {
+        "id": "58860e257290341d",
+        "type": "ui_group",
+        "name": "Dienste",
+        "tab": "b4a87c66d7a3665f",
+        "order": 8,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "b4a87c66d7a3665f",
+        "type": "ui_tab",
+        "name": "Hello",
+        "icon": "",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]

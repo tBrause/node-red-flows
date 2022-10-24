@@ -1,0 +1,312 @@
+[
+    {
+        "id": "57648621523fd7d1",
+        "type": "tab",
+        "label": "ssh bluetooth",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bb5ec02946545e24",
+        "type": "function",
+        "z": "57648621523fd7d1",
+        "name": "",
+        "func": "let bluetooth = msg.payload.search(\"Active: active\");\nlet result = 0;\nif(bluetooth >= 0) {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1160,
+        "y": 300,
+        "wires": [
+            [
+                "898fc7d077cd43d8"
+            ]
+        ]
+    },
+    {
+        "id": "898fc7d077cd43d8",
+        "type": "ui_gauge",
+        "z": "57648621523fd7d1",
+        "name": "color bluetooth",
+        "group": "84133978d916df01",
+        "order": 1,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "0",
+        "max": "1",
+        "colors": [
+            "#ca3838",
+            "#00b500",
+            "#00b500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1354.1041870117188,
+        "y": 298.7777099609375,
+        "wires": []
+    },
+    {
+        "id": "b1742f1dc745e84e",
+        "type": "ui_switch",
+        "z": "57648621523fd7d1",
+        "name": "switch Bluetooth",
+        "label": "",
+        "tooltip": "",
+        "group": "84133978d916df01",
+        "order": 2,
+        "width": "4",
+        "height": "1",
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 280,
+        "y": 140,
+        "wires": [
+            [
+                "83fd8825a25eb3ce"
+            ]
+        ]
+    },
+    {
+        "id": "83fd8825a25eb3ce",
+        "type": "function",
+        "z": "57648621523fd7d1",
+        "name": "",
+        "func": "// GET VARIABLEN\nlet switshBluetooth = flow.get('switshBluetooth') || 0;\n\nswitshBluetooth = msg.payload;\n\nlet switshBluetoothStatus = 'ON';\n\n// FUNKTION\nif(switshBluetooth === false) {\n    switshBluetoothStatus = 'OFF';\n}\n// SET VARIABLEN\nflow.set('switshBluetoothStatus', switshBluetoothStatus);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = switshBluetoothStatus;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 140,
+        "wires": [
+            [
+                "ca3bb900a4a90754",
+                "4837737f672beb0c"
+            ]
+        ]
+    },
+    {
+        "id": "ca3bb900a4a90754",
+        "type": "switch",
+        "z": "57648621523fd7d1",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "ON",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "OFF",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 250,
+        "y": 260,
+        "wires": [
+            [
+                "ed82b93d385ca00c"
+            ],
+            [
+                "56442d4d4233605d"
+            ]
+        ]
+    },
+    {
+        "id": "56442d4d4233605d",
+        "type": "exec",
+        "z": "57648621523fd7d1",
+        "command": "sudo systemctl stop bluetooth.service",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 530,
+        "y": 320,
+        "wires": [
+            [
+                "bb5ec02946545e24"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "ed82b93d385ca00c",
+        "type": "exec",
+        "z": "57648621523fd7d1",
+        "command": "sudo systemctl start bluetooth.service",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 530,
+        "y": 260,
+        "wires": [
+            [
+                "8e928193f04a182e"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8e928193f04a182e",
+        "type": "exec",
+        "z": "57648621523fd7d1",
+        "command": "sudo systemctl status bluetooth.service",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 900,
+        "y": 260,
+        "wires": [
+            [
+                "bb5ec02946545e24"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "e7d1bd8ad64c5be5",
+        "type": "inject",
+        "z": "57648621523fd7d1",
+        "name": "5min",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 400,
+        "wires": [
+            [
+                "ded1410d90563873"
+            ]
+        ]
+    },
+    {
+        "id": "ded1410d90563873",
+        "type": "exec",
+        "z": "57648621523fd7d1",
+        "command": "sudo systemctl status bluetooth.service",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 540,
+        "y": 400,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "4837737f672beb0c",
+        "type": "ui_text",
+        "z": "57648621523fd7d1",
+        "group": "84133978d916df01",
+        "order": 3,
+        "width": "1",
+        "height": "1",
+        "name": "ON OFF",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 660,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "fb4b7904414e15bd",
+        "type": "function",
+        "z": "57648621523fd7d1",
+        "name": "",
+        "func": "let icon = '<i class=\"fa fa-bluetooth-b\" aria-hidden=\"true\"></i>';\n\nif(msg.payload == 'ON') {\n    icon = '<i class=\"fa fa-bluetooth\" aria-hidden=\"true\"></i>';\n}\n\nmsg.payload = icon;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "84133978d916df01",
+        "type": "ui_group",
+        "name": "Bluetooth",
+        "tab": "b4a87c66d7a3665f",
+        "order": 13,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "b4a87c66d7a3665f",
+        "type": "ui_tab",
+        "name": "Hello",
+        "icon": "",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
