@@ -1,0 +1,272 @@
+[
+    {
+        "id": "90217cda5f3aeef5",
+        "type": "tab",
+        "label": "YR Forecast",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9526b1e6b5053e7d",
+        "type": "function",
+        "z": "90217cda5f3aeef5",
+        "name": "INSERT INTO `api_data_forecast`",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_clouds`, `air_pressure`, `wind_speed`, `wind_direction_deg`) VALUES ('1', '\" + msg.payload.properties.timeseries[0].time + \"', '\" + msg.payload.properties.timeseries[0].data.instant.details.air_temperature + \"', '\" + msg.payload.properties.timeseries[0].data.instant.details.relative_humidity + \"', '\" + msg.payload.properties.timeseries[0].data.instant.details.cloud_area_fraction + \"', '\" + msg.payload.properties.timeseries[0].data.instant.details.air_pressure_at_sea_level + \"', '\" + msg.payload.properties.timeseries[0].data.instant.details.wind_speed + \"', '\" + msg.payload.properties.timeseries[0].data.instant.details.wind_from_direction + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO `api_data_forecast`';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 180,
+        "wires": [
+            [
+                "77011f87a597993c"
+            ]
+        ]
+    },
+    {
+        "id": "77011f87a597993c",
+        "type": "mysql",
+        "z": "90217cda5f3aeef5",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1110,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9983289a95d6c00e",
+        "type": "comment",
+        "z": "90217cda5f3aeef5",
+        "name": "FORECAST / INSERT",
+        "info": "",
+        "x": 180,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "146243646f133373",
+        "type": "http request",
+        "z": "90217cda5f3aeef5",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.met.no/weatherapi/locationforecast/2.0/compact?lon=13.4580&lat=52.5105&altitude=90",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "credentials": {},
+        "x": 430,
+        "y": 180,
+        "wires": [
+            [
+                "9526b1e6b5053e7d"
+            ]
+        ]
+    },
+    {
+        "id": "0bfab30fd1ece233",
+        "type": "mqtt out",
+        "z": "90217cda5f3aeef5",
+        "name": "",
+        "topic": "cron/forecast_data/yr",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 460,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "7d8816fa2b6624a6",
+        "type": "cronplus",
+        "z": "90217cda5f3aeef5",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "cronYRForecast",
+                "topic": "yrForecast",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "45 23 */1 * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "0bfab30fd1ece233",
+                "94b9817431b267c0",
+                "6bf2788fa7284912"
+            ]
+        ]
+    },
+    {
+        "id": "12bd51f0298f6ba9",
+        "type": "inject",
+        "z": "90217cda5f3aeef5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 120,
+        "wires": [
+            [
+                "146243646f133373"
+            ]
+        ]
+    },
+    {
+        "id": "6bf2788fa7284912",
+        "type": "ui_text",
+        "z": "90217cda5f3aeef5",
+        "group": "1f94dc0cd60b6d46",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "text cron/forecast_data/yr",
+        "label": "cron/forecast_data/yr",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 470,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "94b9817431b267c0",
+        "type": "ui_text",
+        "z": "90217cda5f3aeef5",
+        "group": "1f94dc0cd60b6d46",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "next cron/forecast_data/yr",
+        "label": "",
+        "format": "{{msg.cronplus.status.nextDateTZ}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 470,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8f69156c1b02bf03",
+        "type": "inject",
+        "z": "90217cda5f3aeef5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "919f4e44dec380e0",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "raumklima",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1f94dc0cd60b6d46",
+        "type": "ui_group",
+        "name": "Forecast",
+        "tab": "cb4132b94e48ff2c",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "cb4132b94e48ff2c",
+        "type": "ui_tab",
+        "name": "Cronjobs",
+        "icon": "fa-clock-o",
+        "order": 8,
+        "disabled": false,
+        "hidden": false
+    }
+]

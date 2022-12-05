@@ -1,0 +1,926 @@
+[
+    {
+        "id": "f53df285b1e5b9ec",
+        "type": "tab",
+        "label": "VIEW",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3afb01419e7d6bc0",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "payload[0].forecast_time",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1410,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "33d6c9f469c07e09",
+        "type": "inject",
+        "z": "f53df285b1e5b9ec",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 340,
+        "y": 260,
+        "wires": [
+            [
+                "cee62cde25d95489",
+                "f19982e021d36c7b",
+                "4cbc6a2333d9de15"
+            ]
+        ]
+    },
+    {
+        "id": "dd47978c9bb4e2ac",
+        "type": "debug",
+        "z": "f53df285b1e5b9ec",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "cee62cde25d95489",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "SELECT * FROM `forecast_21h`",
+        "func": "msg.topic = \"SELECT * FROM `forecast_21h` WHERE `api_id` = 3\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "dd47978c9bb4e2ac",
+                "4003e4b9f67b4a28"
+            ]
+        ]
+    },
+    {
+        "id": "4003e4b9f67b4a28",
+        "type": "mysql",
+        "z": "f53df285b1e5b9ec",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 910,
+        "y": 200,
+        "wires": [
+            [
+                "36c61ceab2a2958e",
+                "328b2608062c4b3c",
+                "34ea73fefcc0bdbb"
+            ]
+        ]
+    },
+    {
+        "id": "36c61ceab2a2958e",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "FCT DATE SMALL",
+        "func": "// FUNKTION\nfunction fctDate(fct) {\n    const date = new Date(fct);\n    \n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    fct = `${d}.${mon}.${y}`;\n    return fct;\n}\n\ncontent = fctDate(msg.payload[0].forecast_time);\n\nmsg.payload = content;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 120,
+        "wires": [
+            [
+                "3afb01419e7d6bc0"
+            ]
+        ]
+    },
+    {
+        "id": "328b2608062c4b3c",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 6,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].temperatur",
+        "label": "",
+        "format": "{{msg.payload[0].temperatur}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1160,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "34ea73fefcc0bdbb",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 7,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].humidity",
+        "label": "",
+        "format": "{{msg.payload[0].humidity}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1150,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e4856f39e172510e",
+        "type": "comment",
+        "z": "f53df285b1e5b9ec",
+        "name": "`api_id` = 3",
+        "info": "",
+        "x": 580,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "f19982e021d36c7b",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "SELECT * FROM `forecast_21h`",
+        "func": "msg.topic = \"SELECT * FROM `forecast_21h` WHERE `api_id` = 2\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 360,
+        "wires": [
+            [
+                "cbad6b19f4d4175a"
+            ]
+        ]
+    },
+    {
+        "id": "64c867ed11cb3c49",
+        "type": "comment",
+        "z": "f53df285b1e5b9ec",
+        "name": "`api_id` = 2",
+        "info": "",
+        "x": 580,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "cbad6b19f4d4175a",
+        "type": "mysql",
+        "z": "f53df285b1e5b9ec",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 910,
+        "y": 360,
+        "wires": [
+            [
+                "2f9441f053fe9dcc",
+                "a01a5042bc7b8728"
+            ]
+        ]
+    },
+    {
+        "id": "e736e96718b020b9",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "openweather",
+        "label": "openweather",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1130,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "2f9441f053fe9dcc",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 9,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].temperatur",
+        "label": "",
+        "format": "{{msg.payload[0].temperatur}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1160,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "a01a5042bc7b8728",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 10,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].humidity",
+        "label": "",
+        "format": "{{msg.payload[0].humidity}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1150,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "16acd95ac73efab6",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "weatherbit",
+        "label": "weatherbit",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1130,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "dfb1952e0a9a0325",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "FCT DATETIME SMALL",
+        "func": "// FUNKTION\nfunction fctDate(fct) {\n    const date = new Date(fct);\n    \n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    let h = date.getHours();\n    h = ((h < 10) ? \"0\" + h : h);\n    \n    let min = date.getMinutes();\n    min = ((min < 10) ? \"0\" + min : min);\n    \n    let s = date.getSeconds();\n    s = ((s < 10) ? \"0\" + s : s);\n    \n    fct = `${h}:${min}:${s} ${d}.${mon}.${y}`;\n    return fct;\n}\n\ncontent = fctDate(msg.payload[0].forecast_time);\n\nmsg.payload = content;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4cbc6a2333d9de15",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "SELECT * FROM `outdoor_21h`",
+        "func": "msg.topic = \"SELECT * FROM `outdoor_21h`\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 520,
+        "wires": [
+            [
+                "5597af7b2b81264a"
+            ]
+        ]
+    },
+    {
+        "id": "75806f5dfc4d8d67",
+        "type": "comment",
+        "z": "f53df285b1e5b9ec",
+        "name": "`sensor_id` = 4",
+        "info": "",
+        "x": 600,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "5597af7b2b81264a",
+        "type": "mysql",
+        "z": "f53df285b1e5b9ec",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 910,
+        "y": 520,
+        "wires": [
+            [
+                "9040cfa365fb2b23",
+                "2def69af6133987b"
+            ]
+        ]
+    },
+    {
+        "id": "76435295be4e3a75",
+        "type": "inject",
+        "z": "f53df285b1e5b9ec",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 820,
+        "wires": [
+            [
+                "6f827d0880d161ef",
+                "d3fe5444eeccf1de"
+            ]
+        ]
+    },
+    {
+        "id": "cc9f61bb0096d226",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Sensor Outdoor",
+        "label": "Sensor Outdoor",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "9040cfa365fb2b23",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 3,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].temp",
+        "label": "",
+        "format": "{{msg.payload[0].temp}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "2def69af6133987b",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "6163fec975554d91",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].humi",
+        "label": "",
+        "format": "{{msg.payload[0].humi}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "6537e7188953f0f3",
+        "type": "comment",
+        "z": "f53df285b1e5b9ec",
+        "name": "`api_id` = 3",
+        "info": "",
+        "x": 580,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "6f827d0880d161ef",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "SELECT * FROM `forecast_18h`",
+        "func": "msg.topic = \"SELECT * FROM `forecast_18h` WHERE `api_id` = 3\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 760,
+        "wires": [
+            [
+                "8479f6b24627b70a"
+            ]
+        ]
+    },
+    {
+        "id": "8479f6b24627b70a",
+        "type": "mysql",
+        "z": "f53df285b1e5b9ec",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 910,
+        "y": 760,
+        "wires": [
+            [
+                "c642661445ba8ed5",
+                "f4e7a9fd8720bf5e",
+                "b3c99021d2145dc0"
+            ]
+        ]
+    },
+    {
+        "id": "7571e560618e099d",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "weatherbit",
+        "label": "weatherbit",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1130,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "f4e7a9fd8720bf5e",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 6,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].temperatur",
+        "label": "",
+        "format": "{{msg.payload[0].temperatur}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1160,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "b3c99021d2145dc0",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 7,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].humidity",
+        "label": "",
+        "format": "{{msg.payload[0].humidity}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1150,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "c642661445ba8ed5",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "FCT DATE SMALL",
+        "func": "// FUNKTION\nfunction fctDate(fct) {\n    const date = new Date(fct);\n    \n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    fct = `${d}.${mon}.${y}`;\n    return fct;\n}\n\ncontent = fctDate(msg.payload[0].forecast_time);\n\nmsg.payload = content;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 680,
+        "wires": [
+            [
+                "7b02d74a9e7388e6"
+            ]
+        ]
+    },
+    {
+        "id": "7b02d74a9e7388e6",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "payload[0].forecast_time",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1410,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "736ea761aa6e8ebe",
+        "type": "comment",
+        "z": "f53df285b1e5b9ec",
+        "name": "`sensor_id` = 4",
+        "info": "",
+        "x": 600,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "e4e41f09a88df880",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "SELECT * FROM `outdoor_18h`",
+        "func": "msg.topic = \"SELECT * FROM `outdoor_18h`\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 1060,
+        "wires": [
+            [
+                "89333f4746a035b1"
+            ]
+        ]
+    },
+    {
+        "id": "89333f4746a035b1",
+        "type": "mysql",
+        "z": "f53df285b1e5b9ec",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 910,
+        "y": 1060,
+        "wires": [
+            [
+                "76976eca9b13f57f",
+                "e930469903ad5216"
+            ]
+        ]
+    },
+    {
+        "id": "76976eca9b13f57f",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 3,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].temp",
+        "label": "",
+        "format": "{{msg.payload[0].temp}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "e0b55b998db73099",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Sensor Outdoor",
+        "label": "Sensor Outdoor",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "e930469903ad5216",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].humi",
+        "label": "",
+        "format": "{{msg.payload[0].humi}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "d3fe5444eeccf1de",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "SELECT * FROM `forecast_18h`",
+        "func": "msg.topic = \"SELECT * FROM `forecast_18h` WHERE `api_id` = 2\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 900,
+        "wires": [
+            [
+                "1f99d51f07220907"
+            ]
+        ]
+    },
+    {
+        "id": "8f315c461d54b545",
+        "type": "comment",
+        "z": "f53df285b1e5b9ec",
+        "name": "`api_id` = 2",
+        "info": "",
+        "x": 580,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "1f99d51f07220907",
+        "type": "mysql",
+        "z": "f53df285b1e5b9ec",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 910,
+        "y": 900,
+        "wires": [
+            [
+                "bea3d9db4d24da5a",
+                "8c78469dfd0d07e9"
+            ]
+        ]
+    },
+    {
+        "id": "afc5a14e7cf532e0",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 8,
+        "width": 0,
+        "height": 0,
+        "name": "openweather",
+        "label": "openweather",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1130,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "bea3d9db4d24da5a",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 9,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].temperatur",
+        "label": "",
+        "format": "{{msg.payload[0].temperatur}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1160,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "8c78469dfd0d07e9",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "ad7a4b76b6c81f5b",
+        "order": 10,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].humidity",
+        "label": "",
+        "format": "{{msg.payload[0].humidity}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1150,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "96ccf58d0468af77",
+        "type": "comment",
+        "z": "f53df285b1e5b9ec",
+        "name": "`sensor_id` = 4",
+        "info": "",
+        "x": 600,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "3b59211a1802b448",
+        "type": "function",
+        "z": "f53df285b1e5b9ec",
+        "name": "SELECT * FROM `outdoor_0h`",
+        "func": "msg.topic = \"SELECT * FROM `outdoor_0h`\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 1320,
+        "wires": [
+            [
+                "89881693d3e4262f"
+            ]
+        ]
+    },
+    {
+        "id": "89881693d3e4262f",
+        "type": "mysql",
+        "z": "f53df285b1e5b9ec",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 910,
+        "y": 1320,
+        "wires": [
+            [
+                "d8b2d5ce91754ae8",
+                "a8b0fc4426466d74"
+            ]
+        ]
+    },
+    {
+        "id": "d8b2d5ce91754ae8",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "020fb88ae35ffb4a",
+        "order": 3,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].temp",
+        "label": "",
+        "format": "{{msg.payload[0].temp}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "30479956c050b4f0",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "020fb88ae35ffb4a",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "Sensor Outdoor",
+        "label": "Sensor Outdoor",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 1280,
+        "wires": []
+    },
+    {
+        "id": "a8b0fc4426466d74",
+        "type": "ui_text",
+        "z": "f53df285b1e5b9ec",
+        "group": "020fb88ae35ffb4a",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "name": "payload[0].humi",
+        "label": "",
+        "format": "{{msg.payload[0].humi}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "85195632490f1871",
+        "type": "inject",
+        "z": "f53df285b1e5b9ec",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 1320,
+        "wires": [
+            [
+                "3b59211a1802b448"
+            ]
+        ]
+    },
+    {
+        "id": "6163fec975554d91",
+        "type": "ui_group",
+        "name": "21 Uhr",
+        "tab": "ab1be0cdc9f4280c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "919f4e44dec380e0",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "raumklima",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "ad7a4b76b6c81f5b",
+        "type": "ui_group",
+        "name": "18h",
+        "tab": "ab1be0cdc9f4280c",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "020fb88ae35ffb4a",
+        "type": "ui_group",
+        "name": "0h",
+        "tab": "ab1be0cdc9f4280c",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ab1be0cdc9f4280c",
+        "type": "ui_tab",
+        "name": "View",
+        "icon": "",
+        "order": 13,
+        "disabled": false,
+        "hidden": false
+    }
+]

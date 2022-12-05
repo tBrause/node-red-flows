@@ -1,0 +1,306 @@
+[
+    {
+        "id": "3f73221af720ea53",
+        "type": "tab",
+        "label": "WA Forecast",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9b37197c57f31216",
+        "type": "cronplus",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "cronWAForecast",
+                "topic": "wa-forecast",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "14 0,3,6,9,12,15,18,21 * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 280,
+        "y": 240,
+        "wires": [
+            [
+                "3f0de05484619258",
+                "4ed7a15508549d70",
+                "862b03615eeaee4e"
+            ]
+        ]
+    },
+    {
+        "id": "13932704051c97da",
+        "type": "comment",
+        "z": "3f73221af720ea53",
+        "name": "Stunde: 0,3,6,9,12,15,18,21",
+        "info": "",
+        "x": 340,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "3f0de05484619258",
+        "type": "mqtt out",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "topic": "cron/forecast_data/wb",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 640,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "4ed7a15508549d70",
+        "type": "ui_text",
+        "z": "3f73221af720ea53",
+        "group": "1f94dc0cd60b6d46",
+        "order": 7,
+        "width": 0,
+        "height": 0,
+        "name": "text cron/forecast_data/wa",
+        "label": "cron/forecast_data/wa",
+        "format": "{{msg.cronplus.status.nextDateTZ}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 660,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "862b03615eeaee4e",
+        "type": "function",
+        "z": "3f73221af720ea53",
+        "name": "msg.method",
+        "func": "let home_lon = global.get('home_lon');\nlet home_lat = global.get('home_lat');\n\nmsg.payload = \"Token\";\nmsg.headers = {\"X-RapidAPI-Key\": \"9029a422ebmsh0513a0d589737d7p12702cjsn83ef54c81645\", \"X-RapidAPI-Host\": \"weatherapi-com.p.rapidapi.com\"};\nmsg.url = \"https://weatherapi-com.p.rapidapi.com/forecast.json?q=\" + home_lon + \",\" + home_lat + \"\";\nmsg.method = \"GET\";\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 340,
+        "wires": [
+            [
+                "a65871d8beccdce7"
+            ]
+        ]
+    },
+    {
+        "id": "77c752633dc06737",
+        "type": "debug",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "a0aba6ac36449a3d",
+        "type": "inject",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 500,
+        "y": 400,
+        "wires": [
+            [
+                "862b03615eeaee4e"
+            ]
+        ]
+    },
+    {
+        "id": "a65871d8beccdce7",
+        "type": "http request",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 870,
+        "y": 340,
+        "wires": [
+            [
+                "77c752633dc06737",
+                "f5f0fd80eb6d4592",
+                "94dc6edf24d6373f",
+                "b75680d017321a9b"
+            ]
+        ]
+    },
+    {
+        "id": "f92a9fa320f5baa8",
+        "type": "comment",
+        "z": "3f73221af720ea53",
+        "name": "Request",
+        "info": "",
+        "x": 860,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "63b5c7fccb1ed714",
+        "type": "comment",
+        "z": "3f73221af720ea53",
+        "name": "Method",
+        "info": "",
+        "x": 650,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "f5f0fd80eb6d4592",
+        "type": "debug",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.forecast.forecastday[0].hour[0].time",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "94dc6edf24d6373f",
+        "type": "debug",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.forecast.forecastday[0].hour[1].time",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 980,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "b75680d017321a9b",
+        "type": "debug",
+        "z": "3f73221af720ea53",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload.forecast.forecastday[0].hour[23].time",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "5ec2f1929eef959a",
+        "type": "comment",
+        "z": "3f73221af720ea53",
+        "name": "RapidAPI",
+        "info": "",
+        "x": 640,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1f94dc0cd60b6d46",
+        "type": "ui_group",
+        "name": "Forecast",
+        "tab": "cb4132b94e48ff2c",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "cb4132b94e48ff2c",
+        "type": "ui_tab",
+        "name": "Cronjobs",
+        "icon": "fa-clock-o",
+        "order": 8,
+        "disabled": false,
+        "hidden": false
+    }
+]

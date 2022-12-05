@@ -1,0 +1,204 @@
+[
+    {
+        "id": "5790cdc8bcaea24e",
+        "type": "tab",
+        "label": "Time",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "fe14e6cf546baf1c",
+        "type": "inject",
+        "z": "5790cdc8bcaea24e",
+        "name": "1 Minute",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "minute",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 380,
+        "y": 400,
+        "wires": [
+            [
+                "72a028beb145d59f",
+                "5588164fe967468b"
+            ]
+        ]
+    },
+    {
+        "id": "72a028beb145d59f",
+        "type": "debug",
+        "z": "5790cdc8bcaea24e",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "6fcd0c5687864aac",
+        "type": "ui_gauge",
+        "z": "5790cdc8bcaea24e",
+        "name": "timer",
+        "group": "12b21ddaf27bd62f",
+        "order": 12,
+        "width": "6",
+        "height": "4",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "9",
+        "colors": [
+            "#00b500",
+            "#d1ec04",
+            "#f16f04"
+        ],
+        "seg1": "5",
+        "seg2": "7",
+        "className": "",
+        "x": 810,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "5588164fe967468b",
+        "type": "function",
+        "z": "5790cdc8bcaea24e",
+        "name": "",
+        "func": "// GET VARIABLEN\nlet minute = global.get('minute') || 0;\n\n// FUNKTION\n//fctDate();\nif(minute < 9) {\n    minute = minute  + 1;\n} else {\n    minute = 0;\n}\n\n// SET VARIABLEN\nglobal.set('minute', minute);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = minute;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 400,
+        "wires": [
+            [
+                "821cce3674eda77f",
+                "6fcd0c5687864aac"
+            ]
+        ]
+    },
+    {
+        "id": "821cce3674eda77f",
+        "type": "debug",
+        "z": "5790cdc8bcaea24e",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "893e6a78511243dd",
+        "type": "function",
+        "z": "5790cdc8bcaea24e",
+        "name": "new Date",
+        "func": "// GET VARIABLEN\nlet fct = flow.get('fct') || 0;\nfct = 'Sat Sep 17 2022 18:13:15 GMT+0200 (Mitteleuropäische Sommerzeit)';\n// FUNKTION\nfunction fctDate(fct) {\n    const date = new Date(fct);\n    \n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    let h = date.getHours();\n    h = ((h < 10) ? \"0\" + h : h);\n    \n    let min = date.getMinutes();\n    min = ((min < 10) ? \"0\" + min : min);\n    \n    let s = date.getSeconds();\n    s = ((s < 10) ? \"0\" + s : s);\n    \n    fct = `${d}.${mon}.${y} ${h}:${min}:${s}`;\n    return fct;\n}\n\n// SET VARIABLEN\nflow.set('fct', fct);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = fct;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 566.8958129882812,
+        "y": 545.888916015625,
+        "wires": [
+            [
+                "c58c564a6ecf99c3"
+            ]
+        ]
+    },
+    {
+        "id": "fd5ca78667ea6178",
+        "type": "inject",
+        "z": "5790cdc8bcaea24e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 560,
+        "wires": [
+            [
+                "893e6a78511243dd"
+            ]
+        ]
+    },
+    {
+        "id": "c58c564a6ecf99c3",
+        "type": "debug",
+        "z": "5790cdc8bcaea24e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 770,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "12b21ddaf27bd62f",
+        "type": "ui_group",
+        "name": "Timer 10 Minuten",
+        "tab": "e4f90b8f6f089017",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "e4f90b8f6f089017",
+        "type": "ui_tab",
+        "name": "Time",
+        "icon": "fa-clock-o",
+        "order": 18,
+        "disabled": false,
+        "hidden": false
+    }
+]

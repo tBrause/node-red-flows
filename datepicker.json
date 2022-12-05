@@ -1,0 +1,199 @@
+[
+    {
+        "id": "58922ec04b12f464",
+        "type": "tab",
+        "label": "datepicker",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "efabd99b0cd769a0",
+        "type": "function",
+        "z": "58922ec04b12f464",
+        "name": "time1",
+        "func": "// GET VARIABLEN\nlet now = flow.get('now') || 0;\n\n// FUNKTION\nnow = msg.payload;\n\n//new Date();\n\n//const date = new Date().toISOString();\n\n//toISOString()\n//toLocaleString()\n\n\nlet d = date.getDate(msg.payload);\nd = ((d < 10) ? \"0\" + d : d);\n\nlet mon = date.getMonth() + 1;\nmon = ((mon < 10) ? \"0\" + mon : mon);\n\nconst y = date.getFullYear();\n\nlet h = date.getHours(msg.payload);\nh = ((h < 10) ? \"0\" + h : h);\n\nlet min = date.getMinutes();\nmin = ((min < 10) ? \"0\" + min : min);\n\nlet s = date.getSeconds();\ns = ((s < 10) ? \"0\" + s : s);\n\nnow = `${d}.${mon}.${y} ${h}:${min}`;\n\n// SET VARIABLEN\nflow.set('now', now);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = date;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 340,
+        "wires": [
+            [
+                "c558b4e8e6b604db"
+            ]
+        ]
+    },
+    {
+        "id": "c558b4e8e6b604db",
+        "type": "debug",
+        "z": "58922ec04b12f464",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 830,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "884f07ef28136669",
+        "type": "inject",
+        "z": "58922ec04b12f464",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 480,
+        "y": 340,
+        "wires": [
+            [
+                "efabd99b0cd769a0"
+            ]
+        ]
+    },
+    {
+        "id": "6d2d1e96fc0c2b9d",
+        "type": "ui_date_picker",
+        "z": "58922ec04b12f464",
+        "name": "datepicker",
+        "label": "",
+        "group": "4345da5d2dd2dc78",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 530,
+        "y": 260,
+        "wires": [
+            [
+                "94397f78ca6e1dd4"
+            ]
+        ]
+    },
+    {
+        "id": "d164358a7960e79f",
+        "type": "inject",
+        "z": "58922ec04b12f464",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 260,
+        "wires": [
+            [
+                "6d2d1e96fc0c2b9d"
+            ]
+        ]
+    },
+    {
+        "id": "d2afaf06d0a1cba5",
+        "type": "debug",
+        "z": "58922ec04b12f464",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "534c5d85be271538",
+        "type": "ui_text",
+        "z": "58922ec04b12f464",
+        "group": "4345da5d2dd2dc78",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "date picker text",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1140,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "94397f78ca6e1dd4",
+        "type": "function",
+        "z": "58922ec04b12f464",
+        "name": "time1",
+        "func": "// GET VARIABLEN\nlet now = flow.get('now') || 0;\n\n// FUNKTION\nnow = msg.payload;\n\n//new Date();\n// const date = new Date().toISOString();\nconst date = new Date(now);\n\n//toISOString()\n//toLocaleString()\n\n\nlet d = date.getDate(msg.payload);\nd = ((d < 10) ? \"0\" + d : d);\n\nlet mon = date.getMonth() + 1;\nmon = ((mon < 10) ? \"0\" + mon : mon);\n\nconst y = date.getFullYear();\n\nlet h = date.getHours(msg.payload);\nh = ((h < 10) ? \"0\" + h : h);\n\nlet min = date.getMinutes();\nmin = ((min < 10) ? \"0\" + min : min);\n\nlet s = date.getSeconds();\ns = ((s < 10) ? \"0\" + s : s);\n\nnow = `${y}-${mon}-${d} ${h}:${min}:${s}`;\n\n// SET VARIABLEN\nflow.set('now', now);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = now;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800.8958129882812,
+        "y": 276.8888854980469,
+        "wires": [
+            [
+                "534c5d85be271538",
+                "d2afaf06d0a1cba5"
+            ]
+        ]
+    },
+    {
+        "id": "4345da5d2dd2dc78",
+        "type": "ui_group",
+        "name": "Datepicker",
+        "tab": "e4f90b8f6f089017",
+        "order": 8,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e4f90b8f6f089017",
+        "type": "ui_tab",
+        "name": "Time",
+        "icon": "fa-clock-o",
+        "order": 18,
+        "disabled": false,
+        "hidden": false
+    }
+]

@@ -1,0 +1,791 @@
+[
+    {
+        "id": "b6a2ad0c72d43d34",
+        "type": "tab",
+        "label": "OW Forecast",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4e472399c84eb734",
+        "type": "http request",
+        "z": "b6a2ad0c72d43d34",
+        "name": "lat=13.4580&lon=52.5105",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "api.openweathermap.org/data/2.5/forecast?lat=13.4580&lon=52.5105&exclude=hourly&appid=b162164351c05deadf7a675ec65987be&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 430,
+        "y": 340,
+        "wires": [
+            [
+                "3dafa779826dd8fe",
+                "bb290b5ee3592f5c",
+                "ee1fc2b141ab884a"
+            ]
+        ]
+    },
+    {
+        "id": "635e862dae957563",
+        "type": "ui_text",
+        "z": "b6a2ad0c72d43d34",
+        "group": "c3da97eba3f6cdd7",
+        "order": 1,
+        "width": 6,
+        "height": 10,
+        "name": "Content",
+        "label": "{{msg.payload}}",
+        "format": "",
+        "layout": "row-left",
+        "className": "",
+        "x": 2000,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "411e01d0402d759d",
+        "type": "function",
+        "z": "b6a2ad0c72d43d34",
+        "name": "setForecast",
+        "func": "// GET VARIABLEN\nlet forecast = flow.get('forecast') || {};\nlet limit = 8;\n\n// FUNKTION\nforecast = `{`;\n\nfor(let i=0; i < msg.payload.list.length && i <= limit; i++) {\n    \n    forecast = `${forecast}\n    \"${i}\": \n    [\n        \"${msg.payload.list[i].dt_txt}\", \n        \"${msg.payload.list[i].main.temp}\",\n        \"${msg.payload.list[i].main.humidity}\"\n    ]`;\n    \n    if(i < limit) {\n        forecast = `${forecast},`;\n    }\n}\n\nforecast = `${forecast}\n}`;\n\n// SET VARIABLEN\nflow.set('forecast', forecast);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = forecast;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 660,
+        "wires": [
+            [
+                "0f145398465fbeff"
+            ]
+        ]
+    },
+    {
+        "id": "0f145398465fbeff",
+        "type": "json",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 970,
+        "y": 800,
+        "wires": [
+            [
+                "7f12f9751820fc18"
+            ]
+        ]
+    },
+    {
+        "id": "7f12f9751820fc18",
+        "type": "file",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "filename": "data/forecast",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 1150,
+        "y": 800,
+        "wires": [
+            [
+                "8c8d12e1484a9899"
+            ]
+        ]
+    },
+    {
+        "id": "8c8d12e1484a9899",
+        "type": "file in",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "filename": "data/forecast",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1350,
+        "y": 800,
+        "wires": [
+            [
+                "7081bdd21d4e2688"
+            ]
+        ]
+    },
+    {
+        "id": "7081bdd21d4e2688",
+        "type": "json",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 1630,
+        "y": 800,
+        "wires": [
+            [
+                "b07c238e2ab822b5"
+            ]
+        ]
+    },
+    {
+        "id": "b07c238e2ab822b5",
+        "type": "function",
+        "z": "b6a2ad0c72d43d34",
+        "name": "getForecast",
+        "func": "// GET VARIABLEN\nlet forecastView = '';\n\n// FUNKTION\nfor (const [key, value] of Object.entries(msg.payload)) {\n  forecastView = forecastView + convert_date(value[0]) + `<br>`;\n  forecastView = forecastView + `<i class=\"fa fa-thermometer-half\" aria-hidden=\"true\"></i> ` + value[1] + `°C | `;\n  forecastView = forecastView + value[2] + `%<br><br>`;\n}\n\nfunction convert_date(intdate) {\n    const date = new Date(intdate);\n\n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    let h = date.getHours();\n    h = ((h < 10) ? \"0\" + h : h);\n    \n    let min = date.getMinutes();\n    min = ((min < 10) ? \"0\" + min : min);\n    \n    let s = date.getSeconds();\n    s = ((s < 10) ? \"0\" + s : s);\n    \n    now = `${h}:${min} ${d}.${mon}.${y}`;\n    \n    return now;\n}\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = forecastView;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1810,
+        "y": 800,
+        "wires": [
+            [
+                "635e862dae957563"
+            ]
+        ]
+    },
+    {
+        "id": "74f6545892d334a5",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "READ",
+        "info": "",
+        "x": 1330,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "a9ffd70c32dc89fd",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "Request",
+        "info": "",
+        "x": 380,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "f60f5d4e84747f17",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "WRITE",
+        "info": "",
+        "x": 1130,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "5347dc66353cddb2",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "GET",
+        "info": "",
+        "x": 1790,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "eb14b07b4a23d75b",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "SET",
+        "info": "",
+        "x": 1310,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "797c6b2734b6ca81",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "View",
+        "info": "",
+        "x": 1990,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "5379b371332862fa",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "Convert",
+        "info": "",
+        "x": 970,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "31f851579da3fddd",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "Convert",
+        "info": "",
+        "x": 1630,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "c8bf171f2d45336a",
+        "type": "inject",
+        "z": "b6a2ad0c72d43d34",
+        "name": "Init",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 990,
+        "y": 680,
+        "wires": [
+            [
+                "8c8d12e1484a9899"
+            ]
+        ]
+    },
+    {
+        "id": "c15d6621306f7b4f",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "INIT",
+        "info": "",
+        "x": 970,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "bb290b5ee3592f5c",
+        "type": "function",
+        "z": "b6a2ad0c72d43d34",
+        "name": "INSERT INTO `api_data_forecast` ...",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_description`, `sky_clouds`, `air_pressure`, `probability_of_precipitation`, `wind_speed`, `wind_direction_deg`) VALUES ('2', '\" + msg.payload.list[1].dt_txt + \"', '\" + msg.payload.list[1].main.temp + \"', '\" + msg.payload.list[1].main.humidity + \"', '\" + msg.payload.list[1].weather[0].description + \"','\" + msg.payload.list[1].clouds.all + \"', '\" + msg.payload.list[1].main.pressure + \"', '\" + msg.payload.list[1].pop + \"', '\" + msg.payload.list[1].wind.speed + \"', '\" + msg.payload.list[1].wind.deg + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO api_data_forecast';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 320,
+        "wires": [
+            [
+                "4713dc648b8bdf83",
+                "5ab90645f8abedf0"
+            ]
+        ]
+    },
+    {
+        "id": "4713dc648b8bdf83",
+        "type": "debug",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1040,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "5ab90645f8abedf0",
+        "type": "mysql",
+        "z": "b6a2ad0c72d43d34",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1050,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d1d5627fbd1bf7e8",
+        "type": "cronplus",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "cronOWForecast",
+                "topic": "ow-forecast",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "12 0,3,6,9,12,15,18,21 * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 180,
+        "y": 340,
+        "wires": [
+            [
+                "ffad4279e5111809",
+                "4e472399c84eb734",
+                "05e14fb454358505"
+            ]
+        ]
+    },
+    {
+        "id": "ffad4279e5111809",
+        "type": "mqtt out",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "topic": "cron/forecast_data/ow",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 420,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "e2990b6f0c512cf5",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "3. Stunde",
+        "info": "",
+        "x": 640,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "82ea8f3a6fdcce62",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "Stunde: 0,3,6,9,12,15,18,21",
+        "info": "",
+        "x": 120,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "ffaed8b75bf85a5a",
+        "type": "mysql",
+        "z": "b6a2ad0c72d43d34",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1050,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "89de4893ed67db82",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "6. Stunde",
+        "info": "",
+        "x": 640,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "3dafa779826dd8fe",
+        "type": "debug",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "70d5b1504f8dbdb1",
+        "type": "http request",
+        "z": "b6a2ad0c72d43d34",
+        "name": "Berlin",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "api.openweathermap.org/data/2.5/forecast?lat={{{topic.lat}}}&lon={{{topic.lon}}}&exclude=hourly&appid=b162164351c05deadf7a675ec65987be&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 1050,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1f1fccdc29c6c415",
+        "type": "debug",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1061.2291259765625,
+        "y": 384.8888854980469,
+        "wires": []
+    },
+    {
+        "id": "150ed1c96a6b574f",
+        "type": "inject",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "api.openweathermap.org/data/2.5/forecast?lat=13.4580&lon=52.5105&exclude=hourly&appid=b162164351c05deadf7a675ec65987be&units=metric",
+        "payloadType": "str",
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "4e472399c84eb734"
+            ]
+        ]
+    },
+    {
+        "id": "ee1fc2b141ab884a",
+        "type": "function",
+        "z": "b6a2ad0c72d43d34",
+        "name": "INSERT INTO `api_data_forecast` ...",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_description`, `sky_clouds`, `air_pressure`, `probability_of_precipitation`, `wind_speed`, `wind_direction_deg`) VALUES ('2', '\" + msg.payload.list[2].dt_txt + \"', '\" + msg.payload.list[2].main.temp + \"', '\" + msg.payload.list[2].main.humidity + \"', '\" + msg.payload.list[2].weather[0].description + \"','\" + msg.payload.list[2].clouds.all + \"', '\" + msg.payload.list[2].main.pressure + \"', '\" + msg.payload.list[2].pop + \"', '\" + msg.payload.list[2].wind.speed + \"', '\" + msg.payload.list[2].wind.deg + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO api_data_forecast';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 730,
+        "y": 420,
+        "wires": [
+            [
+                "1f1fccdc29c6c415",
+                "ffaed8b75bf85a5a"
+            ]
+        ]
+    },
+    {
+        "id": "96d604375ff8af9c",
+        "type": "inject",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "api.openweathermap.org/data/2.5/forecast?lat=13.4580&lon=52.5105&exclude=hourly&appid=b162164351c05deadf7a675ec65987be&units=metric",
+        "payloadType": "str",
+        "x": 170,
+        "y": 560,
+        "wires": [
+            [
+                "f039f410bdbb1b8a"
+            ]
+        ]
+    },
+    {
+        "id": "59d2e4be1733a522",
+        "type": "mysql",
+        "z": "b6a2ad0c72d43d34",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 670,
+        "y": 560,
+        "wires": [
+            [
+                "354f0e7e999b8a74"
+            ]
+        ]
+    },
+    {
+        "id": "f039f410bdbb1b8a",
+        "type": "function",
+        "z": "b6a2ad0c72d43d34",
+        "name": "SELECT `api_data_forecast` ...",
+        "func": "msg.topic = \"SELECT * FROM `api_data_forecast` WHERE `api_id` = 2\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 560,
+        "wires": [
+            [
+                "59d2e4be1733a522"
+            ]
+        ]
+    },
+    {
+        "id": "354f0e7e999b8a74",
+        "type": "debug",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "05e14fb454358505",
+        "type": "ui_text",
+        "z": "b6a2ad0c72d43d34",
+        "group": "1f94dc0cd60b6d46",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "text cron/forecast_data/ow",
+        "label": "cron/forecast_data/ow",
+        "format": "{{msg.cronplus.status.nextDateTZ}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 440,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "58924adca05e55da",
+        "type": "http request",
+        "z": "b6a2ad0c72d43d34",
+        "name": "lat=13.4580&lon=52.5105",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=13.4580&lon=52.5105&appid=b162164351c05deadf7a675ec65987be&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 390,
+        "y": 980,
+        "wires": [
+            [
+                "4bdab55ec08df45a"
+            ]
+        ]
+    },
+    {
+        "id": "83c4161e4ae8f746",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "Request",
+        "info": "",
+        "x": 340,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "a0a2523c52f7ac8c",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "https://openweathermap.org/api/hourly-forecast",
+        "info": "",
+        "x": 460,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "f4f1b7dd9c9d0cb3",
+        "type": "comment",
+        "z": "b6a2ad0c72d43d34",
+        "name": "https://openweathermap.org/forecast5",
+        "info": "",
+        "x": 430,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "42b1fc3e5532a3b8",
+        "type": "inject",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 980,
+        "wires": [
+            [
+                "58924adca05e55da"
+            ]
+        ]
+    },
+    {
+        "id": "4bdab55ec08df45a",
+        "type": "debug",
+        "z": "b6a2ad0c72d43d34",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "c3da97eba3f6cdd7",
+        "type": "ui_group",
+        "name": "openweather.org",
+        "tab": "fd4b7bc6be096b7c",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "919f4e44dec380e0",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "raumklima",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1f94dc0cd60b6d46",
+        "type": "ui_group",
+        "name": "Forecast",
+        "tab": "cb4132b94e48ff2c",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "fd4b7bc6be096b7c",
+        "type": "ui_tab",
+        "name": "Forecast",
+        "icon": "fa-sun-o",
+        "order": 12,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "cb4132b94e48ff2c",
+        "type": "ui_tab",
+        "name": "Cronjobs",
+        "icon": "fa-clock-o",
+        "order": 8,
+        "disabled": false,
+        "hidden": false
+    }
+]

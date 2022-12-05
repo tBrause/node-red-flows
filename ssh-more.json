@@ -1,0 +1,828 @@
+[
+    {
+        "id": "7cb59b2960a193b9",
+        "type": "tab",
+        "label": "ssh WLAN",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d0b0a5aa745ff5f0",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo iwconfig",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 520,
+        "y": 220,
+        "wires": [
+            [
+                "6e169b816f9649b1",
+                "f6cf14bfdf23e79e",
+                "d9277784c62dabf3",
+                "480bc7d3d7d38360"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "76b2951b6faa4974",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "5min",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 200,
+        "wires": [
+            [
+                "d0b0a5aa745ff5f0",
+                "778d3643f976ddd0"
+            ]
+        ]
+    },
+    {
+        "id": "6e169b816f9649b1",
+        "type": "function",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "func": "let wlan = msg.payload.search(\"guteswetter\");\nlet result = 0;\nif(wlan >= 0) {\n    result = 1;\n}\n\nmsg.payload = result;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 737.1041870117188,
+        "y": 220.7777099609375,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f6cf14bfdf23e79e",
+        "type": "function",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "func": "const path = msg.payload.split(\"\\n\");\n\nlet level = 0;\nlevel = path[6];\n\nlevel = level.trim();\n\nlet start = level.search(\"Signal level\");\nstart = start + 14;\nlet end = 2;\n//let end = level.length - 14;\n\nlevel = level.substr(start, end);\nlet level_text = `-${level}`;\n\nmsg.payload = parseInt(level);\nmsg.topic = level_text;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 737.1041870117188,
+        "y": 260.7777099609375,
+        "wires": [
+            [
+                "59c0ea0f48799daa"
+            ]
+        ]
+    },
+    {
+        "id": "59c0ea0f48799daa",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 907.1041870117188,
+        "y": 180.7777099609375,
+        "wires": []
+    },
+    {
+        "id": "2f14df800b8d0cd6",
+        "type": "comment",
+        "z": "7cb59b2960a193b9",
+        "name": "WLAN",
+        "info": "",
+        "x": 187.10418701171875,
+        "y": 160.7777099609375,
+        "wires": []
+    },
+    {
+        "id": "d9277784c62dabf3",
+        "type": "function",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "func": "const path = msg.payload.split(\"\\n\");\n\nlet bitrate = 0;\nbitrate = path[2];\n\nbitrate = bitrate.trim();\n\nlet start = bitrate.search(\"Bit Rate\");\nstart = start;\nlet end = 4;\n//let end = level.length - 14;\n\nbitrate = bitrate.substr(9, end);\n\nmsg.payload = parseInt(bitrate);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 737.1041870117188,
+        "y": 300.7777099609375,
+        "wires": [
+            [
+                "e658a0f9b6f5fd80"
+            ]
+        ]
+    },
+    {
+        "id": "e658a0f9b6f5fd80",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "480bc7d3d7d38360",
+        "type": "function",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "func": "const path = msg.payload.split(\"\\n\");\n\nlet bitrate = 0;\nbitrate = path[2];\n/*\nbitrate = bitrate.trim();\n\nlet start = bitrate.search(\"Bit Rate\");\nstart = start;\nlet end = 14;\n//let end = level.length - 14;\n*/\n\n//bitrate = bitrate.substr(9, end);\n\nmsg.payload = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 754.8958129882812,
+        "y": 429.8888854980469,
+        "wires": [
+            [
+                "59f41cf961927afc"
+            ]
+        ]
+    },
+    {
+        "id": "59f41cf961927afc",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a3e717f32990a62f",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 280,
+        "y": 680,
+        "wires": [
+            [
+                "c182fcc14bf2f722"
+            ]
+        ]
+    },
+    {
+        "id": "c182fcc14bf2f722",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo ls -l /var/log/dpkg.log*",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 520,
+        "y": 680,
+        "wires": [
+            [
+                "cd012cfda772cdb1"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "cd012cfda772cdb1",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 810,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "c3caafb0dcfec294",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo less /var/log/dpkg.log.1",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 520,
+        "y": 740,
+        "wires": [
+            [
+                "827d5bb6fe5dbc85"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8c67a3b3d379a4f3",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 780,
+        "wires": [
+            [
+                "c3caafb0dcfec294"
+            ]
+        ]
+    },
+    {
+        "id": "827d5bb6fe5dbc85",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "a9d0066dc2260185",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 900,
+        "wires": [
+            [
+                "9eab52a830803025"
+            ]
+        ]
+    },
+    {
+        "id": "9eab52a830803025",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo apt update",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 440,
+        "y": 900,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "54d8b78c3c6b35c0",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 540,
+        "wires": [
+            [
+                "7f438531472e4668"
+            ]
+        ]
+    },
+    {
+        "id": "7f438531472e4668",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo ls /var/log*",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 460,
+        "y": 560,
+        "wires": [
+            [
+                "5f2fe0eca99f751c"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "5f2fe0eca99f751c",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "dc9dc1ef5ec117d8",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo less /var/log/user.log.1*",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 480,
+        "y": 1040,
+        "wires": [
+            [
+                "04ba9fd91b036e77"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "04ba9fd91b036e77",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "4799413372973e35",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 1040,
+        "wires": [
+            [
+                "dc9dc1ef5ec117d8"
+            ]
+        ]
+    },
+    {
+        "id": "98fb41aa9161bae0",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 1120,
+        "wires": [
+            [
+                "5be62e37d864ffcd"
+            ]
+        ]
+    },
+    {
+        "id": "5be62e37d864ffcd",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo less /var/log/boot.log.1",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 500,
+        "y": 1120,
+        "wires": [
+            [
+                "d0cee11a04ad1644"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "d0cee11a04ad1644",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "8f7247081c7fcfa5",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 1220,
+        "wires": [
+            [
+                "1e4ad9c673d71c1c"
+            ]
+        ]
+    },
+    {
+        "id": "1e4ad9c673d71c1c",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo less /var/log/daemon.log.1",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 510,
+        "y": 1220,
+        "wires": [
+            [
+                "1e43fdcc3e14b5ab"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "1e43fdcc3e14b5ab",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 730,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "4c9230c91b6ee6a1",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 1320,
+        "wires": [
+            [
+                "03a689ba1f938e9f"
+            ]
+        ]
+    },
+    {
+        "id": "03a689ba1f938e9f",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo less /var/log/debug",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 510,
+        "y": 1320,
+        "wires": [
+            [
+                "10ff44aaec572302"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "10ff44aaec572302",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "b22fdeeec016733e",
+        "type": "inject",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 600,
+        "wires": [
+            [
+                "b16fe0cb10d792e5"
+            ]
+        ]
+    },
+    {
+        "id": "b16fe0cb10d792e5",
+        "type": "exec",
+        "z": "7cb59b2960a193b9",
+        "command": "sudo ls /var/log/mysql/",
+        "addpay": "",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 480,
+        "y": 620,
+        "wires": [
+            [
+                "8b66cc94589f2f67"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "8b66cc94589f2f67",
+        "type": "debug",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "778d3643f976ddd0",
+        "type": "mqtt out",
+        "z": "7cb59b2960a193b9",
+        "name": "",
+        "topic": "interval/raspi421/wlan",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 400,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    }
+]

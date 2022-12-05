@@ -1,0 +1,437 @@
+[
+    {
+        "id": "ae83296a545602f0",
+        "type": "tab",
+        "label": "WB Forecast",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "49c2061c3168a071",
+        "type": "function",
+        "z": "ae83296a545602f0",
+        "name": "msg.method",
+        "func": "msg.payload = \"Token\";\nmsg.headers = {\"X-RapidAPI-Key\": \"9029a422ebmsh0513a0d589737d7p12702cjsn83ef54c81645\", \"X-RapidAPI-Host\": \"weatherbit-v1-mashape.p.rapidapi.com\"};\nmsg.url = \"https://weatherbit-v1-mashape.p.rapidapi.com/forecast/hourly?lon=13.4105&lat=52.5244&hours=48\";\nmsg.method = \"GET\";\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 260,
+        "wires": [
+            [
+                "185c15b17a957edf"
+            ]
+        ]
+    },
+    {
+        "id": "4f5691fe8ad5e9c6",
+        "type": "debug",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "470c2b470e9db4d2",
+        "type": "inject",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 220,
+        "wires": [
+            [
+                "49c2061c3168a071"
+            ]
+        ]
+    },
+    {
+        "id": "185c15b17a957edf",
+        "type": "http request",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 630,
+        "y": 260,
+        "wires": [
+            [
+                "4f5691fe8ad5e9c6",
+                "9b11afd59e4b05c4",
+                "bd10af24b7bc892c",
+                "c9baf1e1e698c51d",
+                "91e9a4b1f0d0631d",
+                "de619e243015aa7a"
+            ]
+        ]
+    },
+    {
+        "id": "9b11afd59e4b05c4",
+        "type": "function",
+        "z": "ae83296a545602f0",
+        "name": "INSERT INTO `api_data_forecast` ...",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_description`, `sky_clouds`, `air_pressure`, `probability_of_precipitation`, `wind_speed`, `wind_direction_deg`, `wind_direction_name`) VALUES ('3', '\" + msg.payload.data[0].timestamp_local + \"', '\" + msg.payload.data [0].temp + \"', '\" + msg.payload.data [0].rh + \"', '\" + msg.payload.data [0].weather.description + \"', '\" + msg.payload.data [0].clouds + \"', '\" + msg.payload.data [0].pres + \"', '\" + msg.payload.data [0].precip + \"', '\" + msg.payload.data [0].wind_spd + \"', '\" + msg.payload.data [0].wind_dir + \"', '\" + msg.payload.data [0].wind_cdir + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO api_data_forecast';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 260,
+        "wires": [
+            [
+                "dc5302f12011c8bf"
+            ]
+        ]
+    },
+    {
+        "id": "dc5302f12011c8bf",
+        "type": "debug",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "bd10af24b7bc892c",
+        "type": "function",
+        "z": "ae83296a545602f0",
+        "name": "INSERT INTO `api_data_forecast` ...",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_description`, `sky_clouds`, `air_pressure`, `probability_of_precipitation`, `wind_speed`, `wind_direction_deg`, `wind_direction_name`) VALUES ('3', '\" + msg.payload.data[1].timestamp_local + \"', '\" + msg.payload.data [1].temp + \"', '\" + msg.payload.data [1].rh + \"', '\" + msg.payload.data [1].weather.description + \"', '\" + msg.payload.data [1].clouds + \"', '\" + msg.payload.data [1].pres + \"', '\" + msg.payload.data [1].precip + \"', '\" + msg.payload.data [1].wind_spd + \"', '\" + msg.payload.data [1].wind_dir + \"', '\" + msg.payload.data [1].wind_cdir + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO api_data_forecast';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 320,
+        "wires": [
+            [
+                "a484c4838378abde"
+            ]
+        ]
+    },
+    {
+        "id": "a484c4838378abde",
+        "type": "debug",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "c9baf1e1e698c51d",
+        "type": "function",
+        "z": "ae83296a545602f0",
+        "name": "INSERT INTO `api_data_forecast` ...",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_description`, `sky_clouds`, `air_pressure`, `probability_of_precipitation`, `wind_speed`, `wind_direction_deg`, `wind_direction_name`) VALUES ('3', '\" + msg.payload.data[2].timestamp_local + \"', '\" + msg.payload.data [2].temp + \"', '\" + msg.payload.data [2].rh + \"', '\" + msg.payload.data [2].weather.description + \"', '\" + msg.payload.data [2].clouds + \"', '\" + msg.payload.data [2].pres + \"', '\" + msg.payload.data [2].precip + \"', '\" + msg.payload.data [2].wind_spd + \"', '\" + msg.payload.data [2].wind_dir + \"', '\" + msg.payload.data [2].wind_cdir + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO api_data_forecast';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 380,
+        "wires": [
+            [
+                "628cdf1ac1aa1f2f"
+            ]
+        ]
+    },
+    {
+        "id": "628cdf1ac1aa1f2f",
+        "type": "debug",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "topic",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b0d77ed5542de934",
+        "type": "cronplus",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "cronWBForecast",
+                "topic": "wb-forecast",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "13 0,3,6,9,12,15,18,21 * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 120,
+        "y": 260,
+        "wires": [
+            [
+                "49c2061c3168a071",
+                "3fe1057a27298120",
+                "58454b2cbd92f170"
+            ]
+        ]
+    },
+    {
+        "id": "15c985fbcb50f08c",
+        "type": "mysql",
+        "z": "ae83296a545602f0",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1290,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3fe1057a27298120",
+        "type": "mqtt out",
+        "z": "ae83296a545602f0",
+        "name": "",
+        "topic": "cron/forecast_data/wb",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 480,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "58454b2cbd92f170",
+        "type": "ui_text",
+        "z": "ae83296a545602f0",
+        "group": "1f94dc0cd60b6d46",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "text cron/forecast_data/wb",
+        "label": "cron/forecast_data/wb",
+        "format": "{{msg.cronplus.status.nextDateTZ}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 500,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "91e9a4b1f0d0631d",
+        "type": "function",
+        "z": "ae83296a545602f0",
+        "name": "INSERT INTO `api_data_forecast` ...",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_description`, `sky_clouds`, `air_pressure`, `probability_of_precipitation`, `wind_speed`, `wind_direction_deg`, `wind_direction_name`) VALUES ('3', '\" + msg.payload.data[2].timestamp_local + \"', '\" + msg.payload.data [2].temp + \"', '\" + msg.payload.data [2].rh + \"', '\" + msg.payload.data [2].weather.description + \"', '\" + msg.payload.data [2].clouds + \"', '\" + msg.payload.data [2].pres + \"', '\" + msg.payload.data [2].precip + \"', '\" + msg.payload.data [2].wind_spd + \"', '\" + msg.payload.data [2].wind_dir + \"', '\" + msg.payload.data [2].wind_cdir + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO api_data_forecast';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 500,
+        "wires": [
+            [
+                "15c985fbcb50f08c"
+            ]
+        ]
+    },
+    {
+        "id": "e01ee066b9986337",
+        "type": "comment",
+        "z": "ae83296a545602f0",
+        "name": "3 Stunden",
+        "info": "",
+        "x": 820,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "4caa60968d25233a",
+        "type": "comment",
+        "z": "ae83296a545602f0",
+        "name": "6 Stunden",
+        "info": "",
+        "x": 820,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "de619e243015aa7a",
+        "type": "function",
+        "z": "ae83296a545602f0",
+        "name": "INSERT INTO `api_data_forecast` ...",
+        "func": "let sql = \"INSERT INTO `api_data_forecast` (`api_id`, `forecast_time`, `temperatur`, `humidity`, `sky_description`, `sky_clouds`, `air_pressure`, `probability_of_precipitation`, `wind_speed`, `wind_direction_deg`, `wind_direction_name`) VALUES ('3', '\" + msg.payload.data[5].timestamp_local + \"', '\" + msg.payload.data [5].temp + \"', '\" + msg.payload.data [5].rh + \"', '\" + msg.payload.data [5].weather.description + \"', '\" + msg.payload.data [5].clouds + \"', '\" + msg.payload.data [5].pres + \"', '\" + msg.payload.data [5].precip + \"', '\" + msg.payload.data [5].wind_spd + \"', '\" + msg.payload.data [5].wind_dir + \"', '\" + msg.payload.data [5].wind_cdir + \"')\";\nmsg.topic = sql;\nmsg.payload = 'INSERT INTO api_data_forecast';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 620,
+        "wires": [
+            [
+                "adf50d6b307d04dd"
+            ]
+        ]
+    },
+    {
+        "id": "adf50d6b307d04dd",
+        "type": "mysql",
+        "z": "ae83296a545602f0",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1290,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c70df6e5db23b886",
+        "type": "comment",
+        "z": "ae83296a545602f0",
+        "name": "Stunde: 0,3,6,9,12,15,18,21",
+        "info": "",
+        "x": 180,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "301ab170130c44b4",
+        "type": "comment",
+        "z": "ae83296a545602f0",
+        "name": "RapidAPI",
+        "info": "",
+        "x": 440,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "919f4e44dec380e0",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "raumklima",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1f94dc0cd60b6d46",
+        "type": "ui_group",
+        "name": "Forecast",
+        "tab": "cb4132b94e48ff2c",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "cb4132b94e48ff2c",
+        "type": "ui_tab",
+        "name": "Cronjobs",
+        "icon": "fa-clock-o",
+        "order": 8,
+        "disabled": false,
+        "hidden": false
+    }
+]

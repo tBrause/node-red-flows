@@ -1,0 +1,1555 @@
+[
+    {
+        "id": "ddd61edf8d8f5ce2",
+        "type": "tab",
+        "label": "openweather",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "48277557288d1e06",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "sys_sunrise",
+        "func": "// GET VARIABLEN\nlet sys_sunrise = flow.get('sys_sunrise') || 0;\n\n// FUNKTION\nsys_sunrise = msg.payload.sunrise;\n\n// SET VARIABLEN\nflow.set('sys_sunrise', sys_sunrise);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = sys_sunrise;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 1060,
+        "wires": [
+            [
+                "3d10a8765ff07baa"
+            ]
+        ]
+    },
+    {
+        "id": "328a9c2fcddea503",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "sys_sunset",
+        "func": "// GET VARIABLEN\nlet sys_sunset = flow.get('sys_sunset') || 0;\n\n// FUNKTION\nsys_sunset = msg.payload.sunset;\n\n// SET VARIABLEN\nflow.set('sys_sunset', sys_sunset);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = sys_sunset;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 1100,
+        "wires": [
+            [
+                "f00a189b5d453d95"
+            ]
+        ]
+    },
+    {
+        "id": "5a649fac7fc948a7",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "sys",
+        "func": "// GET VARIABLEN\nlet sys = flow.get('sys') || 0;\n\n// FUNKTION\nsys = msg.payload.sys;\n\n// SET VARIABLEN\nflow.set('sys', sys);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = sys;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 1020,
+        "wires": [
+            [
+                "48277557288d1e06",
+                "328a9c2fcddea503"
+            ]
+        ]
+    },
+    {
+        "id": "db8196e2a58b061e",
+        "type": "http request",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "Berlin",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.openweathermap.org/data/2.5/weather?q=Berlin&appid=b162164351c05deadf7a675ec65987be&units=metric",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "x": 430,
+        "y": 800,
+        "wires": [
+            [
+                "7d78cb4c0a316aa1",
+                "c3bbe56e3fd921aa",
+                "812ee0d99229456e",
+                "5a649fac7fc948a7",
+                "88ded4fad3d03744",
+                "2ceb1d162a097e37",
+                "dd580be66d435bae",
+                "85c23d534094847b",
+                "a38fa710235fcae4",
+                "80f50b86215efe48"
+            ]
+        ]
+    },
+    {
+        "id": "812ee0d99229456e",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main",
+        "func": "// GET VARIABLEN\nlet main = flow.get('main') || 0;\n\n// FUNKTION\nmain = msg.payload.main;\n\n// SET VARIABLEN\nflow.set('main', main);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = main;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 300,
+        "wires": [
+            [
+                "6fbc41ee6e77ea24",
+                "56ab50748b931c65",
+                "35eb680bd848b9b7"
+            ]
+        ]
+    },
+    {
+        "id": "7d78cb4c0a316aa1",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "weather",
+        "func": "// GET VARIABLEN\nlet weather = flow.get('weather') || 0;\n\n// FUNKTION\nweather = msg.payload.weather[0];\n\n// SET VARIABLEN\nflow.set('weather', weather);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = weather;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 620,
+        "wires": [
+            [
+                "aad5ed3437dd4c01",
+                "1e6515eec4565317",
+                "83dd913f9d5c4ff9"
+            ]
+        ]
+    },
+    {
+        "id": "c3bbe56e3fd921aa",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "wind",
+        "func": "// GET VARIABLEN\nlet wind = flow.get('wind') || 0;\n\n// FUNKTION\nwind = msg.payload.wind;\n\n// SET VARIABLEN\nflow.set('wind', wind);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = wind;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 740,
+        "wires": [
+            [
+                "6d6970e4b24398db",
+                "b279c1e1495b48da"
+            ]
+        ]
+    },
+    {
+        "id": "2ceb1d162a097e37",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "clouds_all",
+        "func": "// GET VARIABLEN\nlet clouds_all = flow.get('clouds_all') || 0;\n\n// FUNKTION\nclouds_all = msg.payload.clouds.all;\n\n// SET VARIABLEN\nflow.set('clouds_all', clouds_all);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = clouds_all;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 860,
+        "wires": [
+            [
+                "cf40801eef0ad09e"
+            ]
+        ]
+    },
+    {
+        "id": "88ded4fad3d03744",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "name",
+        "func": "// GET VARIABLEN\nlet name = flow.get('name') || 0;\n\n// FUNKTION\nname = msg.payload.name;\n\n// SET VARIABLEN\nflow.set('name', name);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = name;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 150,
+        "y": 980,
+        "wires": [
+            [
+                "46e6fbeff51aefe7"
+            ]
+        ]
+    },
+    {
+        "id": "dd580be66d435bae",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "coord",
+        "func": "// GET VARIABLEN\nlet coord = flow.get('coord') || 0;\n\n// FUNKTION\ncoord = msg.payload.coord;\n\n// SET VARIABLEN\nflow.set('coord', coord);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = coord;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 1180,
+        "wires": [
+            [
+                "2330772a5a5ed9ec",
+                "297b168802b4a64a"
+            ]
+        ]
+    },
+    {
+        "id": "dfce64c56dfea1a6",
+        "type": "inject",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "60 Minuten",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "v": "",
+                "vt": "date"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 60,
+        "y": 440,
+        "wires": [
+            [
+                "db8196e2a58b061e",
+                "3a20fb083ad87a15"
+            ]
+        ]
+    },
+    {
+        "id": "6fbc41ee6e77ea24",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_humidity",
+        "func": "// GET VARIABLEN\nlet main_humidity = flow.get('main_humidity') || 0;\n\n// FUNKTION\nmain_humidity = msg.payload.humidity;\n\n// SET VARIABLEN\nflow.set('main_humidity', main_humidity);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = main_humidity;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 340,
+        "wires": [
+            [
+                "37615a29a00329cb",
+                "c88a615761a0bce4",
+                "a3cf79842064010e",
+                "088ee34d32558547",
+                "00a21318c440bff0"
+            ]
+        ]
+    },
+    {
+        "id": "56ab50748b931c65",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_temp",
+        "func": "// GET VARIABLEN\nlet main_temp = flow.get('main_temp') || 0;\n\n// FUNKTION\nmain_temp = msg.payload.temp;\n\n// SET VARIABLEN\nflow.set('main_temp', main_temp);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = main_temp;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 220,
+        "wires": [
+            [
+                "7338a014aa5d7a30",
+                "fba9e3d4b7a32d7c",
+                "66f5f701db52321e",
+                "9d8316e460c6d437",
+                "4a7792fb4da6f19c"
+            ]
+        ]
+    },
+    {
+        "id": "35eb680bd848b9b7",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_pressure",
+        "func": "// GET VARIABLEN\nlet main_pressure = flow.get('main_pressure') || 0;\n\n// FUNKTION\nmain_pressure = msg.payload.pressure;\n\n// SET VARIABLEN\nflow.set('main_pressure', main_pressure);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = main_pressure;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 380,
+        "wires": [
+            [
+                "67dd73ff2b4ac974",
+                "70373dc283a85ab4"
+            ]
+        ]
+    },
+    {
+        "id": "aad5ed3437dd4c01",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "weather_main",
+        "func": "// GET VARIABLEN\nlet weather_main = flow.get('weather_main') || 0;\n\n// FUNKTION\nweather_main = msg.payload.main;\n\n// SET VARIABLEN\nflow.set('weather_main', weather_main);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = weather_main;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 800,
+        "y": 580,
+        "wires": [
+            [
+                "9d8173ee77d5baae"
+            ]
+        ]
+    },
+    {
+        "id": "1e6515eec4565317",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "weather_description",
+        "func": "// GET VARIABLEN\nlet weather_main = flow.get('weather_description') || 0;\n\n// FUNKTION\nweather_description = msg.payload.description;\n\n// SET VARIABLEN\nflow.set('weather_description', weather_description);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = weather_description;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "83dd913f9d5c4ff9",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "weather_icon",
+        "func": "// GET VARIABLEN\nlet weather_icon = flow.get('weather_icon') || 0;\n\n// FUNKTION\nweather_icon = msg.payload.icon;\n\n// SET VARIABLEN\nflow.set('weather_icon', weather_icon);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = weather_icon;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "6d6970e4b24398db",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "wind_speed",
+        "func": "// GET VARIABLEN\nlet wind_speed = flow.get('wind_speed') || 0;\n\n// FUNKTION\nwind_speed = msg.payload.speed;\n\n// SET VARIABLEN\nflow.set('wind_speed', wind_speed);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = wind_speed;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 790,
+        "y": 740,
+        "wires": [
+            [
+                "da1598ab397e9daf",
+                "1f4e9f5ca177a4fb"
+            ]
+        ]
+    },
+    {
+        "id": "b279c1e1495b48da",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "wind_deg",
+        "func": "// GET VARIABLEN\nlet wind_speed = flow.get('wind_deg') || 0;\n\n// FUNKTION\nwind_deg = msg.payload.deg;\n\n// SET VARIABLEN\nflow.set('wind_deg', wind_deg);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = wind_deg;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 780,
+        "wires": [
+            [
+                "5502778a80f45e82"
+            ]
+        ]
+    },
+    {
+        "id": "2330772a5a5ed9ec",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "coord_lon",
+        "func": "// GET VARIABLEN\nlet coord_lon = flow.get('coord_lon') || 0;\n\n// FUNKTION\ncoord_lon = msg.payload.lon;\n\n// SET VARIABLEN\nflow.set('coord_lon', coord_lon);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = coord_lon;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 1160,
+        "wires": [
+            [
+                "9fedbbcfbb6eecaa"
+            ]
+        ]
+    },
+    {
+        "id": "297b168802b4a64a",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "coord_lat",
+        "func": "// GET VARIABLEN\nlet coord_lat = flow.get('coord_lat') || 0;\n\n// FUNKTION\ncoord_lat = msg.payload.lat;\n\n// SET VARIABLEN\nflow.set('coord_lat', coord_lat);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = coord_lat;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 1200,
+        "wires": [
+            [
+                "37b7fce468461e6f"
+            ]
+        ]
+    },
+    {
+        "id": "9d8173ee77d5baae",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "e70d0760bcc08d3a",
+        "order": 4,
+        "width": "6",
+        "height": "1",
+        "name": "weather_main_text",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 1210,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "7338a014aa5d7a30",
+        "type": "ui_gauge",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_temp_gauge",
+        "group": "28f7dbdd3547c09e",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{msg.payload}} °C",
+        "min": "-20",
+        "max": "50",
+        "colors": [
+            "#2a50ea",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "13",
+        "seg2": "30",
+        "className": "",
+        "x": 1210,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "37615a29a00329cb",
+        "type": "ui_gauge",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_humidity_gauge",
+        "group": "f697df7ca894247c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{msg.payload}} %",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#4b6470",
+            "#00b400",
+            "#e7770d"
+        ],
+        "seg1": "40",
+        "seg2": "80",
+        "className": "",
+        "x": 1220,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "c88a615761a0bce4",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_humidity_chart",
+        "group": "f697df7ca894247c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1220,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "da1598ab397e9daf",
+        "type": "ui_gauge",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "wind_speed_gauge",
+        "group": "7177e1bbce7a0779",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{msg.payload}} m/s",
+        "min": 0,
+        "max": "20",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "8",
+        "seg2": "12",
+        "className": "",
+        "x": 1210,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "89f5412216e665f9",
+        "type": "ui_gauge",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "clouds_all_gauge",
+        "group": "e70d0760bcc08d3a",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "% freier Himmel",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b500"
+        ],
+        "seg1": "10",
+        "seg2": "50",
+        "className": "",
+        "x": 1210,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "1f4e9f5ca177a4fb",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "wind_speed_chart",
+        "group": "7177e1bbce7a0779",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1210,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fba9e3d4b7a32d7c",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_temp_chart",
+        "group": "28f7dbdd3547c09e",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "40",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1210,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0798ce47f6aa3654",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "clouds_all_chart",
+        "group": "e70d0760bcc08d3a",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1200,
+        "y": 860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5502778a80f45e82",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "7177e1bbce7a0779",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "name": "wind_deg",
+        "label": "",
+        "format": "{{msg.payload}} °",
+        "layout": "row-center",
+        "className": "",
+        "x": 1180,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "46e6fbeff51aefe7",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "f136cc64cd7db2e1",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "name",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "city_name",
+        "x": 310,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "9fedbbcfbb6eecaa",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "f136cc64cd7db2e1",
+        "order": 6,
+        "width": "6",
+        "height": "1",
+        "name": "coord_lon",
+        "label": "",
+        "format": "lon : {{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 1180,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "37b7fce468461e6f",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "f136cc64cd7db2e1",
+        "order": 5,
+        "width": "6",
+        "height": "1",
+        "name": "coord_lat",
+        "label": "",
+        "format": "lat : {{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 1180,
+        "y": 1200,
+        "wires": []
+    },
+    {
+        "id": "091892704ce5b1c9",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "f136cc64cd7db2e1",
+        "order": 3,
+        "width": "6",
+        "height": "1",
+        "name": "sys_sunrise",
+        "label": "",
+        "format": "sunrise : {{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 1190,
+        "y": 1060,
+        "wires": []
+    },
+    {
+        "id": "cfffe8fe3f29a9b9",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "f136cc64cd7db2e1",
+        "order": 4,
+        "width": "6",
+        "height": "1",
+        "name": "sys_sunset",
+        "label": "",
+        "format": "sunset : {{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 1190,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "3a20fb083ad87a15",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "new Date",
+        "func": "// GET VARIABLEN\nlet now = flow.get('now') || 0;\n\n// FUNKTION\nconst date = new Date();\n\nlet d = date.getDate();\nd = ((d < 10) ? \"0\" + d : d);\n\nlet mon = date.getMonth() + 1;\nmon = ((mon < 10) ? \"0\" + mon : mon);\n\nconst y = date.getFullYear();\n\nlet h = date.getHours();\nh = ((h < 10) ? \"0\" + h : h);\n\nlet min = date.getMinutes();\nmin = ((min < 10) ? \"0\" + min : min);\n\nlet s = date.getSeconds();\ns = ((s < 10) ? \"0\" + s : s);\n\nnow = `${d}.${mon}.${y} ${h}:${min}:${s}`;\n\n// SET VARIABLEN\nflow.set('now', now);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = now;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 140,
+        "y": 1040,
+        "wires": [
+            [
+                "848ffdb9bb12c7d4"
+            ]
+        ]
+    },
+    {
+        "id": "848ffdb9bb12c7d4",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "f136cc64cd7db2e1",
+        "order": 2,
+        "width": "6",
+        "height": "1",
+        "name": "DateTime",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "x": 320,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "cf40801eef0ad09e",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "func": "// GET VARIABLEN\nlet change = flow.get('change') || 0;\n\n// FUNKTION\nchange = 100 - Number(msg.payload); \n\n// SET VARIABLEN\nflow.set('change', change);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = change;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 780,
+        "y": 860,
+        "wires": [
+            [
+                "c43783c9fee726ef",
+                "89f5412216e665f9",
+                "0798ce47f6aa3654"
+            ]
+        ]
+    },
+    {
+        "id": "c43783c9fee726ef",
+        "type": "debug",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1190,
+        "y": 940,
+        "wires": []
+    },
+    {
+        "id": "67dd73ff2b4ac974",
+        "type": "ui_gauge",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_pressure_gauge",
+        "group": "325d7857240a0cc6",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "{{value}} hPa",
+        "min": "990",
+        "max": "1030",
+        "colors": [
+            "#ca3838",
+            "#e6e600",
+            "#00b400"
+        ],
+        "seg1": "1000",
+        "seg2": "1010",
+        "className": "",
+        "x": 1220,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "70373dc283a85ab4",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_pressure",
+        "group": "325d7857240a0cc6",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "990",
+        "ymax": "1030",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1200,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3d10a8765ff07baa",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "new DateSunrise",
+        "func": "// GET VARIABLEN\nlet sunrise = flow.get('sunrise') || 0;\n\n// FUNKTION\nconst date = new Date(msg.payload * 1000);\n\nlet d = date.getDate();\nd = ((d < 10) ? \"0\" + d : d);\n\nlet mon = date.getMonth() + 1;\nmon = ((mon < 10) ? \"0\" + mon : mon);\n\nconst y = date.getFullYear();\n\nlet h = date.getHours();\nh = ((h < 10) ? \"0\" + h : h);\n\nlet min = date.getMinutes();\nmin = ((min < 10) ? \"0\" + min : min);\n\nlet s = date.getSeconds();\ns = ((s < 10) ? \"0\" + s : s);\n\nsunrise = `${d}.${mon}.${y} ${h}:${min}:${s}`;\n\n// SET VARIABLEN\nflow.set('sunrise', sunrise);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = sunrise;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 1060,
+        "wires": [
+            [
+                "091892704ce5b1c9"
+            ]
+        ]
+    },
+    {
+        "id": "f00a189b5d453d95",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "new DateSunset",
+        "func": "// GET VARIABLEN\nlet sunset = flow.get('sunset') || 0;\n\n// FUNKTION\nconst date = new Date(msg.payload * 1000);\n\nlet d = date.getDate();\nd = ((d < 10) ? \"0\" + d : d);\n\nlet mon = date.getMonth() + 1;\nmon = ((mon < 10) ? \"0\" + mon : mon);\n\nconst y = date.getFullYear();\n\nlet h = date.getHours();\nh = ((h < 10) ? \"0\" + h : h);\n\nlet min = date.getMinutes();\nmin = ((min < 10) ? \"0\" + min : min);\n\nlet s = date.getSeconds();\ns = ((s < 10) ? \"0\" + s : s);\n\nsunset = `${d}.${mon}.${y} ${h}:${min}:${s}`;\n\n// SET VARIABLEN\nflow.set('sunset', sunset);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = sunset;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 1100,
+        "wires": [
+            [
+                "cfffe8fe3f29a9b9"
+            ]
+        ]
+    },
+    {
+        "id": "85c23d534094847b",
+        "type": "debug",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "c6ba937f717b1144",
+        "type": "comment",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "View : Weather",
+        "info": "",
+        "x": 1200,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "66f5f701db52321e",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_temp_chart",
+        "group": "4421ea5d2f4fae8e",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "40",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1570,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a3cf79842064010e",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "main_humidity_chart",
+        "group": "4421ea5d2f4fae8e",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1580,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a2647b70a0149068",
+        "type": "comment",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "View : wetterchecker",
+        "info": "",
+        "x": 1570,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "9d8316e460c6d437",
+        "type": "ui_gauge",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "temperature_gauge",
+        "group": "4421ea5d2f4fae8e",
+        "order": 1,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "-20",
+        "max": "50",
+        "colors": [
+            "#3f62ee",
+            "#00b500",
+            "#ca3838"
+        ],
+        "seg1": "13",
+        "seg2": "30",
+        "className": "",
+        "x": 1570,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "088ee34d32558547",
+        "type": "ui_gauge",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "humidity_gauge",
+        "group": "4421ea5d2f4fae8e",
+        "order": 4,
+        "width": "1",
+        "height": "1",
+        "gtype": "gage",
+        "title": "",
+        "label": "",
+        "format": "",
+        "min": "0",
+        "max": "100",
+        "colors": [
+            "#3f62ee",
+            "#00b500",
+            "#d78c09"
+        ],
+        "seg1": "40",
+        "seg2": "60",
+        "className": "",
+        "x": 1560,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "00a21318c440bff0",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "4421ea5d2f4fae8e",
+        "order": 5,
+        "width": "5",
+        "height": "1",
+        "name": "main_humidity_text",
+        "label": "Luftfeuchtigkeit",
+        "format": "{{msg.payload}} %",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1550,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "4a7792fb4da6f19c",
+        "type": "ui_text",
+        "z": "ddd61edf8d8f5ce2",
+        "group": "4421ea5d2f4fae8e",
+        "order": 2,
+        "width": "5",
+        "height": "1",
+        "name": "main_temp_text",
+        "label": "Temperatur",
+        "format": "{{msg.payload}} °C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1530,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "132d945df2db4526",
+        "type": "comment",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "View : wetterchecker",
+        "info": "",
+        "x": 1550,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a38fa710235fcae4",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "msg.payload.rain[\"1h\"]",
+        "func": "// GET VARIABLEN\nlet rain = flow.get('rain') || 0;\n\n// FUNKTION\nif (typeof variable === 'undefined') {\n    rain = 0;\n} else {\n    rain = msg.payload.rain[\"1h\"];\n}\n\n// SET VARIABLEN\nflow.set('rain', rain);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = rain;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 1260,
+        "wires": [
+            [
+                "c4a190953547dfd6",
+                "43811e6b4a782861"
+            ]
+        ]
+    },
+    {
+        "id": "c4a190953547dfd6",
+        "type": "debug",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "43811e6b4a782861",
+        "type": "ui_chart",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "wind_speed_chart",
+        "group": "3bc48255336fdd1e",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "6",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 910,
+        "y": 1300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "04a444f92205b34a",
+        "type": "cronplus",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "Europe/Berlin",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "cronOW",
+                "topic": "ow",
+                "payloadType": "date",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "2 */1 * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 120,
+        "y": 800,
+        "wires": [
+            [
+                "d6cbec0653b8a1ef",
+                "0116abc6b06d2474"
+            ]
+        ]
+    },
+    {
+        "id": "d6cbec0653b8a1ef",
+        "type": "function",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "ow_cron",
+        "func": "// GET VARIABLEN\nlet ow_cron = flow.get('ow_cron') || 0;\n\n// FUNKTION\now_cron = msg.payload;\n\n// SET VARIABLEN\nflow.set('ow_cron', ow_cron);\n\n// VARIABLEN UEBERGEBEN\nmsg.payload = ow_cron;\nmsg.topic = msg.payload;\n\n// RETURN\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 800,
+        "wires": [
+            [
+                "db8196e2a58b061e",
+                "3a20fb083ad87a15"
+            ]
+        ]
+    },
+    {
+        "id": "80f50b86215efe48",
+        "type": "debug",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "ceb27ffd3dafc8e0",
+        "type": "inject",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 340,
+        "y": 500,
+        "wires": [
+            [
+                "db8196e2a58b061e"
+            ]
+        ]
+    },
+    {
+        "id": "0116abc6b06d2474",
+        "type": "debug",
+        "z": "ddd61edf8d8f5ce2",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 270,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "e70d0760bcc08d3a",
+        "type": "ui_group",
+        "name": "Himmel",
+        "tab": "5052abf10d1685d7",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "28f7dbdd3547c09e",
+        "type": "ui_group",
+        "name": "Temperatur",
+        "tab": "5052abf10d1685d7",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f697df7ca894247c",
+        "type": "ui_group",
+        "name": "Lüftfeuchtigkeit",
+        "tab": "5052abf10d1685d7",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7177e1bbce7a0779",
+        "type": "ui_group",
+        "name": "Wind",
+        "tab": "5052abf10d1685d7",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f136cc64cd7db2e1",
+        "type": "ui_group",
+        "name": "info",
+        "tab": "5052abf10d1685d7",
+        "order": 7,
+        "disp": false,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "325d7857240a0cc6",
+        "type": "ui_group",
+        "name": "Luftdruck",
+        "tab": "5052abf10d1685d7",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4421ea5d2f4fae8e",
+        "type": "ui_group",
+        "name": "openweather.org",
+        "tab": "d1dcec789102c3a3",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "3bc48255336fdd1e",
+        "type": "ui_group",
+        "name": "Niederschlag",
+        "tab": "5052abf10d1685d7",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5052abf10d1685d7",
+        "type": "ui_tab",
+        "name": "Weather",
+        "icon": "fa-sun-o",
+        "order": 11,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "d1dcec789102c3a3",
+        "type": "ui_tab",
+        "name": "Hidden",
+        "icon": "dashboard",
+        "order": 17,
+        "disabled": true,
+        "hidden": true
+    }
+]
