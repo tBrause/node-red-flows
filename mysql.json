@@ -1,0 +1,301 @@
+[
+    {
+        "id": "c68bf3193e71610e",
+        "type": "tab",
+        "label": "mysql",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4aea6f5063f935e3",
+        "type": "mysql",
+        "z": "c68bf3193e71610e",
+        "mydb": "179277ed4e2f8253",
+        "name": "",
+        "x": 790,
+        "y": 280,
+        "wires": [
+            [
+                "740e867aed664593",
+                "210e2760d418e2aa"
+            ]
+        ]
+    },
+    {
+        "id": "740e867aed664593",
+        "type": "debug",
+        "z": "c68bf3193e71610e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 950,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "5d07d43f8bf6e395",
+        "type": "inject",
+        "z": "c68bf3193e71610e",
+        "name": "SELECT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "SELECT",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 200,
+        "wires": [
+            [
+                "0f67a0a184c3efca"
+            ]
+        ]
+    },
+    {
+        "id": "0f67a0a184c3efca",
+        "type": "function",
+        "z": "c68bf3193e71610e",
+        "name": "getSQL Query",
+        "func": "msg.topic = \"SELECT * FROM `nodered`\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 200,
+        "wires": [
+            [
+                "4aea6f5063f935e3"
+            ]
+        ]
+    },
+    {
+        "id": "6cbe7d40d558f27a",
+        "type": "inject",
+        "z": "c68bf3193e71610e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 360,
+        "y": 280,
+        "wires": [
+            [
+                "165e492e4664f317"
+            ]
+        ]
+    },
+    {
+        "id": "165e492e4664f317",
+        "type": "function",
+        "z": "c68bf3193e71610e",
+        "name": "insertSQL Query",
+        "func": "msg.topic = \"INSERT INTO `nodered` (`offerer`) VALUES ('ws')\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 280,
+        "wires": [
+            [
+                "4aea6f5063f935e3"
+            ]
+        ]
+    },
+    {
+        "id": "bb53c9e95dcd0246",
+        "type": "function",
+        "z": "c68bf3193e71610e",
+        "name": "updateSQL Query",
+        "func": "msg.topic = \"UPDATE `nodered` SET `offerer` = 'wa' WHERE id = '3'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 360,
+        "wires": [
+            [
+                "4aea6f5063f935e3"
+            ]
+        ]
+    },
+    {
+        "id": "12c48c8e29fed744",
+        "type": "inject",
+        "z": "c68bf3193e71610e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 360,
+        "wires": [
+            [
+                "bb53c9e95dcd0246"
+            ]
+        ]
+    },
+    {
+        "id": "210e2760d418e2aa",
+        "type": "function",
+        "z": "c68bf3193e71610e",
+        "name": "",
+        "func": "if (msg.payload.warningStatus === undefined) {\n    msg.payload = `SELECT ...`;\n} else {\n    msg.payload = msg.payload.warningStatus;\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 960,
+        "y": 280,
+        "wires": [
+            [
+                "de016b4fde2d751b"
+            ]
+        ]
+    },
+    {
+        "id": "de016b4fde2d751b",
+        "type": "debug",
+        "z": "c68bf3193e71610e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "9c2b111e4fafb943",
+        "type": "function",
+        "z": "c68bf3193e71610e",
+        "name": "deleteSQL Query",
+        "func": "msg.topic = \"DELETE FROM `msg` WHERE `updated` <= DATE_SUB(NOW(), INTERVAL 30 DAY)\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 440,
+        "wires": [
+            [
+                "8a514be95750c6d4"
+            ]
+        ]
+    },
+    {
+        "id": "68def883313c706b",
+        "type": "inject",
+        "z": "c68bf3193e71610e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 440,
+        "wires": [
+            [
+                "9c2b111e4fafb943"
+            ]
+        ]
+    },
+    {
+        "id": "8a514be95750c6d4",
+        "type": "mysql",
+        "z": "c68bf3193e71610e",
+        "mydb": "3440106554ffc41c",
+        "name": "",
+        "x": 790,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "179277ed4e2f8253",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "test",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "3440106554ffc41c",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "mqtt",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]

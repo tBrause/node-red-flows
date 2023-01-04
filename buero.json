@@ -1,0 +1,2415 @@
+[
+    {
+        "id": "3ff4bac1cafa9052",
+        "type": "subflow",
+        "name": "h:m:s / d.m.Y",
+        "info": "",
+        "category": "",
+        "in": [
+            {
+                "x": 40,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "34f8c42e95e32ef0"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 340,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "34f8c42e95e32ef0",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [],
+        "meta": {},
+        "color": "#DDAA99"
+    },
+    {
+        "id": "34f8c42e95e32ef0",
+        "type": "function",
+        "z": "3ff4bac1cafa9052",
+        "name": "h:m:s / d.m.Y",
+        "func": "let date_value = msg.payload;\n\n// FUNKTION\nfunction fctDate(date_value) {\n    const date = new Date(date_value);\n    \n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    let h = date.getHours();\n    h = ((h < 10) ? \"0\" + h : h);\n    \n    let min = date.getMinutes();\n    min = ((min < 10) ? \"0\" + min : min);\n    \n    let s = date.getSeconds();\n    s = ((s < 10) ? \"0\" + s : s);\n    \n    output = `${h}:${min}:${s} ${d}.${mon}.${y}`;\n    return output;\n}\n\nmsg.payload = fctDate(date_value);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 190,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5a3a9fd242ddfbf1",
+        "type": "tab",
+        "label": "Büro",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d4be13239c90261b",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "room_id",
+        "func": "// FLOW GET\nlet room_id = flow.get('room_id');\n\n// MSG\nmsg.payload = room_id;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 120,
+        "wires": [
+            [
+                "446a6f4ea0ca522d"
+            ]
+        ]
+    },
+    {
+        "id": "446a6f4ea0ca522d",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "SELECT * FROM `room_settings`",
+        "func": "msg.topic = \"SELECT * FROM `room_settings` WHERE `id` = '\" + msg.payload + \"'\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 120,
+        "wires": [
+            [
+                "e4963e57f2945c78"
+            ]
+        ]
+    },
+    {
+        "id": "e4963e57f2945c78",
+        "type": "mysql",
+        "z": "5a3a9fd242ddfbf1",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1150,
+        "y": 120,
+        "wires": [
+            [
+                "86ba38d6a71db901"
+            ]
+        ]
+    },
+    {
+        "id": "86ba38d6a71db901",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Flow VARS room_settings",
+        "func": "// FLOW GET && SET\nlet room_id = flow.get('room_id') || 1;\n\nlet min_temp = flow.get('min_temp') || 19;\nlet opt_temp = flow.get('opt_temp') || 21;\nlet max_temp = flow.get('max_temp') || 24;\n\nlet min_humidity = flow.get('min_humidity') || 40;\nlet max_humidity = flow.get('max_humidity') || 70;\n\nlet is_good_co2 = flow.get('is_good_co2') || 900;\nlet is_bad_co2 = flow.get('is_bad_co2') || 1400;\nlet is_alert_co2 = flow.get('is_alert_co2') || 1600;\n\nlet db_good = flow.get('db_good') || 40;\nlet db_bad = flow.get('db_bad') || 70;\n\n// SET\nmin_temp = msg.payload[0].min_temp;\nopt_temp = msg.payload[0].opt_temp;\nmax_temp = msg.payload[0].max_temp;\n\nmin_humidity = msg.payload[0].min_humidity;\nmax_humidity = msg.payload[0].max_humidity;\n\nis_good_co2 = msg.payload[0].is_good_co2;\nis_bad_co2 = msg.payload[0].is_bad_co2;\nis_alert_co2 = msg.payload[0].is_alert_co2;\n\ndb_good = msg.payload[0].db_good;\ndb_bad = msg.payload[0].db_bad;\n\n// FLOW SET\nflow.set('room_id', room_id);\n\nflow.set('min_temp', min_temp);\nflow.set('opt_temp', opt_temp);\nflow.set('max_temp', max_temp);\n\nflow.set('min_humidity', min_humidity);\nflow.set('max_humidity', max_humidity);\n\nflow.set('is_good_co2', is_good_co2);\nflow.set('is_bad_co2', is_bad_co2);\nflow.set('is_alert_co2', is_alert_co2);\n\nflow.set('db_good', db_good);\nflow.set('db_bad', db_bad);\n\n// MSG\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1390,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e09e2a08b558b672",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "sensor_id",
+        "func": "// FLOW GET\nlet sensor_id = flow.get('sensor_id');\n\n// MSG\nmsg.payload = sensor_id;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 180,
+        "wires": [
+            [
+                "950ee85f787c071d"
+            ]
+        ]
+    },
+    {
+        "id": "950ee85f787c071d",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "SELECT * FROM `sensor_data`",
+        "func": "msg.topic = \"SELECT * FROM `sensor_data` WHERE `sensor_id` = '\" + msg.payload + \"' ORDER BY `sensor_data`.`updated` DESC LIMIT 0, 1\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 180,
+        "wires": [
+            [
+                "555784115ca742dd"
+            ]
+        ]
+    },
+    {
+        "id": "555784115ca742dd",
+        "type": "mysql",
+        "z": "5a3a9fd242ddfbf1",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1150,
+        "y": 180,
+        "wires": [
+            [
+                "9637c500c5f7b3e5"
+            ]
+        ]
+    },
+    {
+        "id": "9637c500c5f7b3e5",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Flow VARS sensor_data",
+        "func": "// FLOW GET && SET\nlet sensor_id = flow.get('sensor_id') || 3;\n\nlet temp = flow.get('temp') || 0;\nlet humi = flow.get('humi') || 0;\nlet co = flow.get('co') || 0;\nlet db = flow.get('db') || 0;\nlet battery = flow.get('battery') || 100;\n\nlet updated = flow.get('updated') || 0;\n\n// SET\ntemp = msg.payload[0].temp;\nhumi = msg.payload[0].humi;\nco = msg.payload[0].co;\ndb = msg.payload[0].db;\nbattery = msg.payload[0].battery;\nupdated = msg.payload[0].updated;\n\n// FLOW SET\nflow.set('sensor_id', sensor_id);\n\nflow.set('temp', temp);\nflow.set('humi', humi);\nflow.set('co', co);\nflow.set('db', db);\nflow.set('battery', battery);\n\nflow.set('updated', updated);\n\n// MSG\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1390,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ae2fbe6052e3b61a",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "SET Room & Sensor ID",
+        "func": "// FLOW GET\nlet room_id = flow.get('room_id') || 1;\nlet sensor_id = flow.get('sensor_id') || 3;\n\n// SET\nroom_id = 1;\nsensor_id = 3;\n\n// FLOW SET\nflow.set('room_id', room_id);\nflow.set('sensor_id', sensor_id);\n\n// MSG\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 140,
+        "wires": [
+            [
+                "d4be13239c90261b",
+                "e09e2a08b558b672"
+            ]
+        ]
+    },
+    {
+        "id": "cad36c5318b84ac7",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Settings Temperatur",
+        "info": "",
+        "x": 370,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "fd7ac4722a7671db",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "min_temp",
+        "func": "// FLOAT GET\nlet min_temp = flow.get('min_temp');\n\n// MSG\nmsg.payload = min_temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 400,
+        "wires": [
+            [
+                "aece63ac56058813",
+                "fe7f3f70f47aacd5"
+            ]
+        ]
+    },
+    {
+        "id": "37d17a09efc54d2f",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "max_temp",
+        "func": "// FLOAT GET\nlet max_temp = flow.get('max_temp') || 24;\n\n// MSG\nmsg.payload = max_temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 640,
+        "wires": [
+            [
+                "efbbc99fdea6958f",
+                "868606088e1255c6"
+            ]
+        ]
+    },
+    {
+        "id": "aece63ac56058813",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "Mindestens",
+        "tooltip": "",
+        "group": "b1a371df80305874",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "50",
+        "step": 1,
+        "className": "",
+        "x": 630,
+        "y": 400,
+        "wires": [
+            [
+                "5761d04b1c98ca7e",
+                "fe7f3f70f47aacd5"
+            ]
+        ]
+    },
+    {
+        "id": "efbbc99fdea6958f",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "Maximal",
+        "tooltip": "",
+        "group": "b1a371df80305874",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMax",
+        "topicType": "str",
+        "format": "{{value}}°C",
+        "min": 0,
+        "max": "50",
+        "step": 1,
+        "className": "",
+        "x": 620,
+        "y": 640,
+        "wires": [
+            [
+                "43c5e50d8b2808f0",
+                "868606088e1255c6"
+            ]
+        ]
+    },
+    {
+        "id": "fe7f3f70f47aacd5",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "tempMin",
+        "func": "msg.topic = `tempMin`;\nmsg = {ui_control:{min:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 460,
+        "wires": [
+            [
+                "efbbc99fdea6958f"
+            ]
+        ]
+    },
+    {
+        "id": "5761d04b1c98ca7e",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet min_temp = flow.get('min_temp');\nlet room_id = flow.get('room_id');\n\n// SET\nmin_temp = msg.payload;\n\n// FLOAT SET\nflow.set('min_temp', min_temp);\n\n// MSG\nmsg.payload = min_temp;\n\nmsg.topic = \"UPDATE `room_settings` SET `min_temp` = '\" + min_temp + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 400,
+        "wires": [
+            [
+                "b7a5288453eeac85",
+                "5bb24a760cda978a",
+                "99d0cd5e2e2485a7",
+                "7363bfcfbc77e748",
+                "1c685dd973e85b0d"
+            ]
+        ]
+    },
+    {
+        "id": "43c5e50d8b2808f0",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet max_temp = flow.get('max_temp');\nlet room_id = flow.get('room_id');\n\n// SET\nmax_temp = msg.payload;\n\n// FLOAT SET\nflow.set('max_temp', max_temp);\n\n// MSG\nmsg.payload = max_temp;\n\nmsg.topic = \"UPDATE `room_settings` SET `max_temp` = '\" + max_temp + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 640,
+        "wires": [
+            [
+                "b7a5288453eeac85",
+                "5bb24a760cda978a",
+                "99d0cd5e2e2485a7",
+                "7363bfcfbc77e748",
+                "1c685dd973e85b0d"
+            ]
+        ]
+    },
+    {
+        "id": "b7a5288453eeac85",
+        "type": "mysql",
+        "z": "5a3a9fd242ddfbf1",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 810,
+        "y": 520,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e86bc02774b0223d",
+        "type": "delay",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "100ms",
+        "pauseType": "delay",
+        "timeout": "100",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 90,
+        "y": 1680,
+        "wires": [
+            [
+                "fd7ac4722a7671db",
+                "37d17a09efc54d2f",
+                "5bb24a760cda978a",
+                "99d0cd5e2e2485a7",
+                "1c685dd973e85b0d",
+                "7363bfcfbc77e748",
+                "e6f620385c1a1a94",
+                "f70be091c862ab9c",
+                "6ec55bc48b588138",
+                "01e26bc58eaaedd2",
+                "5dd2c4248d28c54c",
+                "fd23bbc4a62a3c80",
+                "c9a0efd60bad0599",
+                "1c78b5753a95db93",
+                "e80acbb4cf87b1f8",
+                "102f4aee196a041a",
+                "0d9af59803f554f0",
+                "32fc60f90a2c5ce1",
+                "3fe15d658eb33061",
+                "a93efbb21180a491",
+                "efa75128c2c56c02",
+                "5192eb54ee879b9d",
+                "ecb8d2268338ec44",
+                "cac096fea86d7318",
+                "6f7da3bbc7922e2a",
+                "c46a74cb157c98bc",
+                "c5a5f1114f732acf",
+                "0dd68587f4890c83",
+                "8919139dad5a8768",
+                "c5b7fd1f18a8f8b6",
+                "7eb0f6f32f6ddaed",
+                "afb7c5a9ee2cc665",
+                "64c4f58115b61675",
+                "760529567d150307"
+            ]
+        ]
+    },
+    {
+        "id": "868606088e1255c6",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "tempMax",
+        "func": "msg.topic = `tempMax`;\nmsg = {ui_control:{max:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 580,
+        "wires": [
+            [
+                "aece63ac56058813"
+            ]
+        ]
+    },
+    {
+        "id": "5bb24a760cda978a",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gauge Temp ui_control",
+        "func": "// GLOBAL GET\nlet gauge_toleranz = global.get('gauge_toleranz');\n\n// FLOW GET\nlet temp = flow.get('temp');\n\nlet min_temp = flow.get('min_temp');\nlet opt_temp = flow.get('opt_temp');\nlet max_temp = flow.get('max_temp');\n\n// SET\nlet start = min_temp - gauge_toleranz;\nlet end = max_temp + gauge_toleranz;\n\n// MSG\nmsg.topic = '°C';\nmsg = {ui_control:{min:start, max:end, seg1:min_temp, seg2:max_temp}, topic:`${msg.topic}`};\nmsg.payload = temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 440,
+        "wires": [
+            [
+                "c7379f03d604d386"
+            ]
+        ]
+    },
+    {
+        "id": "c7379f03d604d386",
+        "type": "ui_gauge",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gauge Temp",
+        "group": "b1a371df80305874",
+        "order": 3,
+        "width": "6",
+        "height": "3",
+        "gtype": "gage",
+        "title": "",
+        "label": "°C",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "30",
+        "colors": [
+            "#559cd3",
+            "#00b500",
+            "#e6e600"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1750,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "99d0cd5e2e2485a7",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Temp ui_control",
+        "func": "// GLOBAL GET\nlet gauge_toleranz = global.get('gauge_toleranz');\n\n// FLOW GET\nlet temp = flow.get('temp');\nlet min_temp = flow.get('min_temp');\nlet max_temp = flow.get('max_temp');\n\n// SET\nlet start = min_temp - gauge_toleranz;\nlet end = max_temp + gauge_toleranz;\n\n// MSG\nmsg.topic = 'Aktuel';\nmsg = {ui_control:{ymin:start, ymax:end}, topic:`${msg.topic}`};\nmsg.payload = temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 480,
+        "wires": [
+            [
+                "f2171ef5765c112a"
+            ]
+        ]
+    },
+    {
+        "id": "1c685dd973e85b0d",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Temp max_temp",
+        "func": "// FLOW GET\nlet max_temp = flow.get('max_temp');\n\n// MSG\nmsg.topic = 'max';\nmsg.payload = max_temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 560,
+        "wires": [
+            [
+                "f2171ef5765c112a"
+            ]
+        ]
+    },
+    {
+        "id": "7363bfcfbc77e748",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Temp min_temp",
+        "func": "// FLOW GET\nlet min_temp = flow.get('min_temp');\n\n// MSG\nmsg.topic = 'min';\nmsg.payload = min_temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 520,
+        "wires": [
+            [
+                "f2171ef5765c112a"
+            ]
+        ]
+    },
+    {
+        "id": "edc36ebfbc91132a",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "SET Outdoor",
+        "func": "// FLOW GET\nlet outdoor_id = flow.get('outdoor_id') || 4;\n\n// SET\noutdoor_id = 4;\n\n// FLOW SET\nflow.set('outdoor_id', outdoor_id);\n\n// MSG\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 240,
+        "wires": [
+            [
+                "e1d90736ee6ebc51"
+            ]
+        ]
+    },
+    {
+        "id": "e1d90736ee6ebc51",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "outdoor",
+        "func": "// FLOW GET\nlet outdoor_id = flow.get('outdoor_id');\n\n// MSG\nmsg.payload = outdoor_id;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 240,
+        "wires": [
+            [
+                "90384afc12c15aa9"
+            ]
+        ]
+    },
+    {
+        "id": "90384afc12c15aa9",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "SELECT * FROM `sensor_data`",
+        "func": "msg.topic = \"SELECT * FROM `sensor_data` WHERE `sensor_id` = '\" + msg.payload + \"' ORDER BY `sensor_data`.`updated` DESC LIMIT 0, 1\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 240,
+        "wires": [
+            [
+                "621b972bf9f6587c"
+            ]
+        ]
+    },
+    {
+        "id": "621b972bf9f6587c",
+        "type": "mysql",
+        "z": "5a3a9fd242ddfbf1",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 1150,
+        "y": 240,
+        "wires": [
+            [
+                "4901400c9f7577bc"
+            ]
+        ]
+    },
+    {
+        "id": "4901400c9f7577bc",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Flow VARS sensor_data (Outdoor)",
+        "func": "// FLOW GET && SET\nlet outdoor_temp = flow.get('outdoor_temp') || 0;\nlet outdoor_humi = flow.get('outdoor_humi') || 0;\n\n// SET\noutdoor_temp = msg.payload[0].temp;\noutdoor_humi = msg.payload[0].humi;\n\n// FLOW SET\nflow.set('outdoor_temp', outdoor_temp);\nflow.set('outdoor_humi', outdoor_humi);\n\n// MSG\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1420,
+        "y": 240,
+        "wires": [
+            [
+                "e86bc02774b0223d"
+            ]
+        ]
+    },
+    {
+        "id": "e6f620385c1a1a94",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "outdoor_temp",
+        "func": "// FLOW GET\nlet outdoor_temp = flow.get('outdoor_temp');\n\n// MSG\nmsg.payload = outdoor_temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 680,
+        "wires": [
+            [
+                "eb31d11cb3a6f756"
+            ]
+        ]
+    },
+    {
+        "id": "eb31d11cb3a6f756",
+        "type": "ui_text",
+        "z": "5a3a9fd242ddfbf1",
+        "group": "3badd02204fa4041",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "text Temperatur",
+        "label": "Temperatur",
+        "format": "{{msg.payload}}°C",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1760,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "f70be091c862ab9c",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "temp",
+        "func": "// FLOW GET\nlet temp = flow.get('temp');\n\n// MSG\nmsg.topic = 'Indoor';\nmsg.payload = temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1330,
+        "y": 800,
+        "wires": [
+            [
+                "4ec894f29418ad8b"
+            ]
+        ]
+    },
+    {
+        "id": "6ec55bc48b588138",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "outdoor_temp",
+        "func": "// FLOW GET\nlet outdoor_temp = flow.get('outdoor_temp');\n\n// MSG\nmsg.topic = 'Outdoor';\nmsg.payload = outdoor_temp;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 760,
+        "wires": [
+            [
+                "4ec894f29418ad8b"
+            ]
+        ]
+    },
+    {
+        "id": "0d9af59803f554f0",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "text outdoor_humi",
+        "func": "// FLOW GET\nlet outdoor_humi = flow.get('outdoor_humi');\n\n// MSG\nmsg.payload = outdoor_humi;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 1180,
+        "wires": [
+            [
+                "85dd2aaad860bf64"
+            ]
+        ]
+    },
+    {
+        "id": "85dd2aaad860bf64",
+        "type": "ui_text",
+        "z": "5a3a9fd242ddfbf1",
+        "group": "3badd02204fa4041",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "text humi",
+        "label": "Luftfeuchtigkeit",
+        "format": "{{msg.payload}}%",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1740,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "f2171ef5765c112a",
+        "type": "ui_chart",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Temp",
+        "group": "b1a371df80305874",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#ff7f0e",
+            "#aec7e8",
+            "#ff7f0e",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1750,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5dd2c4248d28c54c",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "min_humidity",
+        "func": "// FLOAT GET\nlet min_humidity = flow.get('min_humidity');\n\n// MSG\nmsg.payload = min_humidity;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 940,
+        "wires": [
+            [
+                "2c1db69d302820f5",
+                "19f3aa07caee735e"
+            ]
+        ]
+    },
+    {
+        "id": "fd23bbc4a62a3c80",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "max_humidity",
+        "func": "// FLOAT GET\nlet max_humidity = flow.get('max_humidity');\n\n// MSG\nmsg.payload = max_humidity;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 1180,
+        "wires": [
+            [
+                "1080251ff89d0775",
+                "49decb6cead24581"
+            ]
+        ]
+    },
+    {
+        "id": "1080251ff89d0775",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "humiMax",
+        "func": "msg.topic = `humiMax`;\nmsg = {ui_control:{max:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 1140,
+        "wires": [
+            [
+                "2c1db69d302820f5"
+            ]
+        ]
+    },
+    {
+        "id": "19f3aa07caee735e",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "humMin",
+        "func": "msg.topic = `humMin`;\nmsg = {ui_control:{min:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 1000,
+        "wires": [
+            [
+                "49decb6cead24581"
+            ]
+        ]
+    },
+    {
+        "id": "2c1db69d302820f5",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "Mindestens",
+        "tooltip": "",
+        "group": "d48606f24897b3a3",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}%",
+        "min": 0,
+        "max": "100",
+        "step": "10",
+        "className": "",
+        "x": 630,
+        "y": 940,
+        "wires": [
+            [
+                "fa7b8c7701a51123",
+                "19f3aa07caee735e"
+            ]
+        ]
+    },
+    {
+        "id": "fa7b8c7701a51123",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet min_humidity = flow.get('min_humidity');\nlet room_id = flow.get('room_id');\n\n// SET\nmin_humidity = msg.payload;\n\n// FLOAT SET\nflow.set('min_humidity', min_humidity);\n\n// MSG\nmsg.payload = min_humidity;\n\nmsg.topic = \"UPDATE `room_settings` SET `min_humidity` = '\" + min_humidity + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 940,
+        "wires": [
+            [
+                "54b0ce2d2a330ffd",
+                "c9a0efd60bad0599",
+                "1c78b5753a95db93",
+                "e80acbb4cf87b1f8",
+                "102f4aee196a041a"
+            ]
+        ]
+    },
+    {
+        "id": "4b1de9d595954344",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet max_humidity = flow.get('max_humidity');\nlet room_id = flow.get('room_id');\n\n// SET\nmax_humidity = msg.payload;\n\n// FLOAT SET\nflow.set('max_humidity', max_humidity);\n\n// MSG\nmsg.max_humidity = max_humidity;\nmsg.topic = \"UPDATE `room_settings` SET `max_humidity` = '\" + max_humidity + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 1180,
+        "wires": [
+            [
+                "54b0ce2d2a330ffd",
+                "c9a0efd60bad0599",
+                "1c78b5753a95db93",
+                "e80acbb4cf87b1f8",
+                "102f4aee196a041a"
+            ]
+        ]
+    },
+    {
+        "id": "49decb6cead24581",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "Maximal",
+        "tooltip": "",
+        "group": "d48606f24897b3a3",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}%",
+        "min": 0,
+        "max": "100",
+        "step": "10",
+        "className": "",
+        "x": 620,
+        "y": 1180,
+        "wires": [
+            [
+                "4b1de9d595954344",
+                "1080251ff89d0775"
+            ]
+        ]
+    },
+    {
+        "id": "54b0ce2d2a330ffd",
+        "type": "mysql",
+        "z": "5a3a9fd242ddfbf1",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 810,
+        "y": 1060,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3fe15d658eb33061",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart humi",
+        "func": "// FLOW GET\nlet humi = flow.get('humi') || 0;\n\n// MSG\nmsg.topic = 'Indoor';\nmsg.payload = humi;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1350,
+        "y": 1300,
+        "wires": [
+            [
+                "2b29b95a23b41471"
+            ]
+        ]
+    },
+    {
+        "id": "a93efbb21180a491",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart outdoor_humi",
+        "func": "// FLOW GET\nlet outdoor_humi = flow.get('outdoor_humi');\n\n// MSG\nmsg.topic = 'Outdoor';\nmsg.payload = outdoor_humi;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 1260,
+        "wires": [
+            [
+                "2b29b95a23b41471"
+            ]
+        ]
+    },
+    {
+        "id": "01e26bc58eaaedd2",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Temp ui_control",
+        "func": "// FLOW GET\nlet temp = flow.get('temp');\nlet outdoor_temp = flow.get('outdoor_temp');\n\n// SET\nlet start = -20;\nlet end = 50;\n\nif(temp > outdoor_temp) {\n    start = Math.round(outdoor_temp - 5);\n    end = Math.round(temp + 1);\n} else {\n    start = Math.round(temp + 5);\n    end = Math.round(outdoor_temp - 1);\n}\n\nstart = 0;\n\n// MSG\nmsg.topic = 'Aktuel';\nmsg = {ui_control:{ymin:start, ymax:end}, topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 720,
+        "wires": [
+            [
+                "4ec894f29418ad8b"
+            ]
+        ]
+    },
+    {
+        "id": "32fc60f90a2c5ce1",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Humi ui_control",
+        "func": "// FLOW GET\nlet humi = flow.get('humi');\n\n// SET\nlet start = 0;\nlet end = 100;\n\n// MSG\nmsg.topic = 'Aktuel';\nmsg = {ui_control:{ymin:start, ymax:end}, topic:`${msg.topic}`};\n//msg.payload = humi;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1220,
+        "wires": [
+            [
+                "2b29b95a23b41471"
+            ]
+        ]
+    },
+    {
+        "id": "c9a0efd60bad0599",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gauge Temp ui_control",
+        "func": "// FLOW GET\nlet humi = flow.get('humi');\n\nlet min_humidity = flow.get('min_humidity');\nlet max_humidity = flow.get('max_humidity');\n\n// SET\nlet start = 0;\nlet end = 100;\n\n// MSG\nmsg.topic = '%';\nmsg = {ui_control:{min:start, max:end, seg1:min_humidity, seg2:max_humidity}, topic:`${msg.topic}`};\nmsg.payload = humi;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 960,
+        "wires": [
+            [
+                "1ee5d8271fa4da7a"
+            ]
+        ]
+    },
+    {
+        "id": "1ee5d8271fa4da7a",
+        "type": "ui_gauge",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gauge Humi",
+        "group": "d48606f24897b3a3",
+        "order": 2,
+        "width": "6",
+        "height": "3",
+        "gtype": "donut",
+        "title": "",
+        "label": "%",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#e6e600",
+            "#00b500",
+            "#e6e600"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1750,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "26978a7d1923aaa0",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Outdoor in Luftfeuchtigkeit",
+        "info": "",
+        "x": 1370,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "1c78b5753a95db93",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Humi ui_control",
+        "func": "// FLOW GET\nlet humi = flow.get('humi');\n\nlet min_humidity = flow.get('min_humidity') || 40;\nlet max_humidity = flow.get('max_humidity') || 70;\n\n// SET\nlet start = 0;\nlet end = 100;\n\n// MSG\nmsg.topic = 'Aktuel';\nmsg = {ui_control:{ymin:start, ymax:end}, topic:`${msg.topic}`};\nmsg.payload = humi;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1000,
+        "wires": [
+            [
+                "b781f6b1454f8cae"
+            ]
+        ]
+    },
+    {
+        "id": "e80acbb4cf87b1f8",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Temp min_temp",
+        "func": "// FLOW GET\nlet min_humidity = flow.get('min_humidity');\n\n// MSG\nmsg.topic = 'min';\nmsg.payload = min_humidity;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1040,
+        "wires": [
+            [
+                "b781f6b1454f8cae"
+            ]
+        ]
+    },
+    {
+        "id": "102f4aee196a041a",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Temp max_temp",
+        "func": "// FLOW GET\nlet max_humidity = flow.get('max_humidity');\n\n// MSG\nmsg.topic = 'max';\nmsg.payload = max_humidity;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1080,
+        "wires": [
+            [
+                "b781f6b1454f8cae"
+            ]
+        ]
+    },
+    {
+        "id": "b781f6b1454f8cae",
+        "type": "ui_chart",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Humi",
+        "group": "d48606f24897b3a3",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#adc5e6",
+            "#ff7f0e",
+            "#ff7f0e",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1750,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d298a17573d37e7b",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Outdoor in Temperatur",
+        "info": "",
+        "x": 1360,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "a0bf958a9a64a68b",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Temperatur",
+        "info": "",
+        "x": 1330,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "a6dab07e9994a948",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "SettingsLuftfeuchtigkeit",
+        "info": "",
+        "x": 380,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "fc23ab1bc27fd83a",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Luftfeuchtigkeit",
+        "info": "",
+        "x": 1340,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "be3a0ac312688e70",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "VIEW: Room (Self)",
+        "info": "",
+        "x": 1770,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "0807b8f9f2d4a4ae",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "VIEW: Room (Self)",
+        "info": "",
+        "x": 1770,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "17adee7f76fdbef3",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "let room_id = flow.get('room_id') || 1; let sensor_id = flow.get('sensor_id') || 3;",
+        "info": "let room_id = flow.get('room_id') || 1;\nlet sensor_id = flow.get('sensor_id') || 3;",
+        "x": 550,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "6f7da3bbc7922e2a",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "is_good_co2",
+        "func": "// FLOAT GET\nlet is_good_co2 = flow.get('is_good_co2');\n\n// MSG\nmsg.payload = is_good_co2;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 1440,
+        "wires": [
+            [
+                "d6105649cc1950c8",
+                "9fb8630e8f292f3d"
+            ]
+        ]
+    },
+    {
+        "id": "c46a74cb157c98bc",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "is_bad_co2",
+        "func": "// FLOAT GET\nlet is_bad_co2 = flow.get('is_bad_co2');\n\n// MSG\nmsg.payload = is_bad_co2;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 1680,
+        "wires": [
+            [
+                "ed849ff640774025",
+                "b51c70a5f95836d7"
+            ]
+        ]
+    },
+    {
+        "id": "ed849ff640774025",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "coMax",
+        "func": "msg.topic = `coMax`;\nmsg = {ui_control:{max:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1640,
+        "wires": [
+            [
+                "d6105649cc1950c8"
+            ]
+        ]
+    },
+    {
+        "id": "9fb8630e8f292f3d",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "coMin",
+        "func": "msg.topic = `coMin`;\nmsg = {ui_control:{min:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1500,
+        "wires": [
+            [
+                "b51c70a5f95836d7"
+            ]
+        ]
+    },
+    {
+        "id": "d6105649cc1950c8",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "Gut bis",
+        "tooltip": "",
+        "group": "b0bc51f819da4e01",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}%",
+        "min": 0,
+        "max": "2200",
+        "step": "100",
+        "className": "",
+        "x": 620,
+        "y": 1440,
+        "wires": [
+            [
+                "03ded0f846f95dc7",
+                "9fb8630e8f292f3d"
+            ]
+        ]
+    },
+    {
+        "id": "03ded0f846f95dc7",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet is_good_co2 = flow.get('is_good_co2');\nlet room_id = flow.get('room_id');\n\n// SET\nis_good_co2 = msg.payload;\n\n// FLOAT SET\nflow.set('is_good_co2', is_good_co2);\n\n// MSG\nmsg.payload = is_good_co2;\n\nmsg.topic = \"UPDATE `room_settings` SET `is_good_co2` = '\" + is_good_co2 + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 1440,
+        "wires": [
+            [
+                "0e34936c76e95c9b",
+                "efa75128c2c56c02",
+                "5192eb54ee879b9d",
+                "ecb8d2268338ec44",
+                "cac096fea86d7318"
+            ]
+        ]
+    },
+    {
+        "id": "78de31b22728bc5f",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet is_bad_co2 = flow.get('is_bad_co2');\nlet room_id = flow.get('room_id');\n\n// SET\nis_bad_co2 = msg.payload;\n\n// FLOAT SET\nflow.set('is_bad_co2', is_bad_co2);\n\n// MSG\nmsg.payload = is_bad_co2;\nmsg.topic = \"UPDATE `room_settings` SET `is_bad_co2` = '\" + is_bad_co2 + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 1680,
+        "wires": [
+            [
+                "0e34936c76e95c9b",
+                "efa75128c2c56c02",
+                "5192eb54ee879b9d",
+                "ecb8d2268338ec44",
+                "cac096fea86d7318"
+            ]
+        ]
+    },
+    {
+        "id": "b51c70a5f95836d7",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "Warnug ab",
+        "tooltip": "",
+        "group": "b0bc51f819da4e01",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "tempOptMin",
+        "topicType": "str",
+        "format": "{{value}}%",
+        "min": 0,
+        "max": "3000",
+        "step": "100",
+        "className": "",
+        "x": 630,
+        "y": 1680,
+        "wires": [
+            [
+                "78de31b22728bc5f",
+                "ed849ff640774025"
+            ]
+        ]
+    },
+    {
+        "id": "0e34936c76e95c9b",
+        "type": "mysql",
+        "z": "5a3a9fd242ddfbf1",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 810,
+        "y": 1560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "efa75128c2c56c02",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gauge CO ui_control",
+        "func": "// FLOW GET\nlet co = flow.get('co');\n\nlet is_good_co2 = flow.get('is_good_co2');\nlet is_bad_co2 = flow.get('is_bad_co2');\n\n// SET\nlet start = 0;\nlet good = is_good_co2;\nlet bad = is_bad_co2;\nlet end = bad + 300;\n\n// seg1:start, \n\n// MSG\nmsg.topic = 'ppn';\nmsg = {ui_control:{min:start, max:end, seg1:good, seg2:bad, seg3:end}, topic:`${msg.topic}`};\nmsg.payload = co;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1440,
+        "wires": [
+            [
+                "cb19e28ba388d22e"
+            ]
+        ]
+    },
+    {
+        "id": "cb19e28ba388d22e",
+        "type": "ui_gauge",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gaugeCO2",
+        "group": "b0bc51f819da4e01",
+        "order": 2,
+        "width": "6",
+        "height": "3",
+        "gtype": "donut",
+        "title": "",
+        "label": "ppm",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "2200",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#e64500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1750,
+        "y": 1440,
+        "wires": []
+    },
+    {
+        "id": "5192eb54ee879b9d",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart CO2 ui_control",
+        "func": "// FLOW GET\nlet co = flow.get('co');\nlet is_good_co2 = flow.get('is_good_co2');\nlet is_bad_co2 = flow.get('is_bad_co2');\n\n// SET\nlet start = 0;\nlet end = is_bad_co2 + 300;\n\n// MSG\nmsg.topic = 'Aktuel';\nmsg = {ui_control:{ymin:start, ymax:end}, topic:`${msg.topic}`};\nmsg.payload = co;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1480,
+        "wires": [
+            [
+                "0f542d3d8a3b3535"
+            ]
+        ]
+    },
+    {
+        "id": "ecb8d2268338ec44",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart CO2 is_good_co2",
+        "func": "// FLOW GET\nlet is_good_co2 = flow.get('is_good_co2');\n\n// MSG\nmsg.topic = 'gut';\nmsg.payload = is_good_co2;\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1390,
+        "y": 1520,
+        "wires": [
+            [
+                "0f542d3d8a3b3535"
+            ]
+        ]
+    },
+    {
+        "id": "cac096fea86d7318",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart CO2 is_bad_co2",
+        "func": "// FLOW GET\nlet is_bad_co2 = flow.get('is_bad_co2');\n\n// MSG\nmsg.topic = 'warn';\nmsg.payload = is_bad_co2;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1560,
+        "wires": [
+            [
+                "0f542d3d8a3b3535"
+            ]
+        ]
+    },
+    {
+        "id": "f532a1271f8c2767",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Settings CO2",
+        "info": "",
+        "x": 350,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "a58f4ecb5d030c97",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "CO2",
+        "info": "",
+        "x": 1310,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "0f542d3d8a3b3535",
+        "type": "ui_chart",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart CO2",
+        "group": "b0bc51f819da4e01",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "3",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#00b500",
+            "#ff7f0e",
+            "#ff7f0e",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1750,
+        "y": 1480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "24be743916fd4ec3",
+        "type": "ui_text",
+        "z": "5a3a9fd242ddfbf1",
+        "group": "7a7a528c0567ddfc",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "Letztes",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 780,
+        "y": 2200,
+        "wires": []
+    },
+    {
+        "id": "c5a5f1114f732acf",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "updated",
+        "func": "let updated = flow.get('updated') || 0;\n\nmsg.payload = updated;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 2200,
+        "wires": [
+            [
+                "b46631cb669f61fc",
+                "aadc5fc44937c074"
+            ]
+        ]
+    },
+    {
+        "id": "5b4fd0d4e9366baa",
+        "type": "link in",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Netatmo Indoor",
+        "links": [
+            "99818b8228e4e27d"
+        ],
+        "x": 165,
+        "y": 140,
+        "wires": [
+            [
+                "ae2fbe6052e3b61a",
+                "edc36ebfbc91132a"
+            ]
+        ]
+    },
+    {
+        "id": "b46631cb669f61fc",
+        "type": "subflow:3ff4bac1cafa9052",
+        "z": "5a3a9fd242ddfbf1",
+        "x": 590,
+        "y": 2200,
+        "wires": [
+            [
+                "24be743916fd4ec3"
+            ]
+        ]
+    },
+    {
+        "id": "afb7c5a9ee2cc665",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "db_good",
+        "func": "// FLOAT GET\nlet db_good = flow.get('db_good');\n\n// MSG\nmsg.payload = db_good;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 1820,
+        "wires": [
+            [
+                "00308a0454c5ef91",
+                "1cd2639cd172d6ec"
+            ]
+        ]
+    },
+    {
+        "id": "64c4f58115b61675",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "db_bad",
+        "func": "// FLOAT GET\nlet db_bad = flow.get('db_bad');\n\n// MSG\nmsg.payload = db_bad;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 2060,
+        "wires": [
+            [
+                "44dd4fca27f167f1",
+                "eeed89d7d85d2f17"
+            ]
+        ]
+    },
+    {
+        "id": "44dd4fca27f167f1",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "dbMax",
+        "func": "msg.topic = `coMax`;\nmsg = {ui_control:{max:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 2020,
+        "wires": [
+            [
+                "00308a0454c5ef91"
+            ]
+        ]
+    },
+    {
+        "id": "1cd2639cd172d6ec",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "dbMin",
+        "func": "msg.topic = `coMin`;\nmsg = {ui_control:{min:`${msg.payload}`},topic:`${msg.topic}`};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1880,
+        "wires": [
+            [
+                "eeed89d7d85d2f17"
+            ]
+        ]
+    },
+    {
+        "id": "00308a0454c5ef91",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "Leise bis",
+        "tooltip": "",
+        "group": "1f09b98928526ab5",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "",
+        "topicType": "str",
+        "format": "{{value}}dB",
+        "min": 0,
+        "max": "120",
+        "step": "5",
+        "className": "",
+        "x": 620,
+        "y": 1820,
+        "wires": [
+            [
+                "bb18468b041e515f",
+                "1cd2639cd172d6ec"
+            ]
+        ]
+    },
+    {
+        "id": "bb18468b041e515f",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet db_good = flow.get('db_good');\nlet room_id = flow.get('room_id');\n\n// SET\ndb_good = msg.payload;\n\n// FLOAT SET\nflow.set('db_good', db_good);\n\n// MSG\nmsg.payload = db_good;\n\nmsg.topic = \"UPDATE `room_settings` SET `db_good` = '\" + db_good + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 1820,
+        "wires": [
+            [
+                "24aaf4bc2aac9f99",
+                "0dd68587f4890c83",
+                "8919139dad5a8768",
+                "c5b7fd1f18a8f8b6",
+                "7eb0f6f32f6ddaed"
+            ]
+        ]
+    },
+    {
+        "id": "a1ad6d26e140f7b3",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "UPDATE `room_settings`",
+        "func": "// FLOAT GET\nlet db_bad = flow.get('db_bad');\nlet room_id = flow.get('room_id');\n\n// SET\ndb_bad = msg.payload;\n\n// FLOAT SET\nflow.set('db_bad', db_bad);\n\n// MSG\nmsg.payload = db_bad;\nmsg.topic = \"UPDATE `room_settings` SET `db_bad` = '\" + db_bad + \"' WHERE id = '\" + room_id + \"'\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 2060,
+        "wires": [
+            [
+                "24aaf4bc2aac9f99",
+                "0dd68587f4890c83",
+                "8919139dad5a8768",
+                "c5b7fd1f18a8f8b6",
+                "7eb0f6f32f6ddaed"
+            ]
+        ]
+    },
+    {
+        "id": "eeed89d7d85d2f17",
+        "type": "ui_numeric",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "label": "zu laut ab",
+        "tooltip": "",
+        "group": "1f09b98928526ab5",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": false,
+        "passthru": true,
+        "topic": "",
+        "topicType": "str",
+        "format": "{{value}}dB",
+        "min": 0,
+        "max": "120",
+        "step": "5",
+        "className": "",
+        "x": 620,
+        "y": 2060,
+        "wires": [
+            [
+                "a1ad6d26e140f7b3",
+                "44dd4fca27f167f1"
+            ]
+        ]
+    },
+    {
+        "id": "24aaf4bc2aac9f99",
+        "type": "mysql",
+        "z": "5a3a9fd242ddfbf1",
+        "mydb": "919f4e44dec380e0",
+        "name": "",
+        "x": 810,
+        "y": 1940,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0dd68587f4890c83",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gauge dB ui_control",
+        "func": "// FLOW GET\nlet db = flow.get('db');\n\nlet db_good = flow.get('db_good');\nlet db_bad = flow.get('db_bad');\n\n// SET\nlet start = 0;\nlet good = db_good;\nlet bad = db_bad;\nlet end = db_bad + 20;\n\n// seg1:start, \n\n// MSG\nmsg.topic = 'dB';\nmsg = {ui_control:{min:start, max:end, seg1:good, seg2:bad, seg3:end}, topic:`${msg.topic}`};\nmsg.payload = db;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1380,
+        "y": 1820,
+        "wires": [
+            [
+                "348ad30c3667f00f"
+            ]
+        ]
+    },
+    {
+        "id": "348ad30c3667f00f",
+        "type": "ui_gauge",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "gauge dB",
+        "group": "1f09b98928526ab5",
+        "order": 2,
+        "width": "6",
+        "height": "3",
+        "gtype": "donut",
+        "title": "",
+        "label": "dB",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "2200",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#e64500"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1740,
+        "y": 1820,
+        "wires": []
+    },
+    {
+        "id": "8919139dad5a8768",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart dB ui_control",
+        "func": "// FLOW GET\nlet db = flow.get('db');\nlet db_good = flow.get('db_good');\nlet db_bad = flow.get('db_bad');\n\n// SET\nlet start = 0;\nlet end = db_bad + 20;\n\n// MSG\nmsg.topic = 'Aktuel';\nmsg = {ui_control:{ymin:start, ymax:end}, topic:`${msg.topic}`};\nmsg.payload = db;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 1860,
+        "wires": [
+            [
+                "1e9953a331bdc110"
+            ]
+        ]
+    },
+    {
+        "id": "c5b7fd1f18a8f8b6",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart dB db_good",
+        "func": "// FLOW GET\nlet db_good = flow.get('db_good');\n\n// MSG\nmsg.topic = 'leise';\nmsg.payload = db_good;\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1370,
+        "y": 1900,
+        "wires": [
+            [
+                "1e9953a331bdc110"
+            ]
+        ]
+    },
+    {
+        "id": "7eb0f6f32f6ddaed",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart dB db_bad",
+        "func": "// FLOW GET\nlet db_bad = flow.get('db_bad');\n\n// MSG\nmsg.topic = 'zu laut';\nmsg.payload = db_bad;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1360,
+        "y": 1940,
+        "wires": [
+            [
+                "1e9953a331bdc110"
+            ]
+        ]
+    },
+    {
+        "id": "4caa63c9b33f3bab",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "Settings dB",
+        "info": "",
+        "x": 350,
+        "y": 1780,
+        "wires": []
+    },
+    {
+        "id": "4523f19e14544bf3",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "dB",
+        "info": "",
+        "x": 1310,
+        "y": 1780,
+        "wires": []
+    },
+    {
+        "id": "1e9953a331bdc110",
+        "type": "ui_chart",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart dB",
+        "group": "1f09b98928526ab5",
+        "order": 1,
+        "width": "6",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#00b500",
+            "#ff7f0e",
+            "#ff7f0e",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1740,
+        "y": 1860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e4bd9606a7cea030",
+        "type": "comment",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "From Float Netatmo",
+        "info": "",
+        "x": 150,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "4ec894f29418ad8b",
+        "type": "ui_chart",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Outdoor & Indoor",
+        "group": "3badd02204fa4041",
+        "order": 2,
+        "width": "6",
+        "height": "3",
+        "label": "",
+        "chartType": "horizontalBar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "-20",
+        "ymax": "50",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0c3f64",
+            "#1f77b4",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1780,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2b29b95a23b41471",
+        "type": "ui_chart",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "chart Outdoor & Indoor humi",
+        "group": "3badd02204fa4041",
+        "order": 5,
+        "width": "6",
+        "height": "3",
+        "label": "",
+        "chartType": "horizontalBar",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0c3f64",
+            "#1f77b4",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1800,
+        "y": 1220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "760529567d150307",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "updated",
+        "func": "let updated = flow.get('updated') || 0;\n\nmsg.payload = updated + 600;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 2280,
+        "wires": [
+            [
+                "942851ef0c348de9"
+            ]
+        ]
+    },
+    {
+        "id": "3dad7158199eab14",
+        "type": "debug",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 2280,
+        "wires": []
+    },
+    {
+        "id": "aadc5fc44937c074",
+        "type": "debug",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 490,
+        "y": 2240,
+        "wires": []
+    },
+    {
+        "id": "942851ef0c348de9",
+        "type": "function",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "m + 10",
+        "func": "let date_value = msg.payload;\nlet plus = (60*60+10);\n\n// FUNKTION\nfunction fctDate(date_value, plus) {\n    const date = new Date(date_value + plus);\n    \n    let d = date.getDate();\n    d = ((d < 10) ? \"0\" + d : d);\n    \n    let mon = date.getMonth() + 1;\n    mon = ((mon < 10) ? \"0\" + mon : mon);\n    \n    const y = date.getFullYear();\n    \n    let h = date.getHours();\n    h = ((h < 10) ? \"0\" + h : h);\n    \n    let min = date.getMinutes();\n    min = ((min < 10) ? \"0\" + min : min);\n    \n    let s = date.getSeconds();\n    s = ((s < 10) ? \"0\" + s : s);\n    \n    output = `${h}:${min}:${s} ${d}.${mon}.${y}`;\n    return output;\n}\n\nmsg.payload = fctDate(date_value, plus);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 2280,
+        "wires": [
+            [
+                "3dad7158199eab14"
+            ]
+        ]
+    },
+    {
+        "id": "9abd6a232e6fe5b2",
+        "type": "ui_spacer",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "spacer",
+        "group": "b0bc51f819da4e01",
+        "order": 3,
+        "width": "6",
+        "height": "1"
+    },
+    {
+        "id": "786225c66c251acd",
+        "type": "ui_spacer",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "spacer",
+        "group": "b1a371df80305874",
+        "order": 4,
+        "width": "6",
+        "height": "1"
+    },
+    {
+        "id": "7266a0f9da6d0f39",
+        "type": "ui_spacer",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "spacer",
+        "group": "d48606f24897b3a3",
+        "order": 3,
+        "width": "6",
+        "height": "1"
+    },
+    {
+        "id": "f6fd0b139e92f80c",
+        "type": "ui_spacer",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "spacer",
+        "group": "1f09b98928526ab5",
+        "order": 3,
+        "width": "6",
+        "height": "1"
+    },
+    {
+        "id": "0a3ed2d30f749e8f",
+        "type": "ui_spacer",
+        "z": "5a3a9fd242ddfbf1",
+        "name": "spacer",
+        "group": "3badd02204fa4041",
+        "order": 3,
+        "width": "6",
+        "height": "1"
+    },
+    {
+        "id": "919f4e44dec380e0",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "raumklima",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "b1a371df80305874",
+        "type": "ui_group",
+        "name": "Temperatur",
+        "tab": "1f842539987af76b",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "3badd02204fa4041",
+        "type": "ui_group",
+        "name": "Outdoor",
+        "tab": "1f842539987af76b",
+        "order": 5,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "d48606f24897b3a3",
+        "type": "ui_group",
+        "name": "Luftfeuchtigkeit",
+        "tab": "1f842539987af76b",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "b0bc51f819da4e01",
+        "type": "ui_group",
+        "name": "CO2",
+        "tab": "1f842539987af76b",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "7a7a528c0567ddfc",
+        "type": "ui_group",
+        "name": "Updates",
+        "tab": "1f842539987af76b",
+        "order": 6,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "1f09b98928526ab5",
+        "type": "ui_group",
+        "name": "Geräuschpegel",
+        "tab": "1f842539987af76b",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": true,
+        "className": ""
+    },
+    {
+        "id": "1f842539987af76b",
+        "type": "ui_tab",
+        "name": "Büro",
+        "icon": "fa-thermometer-half",
+        "order": 8,
+        "disabled": false,
+        "hidden": false
+    }
+]

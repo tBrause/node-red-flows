@@ -1,0 +1,183 @@
+[
+    {
+        "id": "ddc2d3725b628a90",
+        "type": "tab",
+        "label": "Chat",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "48e27ad35704a6b3",
+        "type": "ui_form",
+        "z": "ddc2d3725b628a90",
+        "name": "",
+        "label": "Chat",
+        "group": "0c3e23847ca5c44f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Message",
+                "value": "msg",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "msg": ""
+        },
+        "payload": "",
+        "submit": "SEND",
+        "cancel": "CLEAR",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": true,
+        "className": "my_button",
+        "x": 670,
+        "y": 400,
+        "wires": [
+            [
+                "2a77229564ba2cf5",
+                "268b3b1186b64376"
+            ]
+        ]
+    },
+    {
+        "id": "2a77229564ba2cf5",
+        "type": "debug",
+        "z": "ddc2d3725b628a90",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "268b3b1186b64376",
+        "type": "mqtt out",
+        "z": "ddc2d3725b628a90",
+        "name": "",
+        "topic": "msg",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e7bef4fac1dad829",
+        "x": 850,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "897d9dfa45252ba0",
+        "type": "mqtt in",
+        "z": "ddc2d3725b628a90",
+        "name": "",
+        "topic": "msg/#",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "e7bef4fac1dad829",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 850,
+        "y": 580,
+        "wires": [
+            [
+                "b703df2fc2217f28",
+                "24b9fa9887eab9a2"
+            ]
+        ]
+    },
+    {
+        "id": "b703df2fc2217f28",
+        "type": "debug",
+        "z": "ddc2d3725b628a90",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "24b9fa9887eab9a2",
+        "type": "ui_text",
+        "z": "ddc2d3725b628a90",
+        "group": "0c3e23847ca5c44f",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "view",
+        "label": "{{msg.payload.msg}}",
+        "format": "",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1010,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "0c3e23847ca5c44f",
+        "type": "ui_group",
+        "name": "Form",
+        "tab": "4a9cf85a90c59317",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e7bef4fac1dad829",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "guteswetter.ddns.net",
+        "port": "1883",
+        "clientid": "mqtt_raspi421",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "sessionExpiry": ""
+    },
+    {
+        "id": "4a9cf85a90c59317",
+        "type": "ui_tab",
+        "name": "msg",
+        "icon": "fa-paper-plane",
+        "order": 14,
+        "disabled": false,
+        "hidden": false
+    }
+]
